@@ -27,7 +27,7 @@ When rules conflict, follow the higher priority rule and explain the conflict br
 ## 1) Language Policy (STRICT)
 
 ### 1.1 Chat Responses
-- If the user's request includes Traditional Chinese, respond in Traditional Chinese.
+- Always respond in Traditional Chinese.
 
 ### 1.2 Repository Artifacts
 Repository artifacts MUST be written in English, including:

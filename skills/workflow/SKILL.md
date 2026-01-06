@@ -10,10 +10,11 @@ metadata:
 ## Goals
 - Provide a repeatable end-to-end change workflow that optimizes for **safety** (money/auth/data) while keeping documentation **proportional to risk**.
 - Produce a closed loop: intake → plan/spec → implement → review → fix → verify.
+- Keep TASK/SPEC lean by defaulting to per-change docs and treating root files as a short index.
 
 ## Definitions
 ### Change class
-- **Trivial**: Non-executable, non-behavioral changes only (docs/comments/typos/formatting) with no production impact.
+- **Trivial**: Non-executable, non-behavioral changes only (.comments/typos/formatting) with no production impact.
 - **Small**: Behavior change limited to a single component, no API contract changes, and **no high-risk area touched** (see below). Can be fully covered by targeted tests.
 - **Non-trivial**: Anything that is not Trivial/Small (cross-cutting changes, contract changes, infra changes, ambiguous impact, or any high-risk area).
 
@@ -38,27 +39,32 @@ If any high-risk row is **Yes** or **Ambiguous**, prefer **medium/high** risk un
 - UI work: load `agents-solid` and `agents-ui`.
 - Infra changes: load `agents-infra`.
 
-## Step 0: Intake + Triage + Docs (TASK.md / SPEC.md)
+## Step 0: Intake + Triage + Docs (TASK/SPEC)
 ### 0.1 Intake
 - Restate the goal (1-2 sentences).
 - List up to 3 assumptions if needed.
 - Declare the **change class**: Trivial / Small / Non-trivial.
 - Classify **risk**: low / medium / high (see rubric above).
 
-### 0.2 Documentation gating (keep docs proportional)
+### 0.2 Documentation gating (keep docs proportional + small)
 - **Trivial**
   - No TASK/SPEC required.
   - Still include a verification note in the final output (e.g., “No runtime impact; verified by …”).
 - **Small**
-  - Create/update **TASK.md**.
-  - SPEC.md is optional unless a matrix-driven requirement applies (see 0.4).
+  - Create/update a **TASK doc**.
+  - SPEC is optional unless a matrix-driven requirement applies (see 0.4).
 - **Non-trivial**
-  - Create/update **TASK.md** and **SPEC.md**.
+  - Create/update a **TASK doc** and a **SPEC doc**.
 
-For non-trivial changes, create or update `TASK.md` and `SPEC.md` at repo root.
-- If the files exist, append a dated section near the top; do not rewrite older sections.
+Default locations (prevent root bloat):
+- Prefer per-change files:
+  - `.tasks/TASK-YYYY-MM-DD-<slug>.md`
+  - `.specs/SPEC-YYYY-MM-DD-<slug>.md`
+  - Create `.tasks/` and `.specs/` if missing.
+- Keep root `TASK.md` / `SPEC.md` as a short index + rolling summary (<= ~20 lines) linking to the per-change docs.
+- If the repo already standardizes on root TASK/SPEC, keep only the most recent sections in root and archive the rest (see 0.9).
 
-### 0.3 TASK.md must include
+### 0.3 TASK doc must include
 - Title + date
 - Change class + risk
 - Goal, non-goals, assumptions
@@ -66,7 +72,7 @@ For non-trivial changes, create or update `TASK.md` and `SPEC.md` at repo root.
 - Expected files/dirs
 - Verification plan (commands + expected outcomes, manual checklist if needed)
 
-### 0.4 SPEC.md must include (baseline)
+### 0.4 SPEC doc must include (baseline)
 - Problem
 - Requirements (functional + non-functional)
 - Domain rules / invariants
@@ -126,10 +132,10 @@ If a minimum item is not possible, explicitly state why (e.g., “no test harnes
 If the user only asks for TASK/SPEC, perform Step 0 and stop.
 
 ### 0.9 Archival policy (avoid infinite growth)
-If TASK.md or SPEC.md grows beyond one of these thresholds:
+If root TASK/SPEC is used and grows beyond one of these thresholds:
 - > 10 dated sections, OR
 - > ~400 lines
-Then archive older sections to `docs/history/<TASK|SPEC>-YYYY-MM.md` (keep the most recent sections in root).
+Then archive older sections to `.history/<TASK|SPEC>-YYYY-MM.md` or convert them into per-change docs under `.tasks/` and `.specs/`. Keep only the most recent sections + links in root.
 
 ## Step 1: Implement (backend)
 - Follow `agents-go` rules and layering.

@@ -10,6 +10,7 @@ All agent rules for this repository live in skills.
 - agents-solid: SolidJS frontend
 - agents-ui: UI components/UX work
 - agents-infra: runtime/deployment changes (ports/env/services/build)
+- agents-make: Makefile automation (run/build/test/docker shortcuts)
 
 If multiple areas apply, load all relevant skills.
 For rule priority, language policy, security, scope, verification, and output format, see agents-global.

@@ -9,4 +9,7 @@
 !config.toml
 
 # Ignore others
+*.DS_Store
+*.DS_STORE
+*.vscode
 skills/.system/

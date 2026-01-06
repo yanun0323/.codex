@@ -16,9 +16,13 @@ If any rule conflicts with the agents-global skill, follow the higher-priority r
 ## 1) Stack and Constraints
 
 - SolidJS + TypeScript
+- Tailwind CSS for styling (must use existing project Tailwind setup; do not add alternate styling systems unless explicitly approved).
 - Build tooling: follow the existing repo (often Vite).
 - Do not introduce new libraries (router/query/validation/UI) unless explicitly approved.
   - If the repo already uses a standard library (e.g., TanStack Router/Query, Zod), use it consistently.
+- UI components MUST use shadcn-solid as the source of reusable components.
+  - Follow the shadcn-solid copy/paste approach (components live in the repo; not a runtime dependency).
+  - The CLI may be used for scaffolding, but do not add alternative UI component libraries unless explicitly approved.
 
 ---
 

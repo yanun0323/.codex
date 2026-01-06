@@ -1,0 +1,18 @@
+################################################################################
+# Models
+################################################################################
+model = "gpt-5.2-codex"
+review_model = "gpt-5.2-codex"
+model_provider = "openai"
+
+# Start with medium; bump to high only for complex work or deep review.
+model_reasoning_effort = "xhigh"
+model_reasoning_summary = "auto"
+model_verbosity = "high"
+
+[features]
+undo = true
+exec_policy = true
+skills = true
+web_search_request = true # allow the model to request web searches
+view_image_tool = true    # view_image_tool defaults to true; omit to keep defaults

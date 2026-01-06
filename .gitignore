@@ -1,0 +1,12 @@
+# Ignore everything
+*
+
+# Allow these directories/files
+!skills
+!skills/**
+!.gitignore
+!AGENTS.md
+!config.toml
+
+# Ignore others
+skills/.system/

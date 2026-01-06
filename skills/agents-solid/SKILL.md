@@ -18,11 +18,13 @@ If any rule conflicts with the agents-global skill, follow the higher-priority r
 - SolidJS + TypeScript
 - Tailwind CSS for styling (must use existing project Tailwind setup; do not add alternate styling systems unless explicitly approved).
 - Build tooling: follow the existing repo (often Vite).
+- SolidJS syntax and examples can be obtained from `https://context7.com/websites/solidjs/llms.txt?tokens=10000`.
 - Do not introduce new libraries (router/query/validation/UI) unless explicitly approved.
   - If the repo already uses a standard library (e.g., TanStack Router/Query, Zod), use it consistently.
 - UI components MUST use shadcn-solid as the source of reusable components.
   - Follow the shadcn-solid copy/paste approach (components live in the repo; not a runtime dependency).
   - The CLI may be used for scaffolding, but do not add alternative UI component libraries unless explicitly approved.
+  - Usage syntax and examples can be obtained from `https://context7.com/hngngn/shadcn-solid/llms.txt?tokens=10000`.
 
 ---
 
@@ -48,8 +50,8 @@ If the repo has a different structure, follow the repo and keep boundaries consi
 
 - Prefer a single API client module (e.g., `shared/api/client.ts`) rather than scattered `fetch`.
 - Handle non-2xx responses explicitly.
-- Prefer a consistent server-state pattern:
-  - If a query library exists in the repo, use it.
+- Use TanStack Query for API interactions.
+  - Usage syntax and examples can be obtained from `https://context7.com/websites/tanstack_query/llms.txt?tokens=10000`.
   - Do not cache server state in ad-hoc signals.
 
 ---

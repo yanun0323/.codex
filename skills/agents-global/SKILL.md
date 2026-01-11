@@ -17,6 +17,8 @@ description: Global rules for all coding tasks in this repo - priority, language
    - agents-solid
    - agents-ui
    - agents-infra
+   - agents-js-ts-runtime
+   - agents-make
 4. This skill
 5. Existing repository conventions (when not in conflict)
 

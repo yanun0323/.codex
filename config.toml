@@ -17,9 +17,3 @@ skills = true
 web_search_request = true # allow the model to request web searches
 view_image_tool = true    # view_image_tool defaults to true; omit to keep defaults
 unified_exec = true
-
-[projects."/Users/Shared/Project/work/vgv"]
-trust_level = "trusted"
-
-[projects."/Users/Shared/Project"]
-trust_level = "untrusted"

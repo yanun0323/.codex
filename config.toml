@@ -5,15 +5,88 @@ model = "gpt-5.2-codex"
 review_model = "gpt-5.2-codex"
 model_provider = "openai"
 
-# Start with medium; bump to high only for complex work or deep review.
+
+# Reasoning effort: minimal | low | medium | high | xhigh (default: medium; xhigh on gpt-5.2-codex and gpt-5.2)
 model_reasoning_effort = "xhigh"
+# Reasoning summary: auto | concise | detailed | none (default: auto)
 model_reasoning_summary = "auto"
-model_verbosity = "high"
+# Text verbosity for GPT-5 family (Responses API): low | medium | high (default: medium)
+model_verbosity = "medium"
+# Force-enable reasoning summaries for current model (default: false)
+model_supports_reasoning_summaries = false
+
+################################################################################
+# Notifications
+################################################################################
+
+# External notifier program (argv array). When unset: disabled.
+# Example: notify = ["notify-send", "Codex"]
+# notify = []
+notify = ["notify-send", "Codex"]
+
+################################################################################
+# Approval & Sandbox
+################################################################################
+
+# When to ask for command approval:
+# - untrusted: only known-safe read-only commands auto-run; others prompt
+# - on-failure: auto-run in sandbox; prompt only on failure for escalation
+# - on-request: model decides when to ask (default)
+# - never: never prompt (risky)
+approval_policy = "never"
+
+# Filesystem/network sandbox policy for tool calls:
+# - read-only (default)
+# - workspace-write
+# - danger-full-access (no sandbox; extremely risky)
+sandbox_mode = "workspace-write"
+
+
+################################################################################
+# Centralized Feature Flags (preferred)
+################################################################################
 
 [features]
-undo = true
-exec_policy = true
-skills = true
-web_search_request = true # allow the model to request web searches
-view_image_tool = true    # view_image_tool defaults to true; omit to keep defaults
+# Leave this table empty to accept defaults. Set explicit booleans to opt in/out.
+shell_tool = true
+web_search_request = true
 unified_exec = true
+shell_snapshot = false
+apply_patch_freeform = false
+exec_policy = true
+experimental_windows_sandbox = false
+elevated_windows_sandbox = false
+remote_compaction = true
+remote_models = false
+powershell_utf8 = false
+tui2 = false
+undo = true
+skills = true
+view_image_tool = true               # view_image_tool defaults to true; omit to keep defaults
+
+
+################################################################################
+# Sandbox settings (tables)
+################################################################################
+
+# Extra settings used only when sandbox_mode = "workspace-write".
+[sandbox_workspace_write]
+# Additional writable roots beyond the workspace (cwd). Default: []
+writable_roots = []
+# Allow outbound network access inside the sandbox. Default: false
+network_access = true
+# Exclude $TMPDIR from writable roots. Default: false
+exclude_tmpdir_env_var = false
+# Exclude /tmp from writable roots. Default: false
+exclude_slash_tmp = false
+
+
+################################################################################
+# Model Providers (extend/override built-ins)
+################################################################################
+
+# [model_providers.ollama]
+# name = "Ollama"
+# base_url = "http://localhost:11434/v1"
+# http_headers = { "X-Example-Header" = "example-value" }
+# env_http_headers = { "X-Example-Features" = "EXAMPLE_FEATURES" }

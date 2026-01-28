@@ -146,5 +146,6 @@ Avoid long textbook explanations unless requested.
 Load the relevant domain skills before making changes:
 - Backend (Go + Echo): agents-go
 - Frontend (SolidJS): agents-solid
+- Frontend UI shard-solid enforcement: agents-solid-shard
 - UI layer rules: agents-ui
 - Infra/container/config: agents-infra

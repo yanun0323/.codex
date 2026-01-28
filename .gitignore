@@ -4,6 +4,8 @@
 # Allow these directories/files
 !skills
 !skills/**
+!skills_deprecated
+!skills_deprecated/**
 !.gitignore
 !AGENTS.md
 !config.toml

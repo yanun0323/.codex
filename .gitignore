@@ -8,6 +8,7 @@
 !skills_deprecated/**
 !.gitignore
 !AGENTS.md
+!config.toml.bak
 
 # Ignore others
 *.DS_Store

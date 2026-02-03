@@ -15,7 +15,6 @@ description: Global rules for all coding tasks in this repo - priority, language
 3. Domain skills, when applicable:
    - agents-go
    - agents-solid
-   - agents-shadcn-solid
    - agents-ui
    - agents-infra
    - agents-js-ts-runtime

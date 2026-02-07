@@ -1,18 +1,13 @@
-model = "gpt-5.2"
-review_model = "gpt-5.2-codex"
+model = "gpt-5.3-codex"
+review_model = "gpt-5.2-pro"
 model_provider = "openai"
 model_reasoning_effort = "xhigh"
 model_reasoning_summary = "auto"
 # Text verbosity for GPT-5 family (Responses API): low | medium | high (default: medium)
 model_verbosity = "medium"
-model_supports_reasoning_summaries = false
+model_supports_reasoning_summaries = true
 web_search = "live"
 notify = ["notify-send", "Codex"]
 approval_policy = "never"
 sandbox_mode = "workspace-write"
 personality = "pragmatic"
-
-[profiles.deep-review]
-model = "gpt-5-pro"
-model_reasoning_effort = "high"
-approval_policy = "never"

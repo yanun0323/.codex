@@ -20,11 +20,11 @@ Short description of the intended outcome.
 - Item 2
 
 ## 3) Acceptance Criteria
-| ID | Criterion | Verification |
-| --- | --- | --- |
-| AC-01 |  |  |
-| AC-02 |  |  |
-| AC-03 |  |  |
+| ID | Criterion | Verification | Planned Test ID(s) |
+| --- | --- | --- | --- |
+| AC-01 |  |  |  |
+| AC-02 |  |  |  |
+| AC-03 |  |  |  |
 
 ## 4) Assumptions (max 3)
 | ID | Assumption | Risk If Wrong |
@@ -48,11 +48,20 @@ Short description of the intended outcome.
 
 ## 7) Risk and Verification Plan
 - Risk Level: Low / Medium / High
+- TDD Mode:
+  - Low: Optional
+  - Medium: Required for touched business logic
+  - High: Required for all behavior-changing logic
 - Required checks:
   - Lint:
   - Typecheck:
-  - Tests:
+  - Tests (unit/integration):
+  - TDD Evidence (Medium/High):
   - Manual checks:
+- Test-first exceptions (if any):
+  - Blocker:
+  - Fallback:
+  - Risk impact:
 
 ## 8) Rollback Notes (for Medium/High)
 - Rollback trigger:

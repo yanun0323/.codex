@@ -24,18 +24,20 @@ One-paragraph summary of what was delivered and why.
 |  |  |  |
 
 ## 4) Acceptance Criteria Coverage
-| Acceptance Criterion | Status (Pass/Fail) | Evidence |
-| --- | --- | --- |
-| AC-01 |  |  |
-| AC-02 |  |  |
-| AC-03 |  |  |
+| Acceptance Criterion | Status (Pass/Fail) | Linked Test(s) | Evidence |
+| --- | --- | --- | --- |
+| AC-01 |  |  |  |
+| AC-02 |  |  |  |
+| AC-03 |  |  |  |
 
 ## 5) Verification Evidence
 | Check | Command/Method | Result | Notes |
 | --- | --- | --- | --- |
 | Lint |  |  |  |
 | Typecheck |  |  |  |
+| TDD Red Evidence |  |  |  |
 | Tests |  |  |  |
+| TDD Green Evidence |  |  |  |
 | Security |  |  |  |
 
 ## 6) Residual Risks

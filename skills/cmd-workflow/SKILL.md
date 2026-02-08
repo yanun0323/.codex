@@ -1,6 +1,6 @@
 ---
 name: cmd-workflow
-description: Primary end-to-end workflow for repo changes - intake + TASK_CONTRACT/QUALITY_PROFILE docs + autonomous implementation + critic verification + REVIEW_PACKET handoff. Use this skill only when the user explicitly asks to invoke or use the `workflow` skill.
+description: Primary end-to-end workflow for repo changes - intake + TASK_CONTRACT/QUALITY_PROFILE docs + risk-based TDD build loop + critic verification + REVIEW_PACKET handoff. Use this skill only when the user explicitly asks to invoke or use the `workflow` skill.
 ---
 
 # Exception-Driven Delivery Workflow
@@ -12,6 +12,7 @@ description: Primary end-to-end workflow for repo changes - intake + TASK_CONTRA
 ## Goals
 - Reduce developer cognitive load by escalating only high-value decisions.
 - Increase execution correctness through machine-verifiable quality gates.
+- Shift validation left with risk-based TDD before review.
 - Keep delivery fast by letting low-risk work proceed autonomously.
 
 ## Required Inputs
@@ -54,25 +55,37 @@ Objective:
 Actions:
 1. Classify risk level: `Low`, `Medium`, or `High`.
 2. Create `QUALITY_PROFILE` from template.
-3. Map each quality rule to a verification command or checklist item.
-4. Define rollback strategy for medium/high risk.
+3. Select TDD enforcement mode from risk level:
+   - Low: TDD optional.
+   - Medium: Test-first for touched business logic.
+   - High: Test-first for all behavior-changing logic and critical edge cases.
+4. Map each quality rule and TDD gate to a verification command or checklist item.
+5. Define rollback strategy for medium/high risk.
 
 Exit Criteria:
 - Required gates are defined for the chosen risk level.
+- Required TDD obligations are explicit for the chosen risk level.
 - Verification commands and success criteria are documented.
 
-## Stage 2 - Autonomous Build Loop
+## Stage 2 - Autonomous Build Loop (TDD-Aware)
 Objective:
 - Implement efficiently without unnecessary developer review cycles.
 
 Actions:
 1. Run internal role loop: Architect -> Builder -> Critic.
-2. Make incremental code changes with minimal scope.
-3. Use pseudo code/comments only for complex logic handoff, then remove temporary comments before final handoff.
-4. Keep assumptions synchronized with the task contract.
+2. For medium/high risk, execute Red -> Green -> Refactor per behavior change:
+   - Write failing test(s) first for targeted acceptance criteria.
+   - Implement minimal code to pass.
+   - Refactor while keeping tests green.
+3. For low risk, test-first is optional and test-after is acceptable.
+4. Make incremental code changes with minimal scope.
+5. If test-first is blocked, document the blocker, fallback verification, and risk impact.
+6. Use pseudo code/comments only for complex logic handoff, then remove temporary comments before final handoff.
+7. Keep assumptions synchronized with the task contract.
 
 Exit Criteria:
 - Implementation matches acceptance criteria and scope.
+- Required medium/high-risk TDD evidence is captured.
 - No unresolved critic findings remain at the current iteration.
 
 ## Stage 3 - Critic and Verification Loop
@@ -82,7 +95,7 @@ Objective:
 Actions:
 1. Run all required checks from `QUALITY_PROFILE`.
 2. Fix failures and rerun until passing.
-3. Record evidence for each gate.
+3. Record evidence for each gate, including TDD red/green evidence where required.
 4. If checks cannot run in the environment, record exact commands and expected outcomes.
 
 Exit Criteria:
@@ -124,10 +137,12 @@ Track:
 - Defect leakage after merge.
 - Developer interruption count per task.
 - Rework caused by requirement misunderstanding.
+- TDD compliance rate by risk level.
 
 Use findings to tune:
 - Risk thresholds.
 - Gate strictness.
+- TDD gate policy.
 - Escalation triggers.
 
 ## Hard Rules
@@ -135,3 +150,4 @@ Use findings to tune:
 - Do not introduce new dependencies without explicit approval.
 - Never hardcode secrets or expose sensitive internals in outputs.
 - Keep repository artifacts in English.
+- Do not skip required medium/high-risk TDD gates unless the user explicitly approves an exception.

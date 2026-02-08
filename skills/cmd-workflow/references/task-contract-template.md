@@ -15,11 +15,11 @@ Describe the business or technical outcome in one short paragraph.
 - Item 2
 
 ## 3) Acceptance Criteria
-| ID | Criterion | Verification Method | Priority |
-| --- | --- | --- | --- |
-| AC-01 |  |  | Must |
-| AC-02 |  |  | Must |
-| AC-03 |  |  | Should |
+| ID | Criterion | Verification Method | Planned Test(s) | Priority |
+| --- | --- | --- | --- | --- |
+| AC-01 |  |  |  | Must |
+| AC-02 |  |  |  | Must |
+| AC-03 |  |  |  | Should |
 
 ## 4) Constraints
 - Technical constraints:

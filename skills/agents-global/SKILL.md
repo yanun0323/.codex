@@ -13,12 +13,14 @@ description: Global rules for all coding tasks in this repo - priority, language
 1. Explicit user instructions in the current request
 2. Security rules (in this skill + relevant domain skills)
 3. Domain skills, when applicable:
-   - agents-go
-   - agents-solid
-   - agents-ui
-   - agents-infra
-   - agents-js-ts-runtime
-   - agents-make
+  - agents-go
+  - agents-solid
+  - agents-ui
+  - agents-infra
+  - agents-js-ts-runtime
+  - agents-make
+  - cmd-plan: concise planning workflow for coding tasks (use only when explicitly requested)
+  - cmd-workflow: end-to-end delivery workflow with TASK/QUALITY/REVIEW artifacts (use only when explicitly requested)
 4. This skill
 5. Existing repository conventions (when not in conflict)
 

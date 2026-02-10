@@ -19,8 +19,6 @@ description: Global rules for all coding tasks in this repo - priority, language
   - agents-infra
   - agents-js-ts-runtime
   - agents-make
-  - cmd-plan: concise planning workflow for coding tasks (use only when explicitly requested)
-  - cmd-workflow: end-to-end delivery workflow with TASK/QUALITY/REVIEW artifacts (use only when explicitly requested)
 4. This skill
 5. Existing repository conventions (when not in conflict)
 

@@ -1,5 +1,5 @@
 interface:
   display_name: Command - Interface Design Init
-  short_description: Converted from Anthropic command markdown
+  short_description: Build UI with craft and consistency. For interface design (dashboards, apps, tools) — not marketing sites.
   default_prompt: Use $command-interface-design-init when you need this command workflow as a skill.
-  icon_small: "./assets/command-small.svg"
+  icon_small: './assets/command-small.svg'

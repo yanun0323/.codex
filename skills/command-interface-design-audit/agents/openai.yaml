@@ -1,5 +1,5 @@
 interface:
   display_name: Command - Interface Design Audit
-  short_description: Converted from Anthropic command markdown
+  short_description: Check existing code against your design system for spacing, depth, color, and pattern violations.
   default_prompt: Use $command-interface-design-audit when you need this command workflow as a skill.
   icon_small: "./assets/command-small.svg"

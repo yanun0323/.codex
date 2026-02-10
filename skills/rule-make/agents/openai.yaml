@@ -1,0 +1,3 @@
+interface:
+  display_name: Rule - Make
+  icon_small: "./assets/rule-small.svg"

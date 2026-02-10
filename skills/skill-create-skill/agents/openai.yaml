@@ -1,0 +1,5 @@
+interface:
+  display_name: "Skill - Create Skill"
+  short_description: "Create and normalize skills with naming and metadata rules"
+  icon_small: "./assets/skill-small.svg"
+  default_prompt: "Use $skill-create-skill to create or normalize skills in this repo with the required naming and icon conventions."

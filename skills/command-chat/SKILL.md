@@ -1,12 +1,12 @@
 ---
-name: /chat
-description: Use this skill only when the user explicitly asks to invoke or use the `/chat` skill. This mode is strictly read-only - never create, modify, rename, or delete files. Only inspect local files and optionally search the web to answer questions.
+name: command-chat
+description: Use this skill only when the user explicitly asks to invoke or use the `command-chat` skill. This mode is strictly read-only - never create, modify, rename, or delete files. Only inspect local files and optionally search the web to answer questions.
 ---
 
 # Read-Only Chat Skill
 
 ## When to Use
-- Use this skill only when the user explicitly asks to invoke or use the `/chat` skill.
+- Use this skill only when the user explicitly asks to invoke or use the `command-chat` skill.
 - Use when the user wants discussion, analysis, explanation, or fact-finding without any repository changes.
 
 ## Goals
@@ -47,17 +47,17 @@ Avoid any command pattern that writes:
 - Distinguish verified facts from inference.
 
 ## If the User Requests File Changes
-- Explain that `/chat` mode is read-only and cannot change files.
+- Explain that `command-chat` mode is read-only and cannot change files.
 - Provide either:
   - a read-only analysis/plan, or
   - a clear instruction that the user should switch to a non-read-only coding mode for implementation.
 
 ## Response Style
-- Follow `agents-global` language policy for conversation and artifact language.
+- Follow `rule-global` language policy for conversation and artifact language.
 - Keep responses concise, actionable, and evidence-oriented.
 - For repository questions, cite concrete file paths and relevant lines when possible.
 
 ## Hard Rules
-- Follow `agents-global` priority, security, and language policies.
+- Follow `rule-global` priority, security, and language policies.
 - Preserve workspace state exactly as found.
 - Never perform write operations, even if the user asks, while this skill is active.

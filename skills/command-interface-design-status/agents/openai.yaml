@@ -1,0 +1,5 @@
+interface:
+  display_name: Command - Interface Design Status
+  short_description: Converted from Anthropic command markdown
+  default_prompt: Use $command-interface-design-status when you need this command workflow as a skill.
+  icon_small: "./assets/command-small.svg"

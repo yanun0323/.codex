@@ -1,0 +1,3 @@
+interface:
+  display_name: Rule - Global
+  icon_small: "./assets/rule-small.svg"

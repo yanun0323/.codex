@@ -1,12 +1,12 @@
 ---
-name: /workflow
-description: Primary end-to-end workflow for repo changes - intake + TASK_CONTRACT/QUALITY_PROFILE docs + risk-based TDD build loop + critic verification + REVIEW_PACKET handoff. Use this skill only when the user explicitly asks to invoke or use the `/workflow` skill.
+name: command-workflow
+description: Primary end-to-end workflow for repo changes - intake + TASK_CONTRACT/QUALITY_PROFILE docs + risk-based TDD build loop + critic verification + REVIEW_PACKET handoff. Use this skill only when the user explicitly asks to invoke or use the `command-workflow` skill.
 ---
 
 # Exception-Driven Delivery Workflow
 
 ## When to Use
-- Use this skill only when the user explicitly asks to invoke or use the `/workflow` skill.
+- Use this skill only when the user explicitly asks to invoke or use the `command-workflow` skill.
 - Use for delivery tasks where the team wants high correctness with low developer interruption.
 
 ## Goals
@@ -17,7 +17,7 @@ description: Primary end-to-end workflow for repo changes - intake + TASK_CONTRA
 
 ## Required Inputs
 - User task request and constraints.
-- Existing repo conventions and domain skills (`agents-go`, `agents-solid`, `agents-ui`, `agents-infra`, `agents-make`) when relevant.
+- Existing repo conventions and domain skills (`rule-go`, `rule-solid`, `rule-ui`, `rule-infra`, `rule-make`) when relevant.
 - Current verification commands available in the repo.
 
 ## Artifact Set
@@ -146,7 +146,7 @@ Use findings to tune:
 - Escalation triggers.
 
 ## Hard Rules
-- Follow `agents-global` priority, security, and language policies.
+- Follow `rule-global` priority, security, and language policies.
 - Do not introduce new dependencies without explicit approval.
 - Never hardcode secrets or expose sensitive internals in outputs.
 - Keep repository artifacts in English.

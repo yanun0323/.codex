@@ -1,16 +1,18 @@
 # AGENTS.md - Skills Index
 
-All agent rules for this repository live in skills.
+All agent rules for this repository live in `skills/`.
 
 ## Always load
-- agents-global
+- rule-global
 
 ## Load when relevant
-- agents-go: Go backend
-- agents-solid: SolidJS frontend
-- agents-ui: UI components/UX work
-- agents-infra: runtime/deployment changes (ports/env/services/build)
-- agents-make: Makefile automation (run/build/test/docker shortcuts)
+- rule-go: Go backend
+- rule-solid: SolidJS frontend
+- rule-ui: UI components/UX work
+- rule-infra: runtime/deployment changes (ports/env/services/build)
+- rule-js-ts-runtime: JavaScript/TypeScript runtime and tooling
+- rule-make: Makefile automation (run/build/test/docker shortcuts)
+- skill-create-skill: Create or normalize skills with naming/icon metadata conventions
 
 If multiple areas apply, load all relevant skills.
-For rule priority, language policy, security, scope, verification, and output format, see agents-global.
+For rule priority, language policy, security, scope, verification, and output format, see rule-global.

@@ -1,12 +1,12 @@
 ---
-name: /plan
-description: Create a concise execution plan for coding tasks using task-contract thinking, risk classification, and risk-based TDD + verification-first acceptance criteria. Use this skill only when the user explicitly asks to invoke or use the `/plan` skill.
+name: command-plan
+description: Create a concise execution plan for coding tasks using task-contract thinking, risk classification, and risk-based TDD + verification-first acceptance criteria. Use this skill only when the user explicitly asks to invoke or use the `command-plan` skill.
 ---
 
 # Planning Workflow Skill
 
 ## When to Use
-- Use this skill only when the user explicitly asks to invoke or use the `/plan` skill.
+- Use this skill only when the user explicitly asks to invoke or use the `command-plan` skill.
 - Use when implementation should be paused and a high-signal plan is required first.
 
 ## Goals
@@ -64,7 +64,7 @@ Ask before implementation only when:
 Otherwise, proceed with safest assumptions and document them.
 
 ## Hard Rules
-- Follow `agents-global` rule priority, language policy, and security baseline.
+- Follow `rule-global` rule priority, language policy, and security baseline.
 - Keep repository artifacts in English.
 - Do not introduce new dependencies during planning.
 - Do not skip mandatory medium/high-risk TDD gates unless the user explicitly approves an exception.

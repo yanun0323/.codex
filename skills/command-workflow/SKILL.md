@@ -1,12 +1,12 @@
 ---
-name: cmd-workflow
-description: Primary end-to-end workflow for repo changes - intake + TASK_CONTRACT/QUALITY_PROFILE docs + risk-based TDD build loop + critic verification + REVIEW_PACKET handoff. Use this skill only when the user explicitly asks to invoke or use the `workflow` skill.
+name: /workflow
+description: Primary end-to-end workflow for repo changes - intake + TASK_CONTRACT/QUALITY_PROFILE docs + risk-based TDD build loop + critic verification + REVIEW_PACKET handoff. Use this skill only when the user explicitly asks to invoke or use the `/workflow` skill.
 ---
 
 # Exception-Driven Delivery Workflow
 
 ## When to Use
-- Use this skill only when the user explicitly asks to invoke or use the `workflow` skill.
+- Use this skill only when the user explicitly asks to invoke or use the `/workflow` skill.
 - Use for delivery tasks where the team wants high correctness with low developer interruption.
 
 ## Goals

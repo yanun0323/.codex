@@ -19,7 +19,7 @@ Check existing code against your design system.
 
 ## What to Check
 
-**If `.interface-design/system.md` exists:**
+**If `.vscode/interface-design/system.md` exists:**
 
 1. **Spacing violations**
    - Find spacing values not on defined grid

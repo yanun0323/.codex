@@ -1,20 +1,15 @@
 #!/usr/bin/env python3
 """
-Skill Initializer - Creates a new skill from template
+Skill Initializer - Creates a new Command/Rule/Skill from template.
 
 Usage:
-    init_skill.py <skill-name> --path <path> [--resources scripts,references,assets] [--examples] [--interface key=value]
-
-Examples:
-    init_skill.py my-new-skill --path skills/public
-    init_skill.py my-new-skill --path skills/public --resources scripts,references
-    init_skill.py my-api-helper --path skills/private --resources scripts --examples
-    init_skill.py custom-skill --path /custom/location
-    init_skill.py my-skill --path skills/public --interface short_description="Short UI label"
+    init_skill.py <name> --kind <command|rule|skill> --path <path>
+      [--resources scripts,references,assets] [--examples] [--interface key=value]
 """
 
 import argparse
 import re
+import shutil
 import sys
 from pathlib import Path
 
@@ -22,17 +17,45 @@ from generate_openai_yaml import write_openai_yaml
 
 MAX_SKILL_NAME_LENGTH = 64
 ALLOWED_RESOURCES = {"scripts", "references", "assets"}
+KNOWN_PREFIXES = ("command-", "rule-", "skill-", "agents-")
+
+KIND_CONFIG = {
+    "command": {
+        "prefix": "command-",
+        "label": "Command",
+        "icon": "command-small.svg",
+    },
+    "rule": {
+        "prefix": "rule-",
+        "label": "Rule",
+        "icon": "rule-small.svg",
+    },
+    "skill": {
+        "prefix": "skill-",
+        "label": "Skill",
+        "icon": "skill-small.svg",
+    },
+}
+
+DESCRIPTION_TEMPLATE = (
+    "TODO: Complete and informative explanation of what this item does and when to use it. "
+    "Include specific trigger scenarios, file types, or tasks."
+)
+
+COMMAND_TRIGGER_SENTENCE = (
+    "Use this skill only when the user explicitly asks to invoke the `{skill_name}` skill."
+)
 
 SKILL_TEMPLATE = """---
 name: {skill_name}
-description: [TODO: Complete and informative explanation of what the skill does and when to use it. Include WHEN to use this skill - specific scenarios, file types, or tasks that trigger it.]
+description: "{description_text}"
 ---
 
 # {skill_title}
 
 ## Overview
 
-[TODO: 1-2 sentences explaining what this skill enables]
+[TODO: 1-2 sentences explaining what this item enables]
 
 ## Structuring This Skill
 
@@ -64,11 +87,7 @@ Delete this entire "Structuring This Skill" section when done - it's just guidan
 
 ## [TODO: Replace with the first main section based on chosen structure]
 
-[TODO: Add content here. See examples in existing skills:
-- Code samples for technical skills
-- Decision trees for complex workflows
-- Concrete examples with realistic user requests
-- References to scripts/templates/references as needed]
+[TODO: Add content here. Include concrete examples and references to scripts/references/assets as needed.]
 
 ## Resources (optional)
 
@@ -77,33 +96,11 @@ Create only the resource directories this skill actually needs. Delete this sect
 ### scripts/
 Executable code (Python/Bash/etc.) that can be run directly to perform specific operations.
 
-**Examples from other skills:**
-- PDF skill: `fill_fillable_fields.py`, `extract_form_field_info.py` - utilities for PDF manipulation
-- DOCX skill: `document.py`, `utilities.py` - Python modules for document processing
-
-**Appropriate for:** Python scripts, shell scripts, or any executable code that performs automation, data processing, or specific operations.
-
-**Note:** Scripts may be executed without loading into context, but can still be read by Codex for patching or environment adjustments.
-
 ### references/
 Documentation and reference material intended to be loaded into context to inform Codex's process and thinking.
 
-**Examples from other skills:**
-- Product management: `communication.md`, `context_building.md` - detailed workflow guides
-- BigQuery: API reference documentation and query examples
-- Finance: Schema documentation, company policies
-
-**Appropriate for:** In-depth documentation, API references, database schemas, comprehensive guides, or any detailed information that Codex should reference while working.
-
 ### assets/
 Files not intended to be loaded into context, but rather used within the output Codex produces.
-
-**Examples from other skills:**
-- Brand styling: PowerPoint template files (.pptx), logo files
-- Frontend builder: HTML/React boilerplate project directories
-- Typography: Font files (.ttf, .woff2)
-
-**Appropriate for:** Templates, boilerplate code, document templates, images, icons, fonts, or any files meant to be copied or used in the final output.
 
 ---
 
@@ -116,16 +113,12 @@ Example helper script for {skill_name}
 
 This is a placeholder script that can be executed directly.
 Replace with actual implementation or delete if not needed.
-
-Example real scripts from other skills:
-- pdf/scripts/fill_fillable_fields.py - Fills PDF form fields
-- pdf/scripts/convert_pdf_to_images.py - Converts PDF pages to images
 """
+
 
 def main():
     print("This is an example script for {skill_name}")
-    # TODO: Add actual script logic here
-    # This could be data processing, file conversion, API calls, etc.
+
 
 if __name__ == "__main__":
     main()
@@ -136,30 +129,8 @@ EXAMPLE_REFERENCE = """# Reference Documentation for {skill_title}
 This is a placeholder for detailed reference documentation.
 Replace with actual reference content or delete if not needed.
 
-Example real reference docs from other skills:
-- product-management/references/communication.md - Comprehensive guide for status updates
-- product-management/references/context_building.md - Deep-dive on gathering context
-- bigquery/references/ - API references and query examples
+## Suggested Structure
 
-## When Reference Docs Are Useful
-
-Reference docs are ideal for:
-- Comprehensive API documentation
-- Detailed workflow guides
-- Complex multi-step processes
-- Information too lengthy for main SKILL.md
-- Content that's only needed for specific use cases
-
-## Structure Suggestions
-
-### API Reference Example
-- Overview
-- Authentication
-- Endpoints with examples
-- Error codes
-- Rate limits
-
-### Workflow Guide Example
 - Prerequisites
 - Step-by-step instructions
 - Common patterns
@@ -171,26 +142,6 @@ EXAMPLE_ASSET = """# Example Asset File
 
 This placeholder represents where asset files would be stored.
 Replace with actual asset files (templates, images, fonts, etc.) or delete if not needed.
-
-Asset files are NOT intended to be loaded into context, but rather used within
-the output Codex produces.
-
-Example asset files from other skills:
-- Brand guidelines: logo.png, slides_template.pptx
-- Frontend builder: hello-world/ directory with HTML/React boilerplate
-- Typography: custom-font.ttf, font-family.woff2
-- Data: sample_data.csv, test_dataset.json
-
-## Common Asset Types
-
-- Templates: .pptx, .docx, boilerplate directories
-- Images: .png, .jpg, .svg, .gif
-- Fonts: .ttf, .otf, .woff, .woff2
-- Boilerplate code: Project directories, starter files
-- Icons: .ico, .svg
-- Data files: .csv, .json, .xml, .yaml
-
-Note: This is a text placeholder. Actual assets can be any file type.
 """
 
 
@@ -203,9 +154,24 @@ def normalize_skill_name(skill_name):
     return normalized
 
 
+def strip_known_prefix(name):
+    for prefix in KNOWN_PREFIXES:
+        if name.startswith(prefix):
+            return name[len(prefix) :]
+    return name
+
+
+def enforce_kind_prefix(name, kind):
+    config = KIND_CONFIG[kind]
+    stem = strip_known_prefix(name)
+    stem = normalize_skill_name(stem)
+    if not stem:
+        return None
+    return f"{config['prefix']}{stem}"
+
+
 def title_case_skill_name(skill_name):
-    """Convert hyphenated skill name to Title Case for display."""
-    return " ".join(word.capitalize() for word in skill_name.split("-"))
+    return " ".join(word.capitalize() for word in skill_name.split("-") if word)
 
 
 def parse_resources(raw_resources):
@@ -255,86 +221,115 @@ def create_resource_dirs(skill_dir, skill_name, skill_title, resources, include_
                 print("[OK] Created assets/")
 
 
-def init_skill(skill_name, path, resources, include_examples, interface_overrides):
-    """
-    Initialize a new skill directory with template SKILL.md.
+def build_description_text(kind, skill_name):
+    if kind == "command":
+        return f"{DESCRIPTION_TEMPLATE} {COMMAND_TRIGGER_SENTENCE.format(skill_name=skill_name)}"
+    return DESCRIPTION_TEMPLATE
 
-    Args:
-        skill_name: Name of the skill
-        path: Path where the skill directory should be created
-        resources: Resource directories to create
-        include_examples: Whether to create example files in resource directories
 
-    Returns:
-        Path to created skill directory, or None if error
-    """
-    # Determine skill directory path
+def display_name_for_kind(kind, skill_name):
+    config = KIND_CONFIG[kind]
+    prefix = config["prefix"]
+    stem = skill_name[len(prefix) :] if skill_name.startswith(prefix) else skill_name
+    return f"{config['label']} - {title_case_skill_name(stem)}"
+
+
+def ensure_kind_icon(skill_dir, kind):
+    config = KIND_CONFIG[kind]
+    tool_root = Path(__file__).resolve().parents[1]
+    src = tool_root / "references" / "icons" / config["icon"]
+    if not src.exists():
+        print(f"[ERROR] Missing icon source: {src}")
+        return False
+
+    assets_dir = skill_dir / "assets"
+    assets_dir.mkdir(exist_ok=True)
+    dst = assets_dir / config["icon"]
+    shutil.copyfile(src, dst)
+    print(f"[OK] Ensured assets/{config['icon']}")
+    return True
+
+
+def build_interface_overrides(kind, skill_name, raw_interface_overrides):
+    config = KIND_CONFIG[kind]
+    defaults = [
+        f"display_name={display_name_for_kind(kind, skill_name)}",
+        f"icon_small=./assets/{config['icon']}",
+    ]
+    return defaults + list(raw_interface_overrides)
+
+
+def init_skill(skill_name, kind, path, resources, include_examples, interface_overrides):
     skill_dir = Path(path).resolve() / skill_name
 
-    # Check if directory already exists
     if skill_dir.exists():
         print(f"[ERROR] Skill directory already exists: {skill_dir}")
         return None
 
-    # Create skill directory
     try:
         skill_dir.mkdir(parents=True, exist_ok=False)
         print(f"[OK] Created skill directory: {skill_dir}")
-    except Exception as e:
-        print(f"[ERROR] Error creating directory: {e}")
+    except Exception as exc:  # noqa: BLE001
+        print(f"[ERROR] Error creating directory: {exc}")
         return None
 
-    # Create SKILL.md from template
     skill_title = title_case_skill_name(skill_name)
-    skill_content = SKILL_TEMPLATE.format(skill_name=skill_name, skill_title=skill_title)
+    description_text = build_description_text(kind, skill_name).replace('"', "'")
+    skill_content = SKILL_TEMPLATE.format(
+        skill_name=skill_name,
+        description_text=description_text,
+        skill_title=skill_title,
+    )
 
     skill_md_path = skill_dir / "SKILL.md"
     try:
         skill_md_path.write_text(skill_content)
         print("[OK] Created SKILL.md")
-    except Exception as e:
-        print(f"[ERROR] Error creating SKILL.md: {e}")
+    except Exception as exc:  # noqa: BLE001
+        print(f"[ERROR] Error creating SKILL.md: {exc}")
         return None
 
-    # Create agents/openai.yaml
     try:
         result = write_openai_yaml(skill_dir, skill_name, interface_overrides)
         if not result:
             return None
-    except Exception as e:
-        print(f"[ERROR] Error creating agents/openai.yaml: {e}")
+    except Exception as exc:  # noqa: BLE001
+        print(f"[ERROR] Error creating agents/openai.yaml: {exc}")
         return None
 
-    # Create resource directories if requested
+    if not ensure_kind_icon(skill_dir, kind):
+        return None
+
     if resources:
         try:
             create_resource_dirs(skill_dir, skill_name, skill_title, resources, include_examples)
-        except Exception as e:
-            print(f"[ERROR] Error creating resource directories: {e}")
+        except Exception as exc:  # noqa: BLE001
+            print(f"[ERROR] Error creating resource directories: {exc}")
             return None
 
-    # Print next steps
-    print(f"\n[OK] Skill '{skill_name}' initialized successfully at {skill_dir}")
+    print(f"\n[OK] {KIND_CONFIG[kind]['label']} '{skill_name}' initialized successfully at {skill_dir}")
     print("\nNext steps:")
-    print("1. Edit SKILL.md to complete the TODO items and update the description")
-    if resources:
-        if include_examples:
-            print("2. Customize or delete the example files in scripts/, references/, and assets/")
-        else:
-            print("2. Add resources to scripts/, references/, and assets/ as needed")
-    else:
-        print("2. Create resource directories only if needed (scripts/, references/, assets/)")
-    print("3. Update agents/openai.yaml if the UI metadata should differ")
-    print("4. Run the validator when ready to check the skill structure")
+    print("1. Edit SKILL.md to complete TODO items and finalize trigger-based description")
+    print("2. Confirm assets/ and agents/openai.yaml match the target type")
+    print(
+        "3. Run: python3 skills/skill-skill-creator/scripts/quick_validate.py "
+        f"{skill_dir}"
+    )
 
     return skill_dir
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Create a new skill directory with a SKILL.md template.",
+        description="Create a new command/rule/skill directory with a SKILL.md template.",
     )
-    parser.add_argument("skill_name", help="Skill name (normalized to hyphen-case)")
+    parser.add_argument("skill_name", help="Name to normalize and prefix")
+    parser.add_argument(
+        "--kind",
+        choices=sorted(KIND_CONFIG.keys()),
+        default="skill",
+        help="Target type and prefix rule",
+    )
     parser.add_argument("--path", required=True, help="Output directory for the skill")
     parser.add_argument(
         "--resources",
@@ -344,7 +339,7 @@ def main():
     parser.add_argument(
         "--examples",
         action="store_true",
-        help="Create example files inside the selected resource directories",
+        help="Create example files inside selected resource directories",
     )
     parser.add_argument(
         "--interface",
@@ -354,29 +349,36 @@ def main():
     )
     args = parser.parse_args()
 
-    raw_skill_name = args.skill_name
-    skill_name = normalize_skill_name(raw_skill_name)
-    if not skill_name:
+    raw_name = args.skill_name
+    normalized_name = normalize_skill_name(raw_name)
+    if not normalized_name:
         print("[ERROR] Skill name must include at least one letter or digit.")
         sys.exit(1)
+
+    skill_name = enforce_kind_prefix(normalized_name, args.kind)
+    if not skill_name:
+        print("[ERROR] Unable to normalize skill name after prefix enforcement.")
+        sys.exit(1)
+
     if len(skill_name) > MAX_SKILL_NAME_LENGTH:
         print(
             f"[ERROR] Skill name '{skill_name}' is too long ({len(skill_name)} characters). "
             f"Maximum is {MAX_SKILL_NAME_LENGTH} characters."
         )
         sys.exit(1)
-    if skill_name != raw_skill_name:
-        print(f"Note: Normalized skill name from '{raw_skill_name}' to '{skill_name}'.")
+
+    if skill_name != raw_name:
+        print(f"Note: Normalized skill name from '{raw_name}' to '{skill_name}'.")
 
     resources = parse_resources(args.resources)
     if args.examples and not resources:
         print("[ERROR] --examples requires --resources to be set.")
         sys.exit(1)
 
-    path = args.path
+    interface_overrides = build_interface_overrides(args.kind, skill_name, args.interface)
 
-    print(f"Initializing skill: {skill_name}")
-    print(f"   Location: {path}")
+    print(f"Initializing {KIND_CONFIG[args.kind]['label']}: {skill_name}")
+    print(f"   Location: {args.path}")
     if resources:
         print(f"   Resources: {', '.join(resources)}")
         if args.examples:
@@ -385,12 +387,16 @@ def main():
         print("   Resources: none (create as needed)")
     print()
 
-    result = init_skill(skill_name, path, resources, args.examples, args.interface)
+    result = init_skill(
+        skill_name=skill_name,
+        kind=args.kind,
+        path=args.path,
+        resources=resources,
+        include_examples=args.examples,
+        interface_overrides=interface_overrides,
+    )
 
-    if result:
-        sys.exit(0)
-    else:
-        sys.exit(1)
+    sys.exit(0 if result else 1)
 
 
 if __name__ == "__main__":

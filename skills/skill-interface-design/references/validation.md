@@ -1,6 +1,6 @@
 # Memory Management
 
-When and how to update `.interface-design/system.md`.
+When and how to update `.vscode/interface-design/system.md`.
 
 ## When to Add Patterns
 

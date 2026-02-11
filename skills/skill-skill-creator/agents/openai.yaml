@@ -1,0 +1,5 @@
+interface:
+  display_name: "Skill - Skill Creator"
+  short_description: "Create and normalize command/rule/skill folders"
+  icon_small: "./assets/skill-small.svg"
+  default_prompt: "Use $skill-skill-creator to create or update Command/Rule/Skill folders with normalized naming, icons, and agents metadata."

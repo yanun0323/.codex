@@ -7,9 +7,41 @@ import re
 import sys
 from pathlib import Path
 
-import yaml
-
 MAX_SKILL_NAME_LENGTH = 64
+
+
+def strip_wrapping_quotes(value):
+    if len(value) >= 2 and (
+        (value.startswith('"') and value.endswith('"'))
+        or (value.startswith("'") and value.endswith("'"))
+    ):
+        return value[1:-1]
+    return value
+
+
+def parse_frontmatter_map(frontmatter_text):
+    """
+    Parse top-level YAML-like key/value pairs.
+    This validator intentionally focuses on common scalar frontmatter patterns.
+    """
+    parsed = {}
+    top_level_keys = []
+
+    for raw_line in frontmatter_text.splitlines():
+        if not raw_line.strip() or raw_line.strip().startswith("#"):
+            continue
+        if raw_line[0].isspace():
+            # Nested content (e.g. metadata fields) is ignored by this parser.
+            continue
+        match = re.match(r"^([A-Za-z0-9_-]+)\s*:\s*(.*)$", raw_line)
+        if not match:
+            continue
+        key = match.group(1).strip()
+        value = strip_wrapping_quotes(match.group(2).strip())
+        top_level_keys.append(key)
+        parsed[key] = value
+
+    return parsed, top_level_keys
 
 
 def validate_skill(skill_path):
@@ -29,17 +61,11 @@ def validate_skill(skill_path):
         return False, "Invalid frontmatter format"
 
     frontmatter_text = match.group(1)
-
-    try:
-        frontmatter = yaml.safe_load(frontmatter_text)
-        if not isinstance(frontmatter, dict):
-            return False, "Frontmatter must be a YAML dictionary"
-    except yaml.YAMLError as e:
-        return False, f"Invalid YAML in frontmatter: {e}"
+    frontmatter, top_level_keys = parse_frontmatter_map(frontmatter_text)
 
     allowed_properties = {"name", "description", "license", "allowed-tools", "metadata"}
 
-    unexpected_keys = set(frontmatter.keys()) - allowed_properties
+    unexpected_keys = set(top_level_keys) - allowed_properties
     if unexpected_keys:
         allowed = ", ".join(sorted(allowed_properties))
         unexpected = ", ".join(sorted(unexpected_keys))
@@ -54,8 +80,6 @@ def validate_skill(skill_path):
         return False, "Missing 'description' in frontmatter"
 
     name = frontmatter.get("name", "")
-    if not isinstance(name, str):
-        return False, f"Name must be a string, got {type(name).__name__}"
     name = name.strip()
     if name:
         if not re.match(r"^[a-z0-9-]+$", name):
@@ -76,8 +100,6 @@ def validate_skill(skill_path):
             )
 
     description = frontmatter.get("description", "")
-    if not isinstance(description, str):
-        return False, f"Description must be a string, got {type(description).__name__}"
     description = description.strip()
     if description:
         if "<" in description or ">" in description:

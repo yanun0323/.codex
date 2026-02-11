@@ -70,7 +70,7 @@ Patterns:
   Button: 36px h, 12px 16px pad, 6px radius
   Card: 1px border, 16px pad
 
-Create .interface-design/system.md with these? (y/n/customize)
+Create .vscode/interface-design/system.md with these? (y/n/customize)
 ```
 
 ## Implementation

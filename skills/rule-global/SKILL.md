@@ -20,7 +20,8 @@ description: Global rules for all coding tasks in this repo - priority, language
   - rule-js-ts-runtime
   - rule-make
 4. This skill
-5. Existing repository conventions (when not in conflict)
+5. Other skills
+6. Existing repository conventions (when not in conflict)
 
 When rules conflict, follow the higher priority rule and explain the conflict briefly.
 

@@ -27,9 +27,9 @@ Use these templates from `references/`:
 - `review-packet-template.md`
 
 Default artifact path:
-- `tmp/workflow/<task-slug>/TASK_CONTRACT.md`
-- `tmp/workflow/<task-slug>/QUALITY_PROFILE.md`
-- `tmp/workflow/<task-slug>/REVIEW_PACKET.md`
+- `.vscode/workflow/<task-slug>/TASK_CONTRACT.md`
+- `.vscode/workflow/<task-slug>/QUALITY_PROFILE.md`
+- `.vscode/workflow/<task-slug>/REVIEW_PACKET.md`
 
 If the repo already has a task-doc convention, follow it instead.
 

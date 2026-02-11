@@ -1,4 +1,4 @@
 interface:
   display_name: "Command - Plan Task"
-  short_description: "Initialize PR and hand off to finder rule"
+  short_description: "Create PR from conversation using templates"
   icon_small: "./assets/command-small.svg"

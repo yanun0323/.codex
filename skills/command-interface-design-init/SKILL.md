@@ -1,10 +1,10 @@
 ---
 name: command-interface-design-init
-description: "Build UI with craft and consistency. For interface design (dashboards, apps, tools) — not marketing sites. Use this skill only when the user explicitly asks to invoke or use the `/interface-design-init` skill."
+description: "Build UI with craft and consistency. For interface design (dashboards, apps, tools) — not marketing sites. Use this skill only when the user explicitly asks to invoke."
 ---
 
 ## When to Use
-- Use this skill only when the user explicitly asks to invoke or use the `/interface-design-init` skill.
+- Use this skill only when the user explicitly asks to invoke.
 
 ## Required Reading — Do This First
 

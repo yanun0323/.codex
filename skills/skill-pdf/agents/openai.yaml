@@ -1,6 +1,3 @@
 interface:
-  display_name: Skill - Pdf
-  short_description: Create, edit, and review PDFs
-  icon_large: "./assets/pdf.png"
-  default_prompt: Create, edit, or review this PDF and summarize the key output or changes.
+  display_name: "Skill - Pdf"
   icon_small: "./assets/skill-small.svg"

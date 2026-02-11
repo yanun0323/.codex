@@ -1,0 +1,3 @@
+interface:
+  display_name: "Skill - Internal Comms"
+  icon_small: "./assets/skill-small.svg"

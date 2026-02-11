@@ -1,6 +1,6 @@
 ---
 name: skill-create-skill
-description: Create or update skills in this repository and normalize all folders under skills/. Use when asked to create a new skill, migrate existing skill naming, or enforce metadata conventions: agents-* to rule-*, command-* to command-*, all others to skill-*, synchronized SKILL.md frontmatter name, standardized icon assets, and standardized agents/openai.yaml display_name and icon_small.
+description: Create or update skills in this repository and normalize all folders under skills/. Use when asked to create a new skill, migrate existing skill naming, or enforce metadata conventions.synchronized SKILL.md frontmatter name, standardized icon assets, and standardized agents/openai.yaml display_name and icon_small.
 ---
 
 # Skill Create Skill

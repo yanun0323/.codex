@@ -1,12 +1,12 @@
 ---
 name: command-interface-design-audit
-description: "Check existing code against your design system for spacing, depth, color, and pattern violations. Use this skill only when the user explicitly asks to invoke or use the `/interface-design-audit` skill."
+description: "Check existing code against your design system for spacing, depth, color, and pattern violations. Use this skill only when the user explicitly asks to invoke."
 ---
 
 # interface-design audit
 
 ## When to Use
-- Use this skill only when the user explicitly asks to invoke or use the `/interface-design-audit` skill.
+- Use this skill only when the user explicitly asks to invoke.
 
 Check existing code against your design system.
 

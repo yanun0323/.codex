@@ -1,12 +1,12 @@
 ---
 name: command-interface-design-extract
-description: "Extract design patterns from existing code to create a system.md file. Use this skill only when the user explicitly asks to invoke or use the `/interface-design-extract` skill."
+description: "Extract design patterns from existing code to create a system.md file. Use this skill only when the user explicitly asks to invoke."
 ---
 
 # interface-design extract
 
 ## When to Use
-- Use this skill only when the user explicitly asks to invoke or use the `/interface-design-extract` skill.
+- Use this skill only when the user explicitly asks to invoke.
 
 Extract design patterns from existing code to create a system.
 

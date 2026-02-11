@@ -1,12 +1,12 @@
 ---
 name: command-plan
-description: Create a concise execution plan for coding tasks using task-contract thinking, risk classification, and risk-based TDD + verification-first acceptance criteria. Use this skill only when the user explicitly asks to invoke or use the `command-plan` skill.
+description: Create a concise execution plan for coding tasks using task-contract thinking, risk classification, and risk-based TDD + verification-first acceptance criteria. Use this skill only when the user explicitly asks to invoke.
 ---
 
 # Planning Workflow Skill
 
 ## When to Use
-- Use this skill only when the user explicitly asks to invoke or use the `command-plan` skill.
+- Use this skill only when the user explicitly asks to invoke.
 - Use when implementation should be paused and a high-signal plan is required first.
 
 ## Goals

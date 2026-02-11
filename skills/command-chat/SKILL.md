@@ -1,12 +1,12 @@
 ---
 name: command-chat
-description: Use this skill only when the user explicitly asks to invoke or use the `command-chat` skill. This mode is strictly read-only - never create, modify, rename, or delete files. Only inspect local files and optionally search the web to answer questions.
+description: Use this skill only when the user explicitly asks to invoke This mode is strictly read-only - never create, modify, rename, or delete files. Only inspect local files and optionally search the web to answer questions.
 ---
 
 # Read-Only Chat Skill
 
 ## When to Use
-- Use this skill only when the user explicitly asks to invoke or use the `command-chat` skill.
+- Use this skill only when the user explicitly asks to invoke
 - Use when the user wants discussion, analysis, explanation, or fact-finding without any repository changes.
 
 ## Goals

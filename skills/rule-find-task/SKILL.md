@@ -13,9 +13,10 @@ description: Lightweight always-read rule that runs scripts/find_pr_task.sh to d
 - Keep token usage low by using a bash script for discovery and rebinding logic.
 - Resolve one active PR source file for current conversation `thread_key`.
 - Invoke `$rule-execute-task` only when a valid PR source file is found.
+- Let `$rule-execute-task` infer and update stage automatically from conversation and PR content.
 
 ## Script
-- Path: `./skills/rule-find-task/scripts/find_pr_task.sh`
+- Path: `scripts/find_pr_task.sh`
 - Purpose: resolve one source PR file, optionally rebind cross-thread files, and return structured `key=value` output.
 
 ## Required Inputs
@@ -29,14 +30,15 @@ description: Lightweight always-read rule that runs scripts/find_pr_task.sh to d
    - explicit `thread_key` or `conversation_id`
 2. Run finder script:
    - Thread scan mode:
-     - `bash ./skills/rule-find-task/scripts/find_pr_task.sh --root ./.vscode/pull-request-task --thread-key "$thread_key"`
+     - `bash scripts/find_pr_task.sh --root ./.vscode/pull-request-task --thread-key "$thread_key"`
    - Explicit path mode with rebinding:
-     - `bash ./skills/rule-find-task/scripts/find_pr_task.sh --root ./.vscode/pull-request-task --thread-key "$thread_key" --explicit-path "$pr_path" --rebind`
+     - `bash scripts/find_pr_task.sh --root ./.vscode/pull-request-task --thread-key "$thread_key" --explicit-path "$pr_path" --rebind`
 3. Parse output `result=` and branch:
    - `FOUND`: invoke `$rule-execute-task` with `resolved_path`
    - `NOT_FOUND`: no-op and continue normal non-workflow behavior
    - `AMBIGUOUS`: ask user to choose one candidate
    - `ERROR`: surface `message` and stop workflow invocation
+4. Do not wait for explicit stage-change commands from user; pass control immediately so `$rule-execute-task` can infer and update stage.
 
 ## Output Contract
 - `result=FOUND|NOT_FOUND|AMBIGUOUS|ERROR`

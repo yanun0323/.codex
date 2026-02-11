@@ -14,6 +14,8 @@ description: Use this skill only when the user explicitly asks to invoke. Create
 - Create a `_TW` mirror for RD review from the same extracted task context.
 - Delegate continuation to `$rule-find-task` after creation.
 - Produce a detailed business-specification section from user question and provided files.
+- Analyze existing code before drafting business logic and CR planning.
+- Complete CR decomposition inside `Requirement Definition` (no separate stage at creation time).
 
 ## Inputs
 - Current conversation content.
@@ -49,42 +51,52 @@ Before writing files, extract and normalize:
 7. `problem_statement`: clear current problem and desired outcome.
 8. `business_context`: background and constraints.
 9. `user_roles`: impacted actors and owners.
-10. `detailed_business_logic`: step-by-step business logic with branching rules.
-11. `functional_requirements`: concrete feature requirements.
-12. `non_functional_requirements`: reliability/performance/security/operability requirements.
-13. `decision_rules`: deterministic rule set and boundary conditions.
-14. `process_flow`: ordered business flow.
-15. `edge_cases`: exceptional scenarios and failure handling.
-16. `question_summary`: neutral summary of user request.
-17. `referenced_files`: file evidence from user-provided paths.
-18. `open_questions`: unresolved requirement questions.
-19. `initial_cr_rows`: at least one CR row.
+10. `existing_code_analysis`: summary of current code behavior, boundaries, and touched modules/files.
+11. `detailed_business_logic`: step-by-step business logic with branching rules.
+12. `functional_requirements`: concrete feature requirements.
+13. `non_functional_requirements`: reliability/performance/security/operability requirements.
+14. `decision_rules`: deterministic rule set and boundary conditions.
+15. `process_flow`: ordered business flow.
+16. `edge_cases`: exceptional scenarios and failure handling.
+17. `requirement_definition_cr_plan`: ordered CR plan produced during requirement definition.
+18. `question_summary`: neutral summary of user request.
+19. `referenced_files`: file evidence from user-provided paths.
+20. `open_questions`: unresolved requirement questions.
+21. `initial_cr_rows`: at least one CR row.
 
 Rules:
 1. Never leave `Business Goal` blank.
 2. Do not use placeholders like `TBD` or `as discussed`.
 3. Keep extraction faithful to user intent; do not invent business logic.
 4. When user provides files, read those files first and use them as the primary source for business logic and business requirements.
+5. Analyze relevant existing code before finalizing business logic and CR plan.
+6. Perform CR decomposition inside `Requirement Definition`; do not create a separate `CR Decomposition` stage.
 
 ## Command Workflow
 1. Resolve `thread_key`.
 2. Collect user-provided file paths from conversation (if any) and read relevant content before drafting.
-3. Extract required fields from conversation and file evidence using `references/extraction_contract.md`.
-4. Derive metadata:
+3. Analyze existing code paths related to the request and capture findings in `existing_code_analysis`.
+4. Extract required fields from conversation and file evidence using `references/extraction_contract.md`.
+5. Derive metadata:
    - `pr_id` (UTC timestamp-based identifier)
    - `task_slug` (filesystem-safe from title)
    - `created_at` and `updated_at` in ISO8601 UTC
-5. Load `references/pr_source_template.md` and fill placeholders, including `# Business Specification` sections.
-6. Write source file `${task_slug}.md`; if filename collision occurs, append suffix (`-02`, `-03`, ...).
-7. Build `_TW` mirror by translating headings and narrative text to Traditional Chinese while preserving metadata keys, enum-like values, IDs, and table structure.
-8. Delegate to `$rule-find-task` with the created source path.
+6. Build `requirement_definition_cr_plan` and initial CR Checklist rows in the same pass.
+7. Load `references/pr_source_template.md` and fill placeholders, including `# Business Specification` sections.
+8. Write source file `${task_slug}.md`; if filename collision occurs, append suffix (`-02`, `-03`, ...).
+9. Build `_TW` mirror by translating headings and narrative text to Traditional Chinese while preserving metadata keys, enum-like values, IDs, and table structure.
+10. Initialize stage as `Requirement Definition`, then delegate to `$rule-find-task` with the created source path.
+11. Let `$rule-execute-task` infer and update later stage transitions from conversation and PR state automatically.
 
 ## Constraints
 - Do not use scripts to create PR files in this command.
 - Keep `${task_slug}.md` as the only executable state source.
 - Keep `${task_slug}_TW.md` as review-only mirror.
-- Keep PR Change Card within limits: max 25 lines, max 8 acceptance tests, max 5 invariants, max 15 CR rows.
+- Keep PR Change Card within limits: max 35 lines.
+- Keep Acceptance Tests within limits: max 10 acceptance tests, max 5 invariants.
+- Keep CR Checklist within limits: max 20 CR rows.
 - Ensure `# Business Specification` is detailed and grounded in user question/files.
+- Ensure `existing_code_analysis` and `requirement_definition_cr_plan` are populated before handoff.
 
 ## Output Expectations
 - Return absolute `source_path`.

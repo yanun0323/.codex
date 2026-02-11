@@ -12,7 +12,9 @@ description: "{{description}}"
 ---
 
 # PR Change Card
-### Business Goal: {{business_goal}}
+### Business Goal: 
+{{business_goal}}
+
 ### Out of Scope:
 {{out_of_scope_lines}}
 
@@ -24,12 +26,6 @@ description: "{{description}}"
 - Migration required: {{migration_required}}
 - Rollback path defined: {{rollback_path_defined}}
 
-### Acceptance Tests (<=8):
-{{acceptance_tests_lines}}
-
-### Critical Invariants (<=5):
-{{critical_invariants_lines}}
-
 # Business Specification
 ### Problem Statement
 {{problem_statement}}
@@ -39,6 +35,9 @@ description: "{{description}}"
 
 ### User Roles and Stakeholders
 {{user_roles_lines}}
+
+### Existing Code Analysis
+{{existing_code_analysis_lines}}
 
 ### Detailed Business Logic
 {{detailed_business_logic_lines}}
@@ -58,6 +57,9 @@ description: "{{description}}"
 ### Edge Cases and Exceptions
 {{edge_cases_lines}}
 
+### Requirement Definition CR Plan (Integrated)
+{{requirement_definition_cr_plan_lines}}
+
 ### Input Sources
 Question Summary:
 {{question_summary}}
@@ -67,6 +69,13 @@ Referenced Files:
 
 ### Open Questions
 {{open_questions_lines}}
+
+# Acceptance Tests
+### Acceptance Tests:
+{{acceptance_tests_lines}}
+
+### Critical Invariants:
+{{critical_invariants_lines}}
 
 # CR Checklist
 | CR-ID | Scope | Goal | Path(Fast/Guarded) | Status | Evidence Link | Commit Hash |

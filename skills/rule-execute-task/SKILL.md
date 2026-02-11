@@ -10,8 +10,9 @@ description: Execute staged PR workflow only when invoked by rule-find-task afte
 - Use when the assistant must continue workflow execution from the current stage in that resolved PR file.
 
 ## Inputs (Required)
-- Absolute path to resolved PR source file returned by `/scripts/find_pr_task.sh`
+- Absolute path to resolved PR source file returned by `scripts/find_pr_task.sh`
 - Current PR metadata and sections from the source file.
+- Latest conversation messages for approval and stage-inference signals.
 
 ## Goals
 - Continue workflow from the PR file's current `stage` and `status`.
@@ -19,41 +20,52 @@ description: Execute staged PR workflow only when invoked by rule-find-task afte
 - Keep source and `_TW` mirror synchronized after each source update.
 
 ## Workflow Stages
-1. Stage `Requirement Definition`: Requirement definition via PR Change Card.
-2. Stage `CR Decomposition`: CR decomposition via CR Checklist.
-3. Stage `CR Implementation`: CR implementation loop.
-4. Stage `Validation`: Final validation and merge readiness.
+1. Stage `Requirement Definition`: define requirements and business logic, analyze existing code, and complete CR decomposition in the same stage.
+2. Stage `CR Implementation`: CR implementation loop.
+3. Stage `Validation`: final validation and merge readiness.
 
 ## Stage Transition Table
 | Current Stage | Exit Condition | Next Stage |
 |---|---|---|
-| `Requirement Definition` | PR Change Card approved by RD | `CR Decomposition` |
-| `CR Decomposition` | CR Checklist approved by RD | `CR Implementation` |
-| `CR Implementation` | All CR rows are `done` | `Validation` |
+| `Requirement Definition` | Business specification is complete, existing-code analysis is present, and CR checklist/decomposition is complete with RD-aligned feedback | `CR Implementation` |
+| `CR Implementation` | All CR rows are `committed` | `Validation` |
 | `Validation` | Final validation complete and RD approves merge | done |
+
+## Automatic Stage Management
+Stage updates must be automatic and inferred by the agent. Explicit user commands like "change stage" are not required.
+
+Inference rules:
+1. Normalize legacy stage values (`A/B/C/D`) to named stages (`Requirement Definition` / `CR Implementation` / `Validation` / `done`) when loading PR files.
+2. While in `Requirement Definition`, keep stage unchanged until all are true:
+   - `# Business Specification` is populated.
+   - `existing_code_analysis` section is populated with concrete codebase findings.
+   - CR decomposition is populated (both CR plan and CR checklist rows).
+   - Latest user/RD feedback does not request additional requirement-definition changes.
+3. Move to `CR Implementation` immediately when rule 2 is satisfied.
+4. Move to `Validation` when every CR row is `committed`.
+5. Move to `done` when validation evidence is complete and RD gives merge approval.
+6. If later conversation feedback changes requirements or CR decomposition, automatically move stage back to `Requirement Definition` and update PR sections.
 
 ## CR Status Transition Table
 | Current Status | Trigger | Next Status |
 |---|---|---|
 | `todo` | Agent starts CR | `in_progress` |
 | `in_progress` | Agent submits evidence for review | `in_review` |
-| `in_review` | RD requests changes | `changes_requested` |
-| `changes_requested` | Agent updates and resubmits | `in_review` |
-| `in_review` | RD approves | `approved` |
-| `approved` | Agent commits without further edits | `committed` |
-| `committed` | Checklist and metadata updated | `done` |
+| `in_review` | RD requests changes | `changes` |
+| `changes` | Agent updates and resubmits | `in_review` |
+| `in_review` | RD approves then agent commits without further edits | `committed` |
 
 Rules:
-1. If content changes after `approved`, status must return to `in_review`.
+1. If content changes after RD approval signal and before commit hash write, status must return to `in_review`.
 2. Commit hash is written only after commit is finished.
-3. `done` is immutable unless RD explicitly reopens the CR.
+3. `committed` is immutable unless RD explicitly reopens the CR.
 
-## Stage C Fixed Loop
+## Stage `CR Implementation` Fixed Loop
 `Pick next CR -> Agent implements -> Run checks -> Wait RD decision -> Commit -> Update Checklist -> Next CR`
 
 RD decision values:
-- `approved`
-- `changes_requested`
+- `approved`: `approved` or `approve`
+- `changes`: `changes` or `change` or other decision, feedback, modify request
 
 ## Fast vs Guarded
 - Both paths require RD review.
@@ -102,3 +114,4 @@ Whenever source PR file is updated:
 - This rule does not discover or migrate PR files.
 - File discovery and thread rebinding belong to `$rule-find-task`.
 - New PR initialization belongs to `$command-plan-task`.
+- Stage transition commands from user are optional; stage progression is inferred and updated by this rule.

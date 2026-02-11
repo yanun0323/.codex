@@ -11,3 +11,11 @@ notify = ["notify-send", "Codex"]
 approval_policy = "never"
 sandbox_mode = "workspace-write"
 personality = "pragmatic"
+
+[[skills.config]]
+path = "~/.codex/skills/.system/skill-creator/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "~/.codex/skills/.system/skill-installer/SKILL.md"
+enabled = false

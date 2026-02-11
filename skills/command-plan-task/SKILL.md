@@ -32,13 +32,18 @@ Resolve `thread_key` in this order:
 - Source of truth file: `./.vscode/pull-request-task/${thread_key}/${task_slug}.md`
 - RD mirror file: `./.vscode/pull-request-task/${thread_key}/${task_slug}_TW.md`
 
+## Script
+- Path: `./skills/command-plan-task/scripts/init_pr_task.sh`
+- Purpose: initialize a new thread-bound PR source file and `_TW` mirror with deterministic metadata and template.
+
 ## Command Workflow
 1. Resolve `thread_key`.
-2. Derive `task_slug` from title/description using a filesystem-safe format.
-3. Create a new PR source file `${task_slug}.md` using the fixed PR template in this document.
-4. Create `${task_slug}_TW.md` by translating the source file for RD review.
-5. If slug collision happens, append a stable suffix (for example `-02` or short `pr_id`) and retry.
-6. Immediately delegate to `$rule-find-task`, which will locate the active PR and invoke `$rule-execute-task`.
+2. Run init script:
+   - `bash ./skills/command-plan-task/scripts/init_pr_task.sh --root ./.vscode/pull-request-task --thread-key "$thread_key" --title "$task_title" --description "$task_description"`
+3. Parse script output:
+   - `result=CREATED` with `source_path` and `mirror_path`
+   - `result=ERROR` with `message`
+4. Delegate to `$rule-find-task` with the returned `source_path`, then continue via `$rule-execute-task` when found.
 
 ## Required Metadata in Source File
 - `workflow_version`
@@ -52,7 +57,7 @@ Resolve `thread_key` in this order:
 - `updated_at`
 
 ## Fixed PR Template (Source File)
-Use this exact structure when creating `${task_slug}.md`:
+`init_pr_task.sh` creates `${task_slug}.md` with this structure:
 
 ```md
 ---
@@ -97,8 +102,9 @@ Critical Invariants (<=5):
 - Keep `${task_slug}.md` as the only executable state source.
 - `${task_slug}_TW.md` is a review-only mirror and must never become state authority.
 - Keep the PR skeleton concise: max 25 lines for Change Card, max 8 acceptance tests, max 5 invariants, max 10 CR rows.
+- Use `./skills/command-plan-task/scripts/init_pr_task.sh` for initialization instead of embedding creation logic in prompts.
+- Do not call `./skills/rule-find-task/scripts/find_pr_task.sh` from this command.
 
 ## Output Expectations
-- Return the absolute path of the created source PR file.
-- Return the absolute path of the generated `_TW` mirror.
+- Return `source_path` and `mirror_path` from the init script output.
 - Confirm that control has been handed off to `$rule-find-task`.

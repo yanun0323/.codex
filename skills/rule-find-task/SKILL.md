@@ -1,6 +1,6 @@
 ---
 name: rule-find-task
-description: Lightweight always-read rule that discovers or rebinds a PR task file for the current thread and invokes rule-execute-task when a PR is found.
+description: Lightweight always-read rule that runs scripts/find_pr_task.sh to discover or rebind a PR task file and invokes rule-execute-task only when found.
 ---
 
 # Find Task Rule
@@ -10,38 +10,42 @@ description: Lightweight always-read rule that discovers or rebinds a PR task fi
 - Use this rule as the workflow entry gate before loading `$rule-execute-task`.
 
 ## Goals
-- Keep token usage low by doing only lightweight PR file discovery in this rule.
+- Keep token usage low by using a bash script for discovery and rebinding logic.
 - Resolve one active PR source file for current conversation `thread_key`.
 - Invoke `$rule-execute-task` only when a valid PR source file is found.
 
-## Thread Binding
-Resolve `thread_key` in this order:
-1. `CODEX_THREAD_ID`
-2. Explicit caller value (`thread_key` or `conversation_id`)
-3. Existing PR metadata only for migration fallback
+## Script
+- Path: `./skills/rule-find-task/scripts/find_pr_task.sh`
+- Purpose: resolve one source PR file, optionally rebind cross-thread files, and return structured `key=value` output.
 
-## Discovery Root
-- `./.vscode/pull-request-task/`
+## Required Inputs
+- `thread_key` (or `CODEX_THREAD_ID`)
+- Optional explicit PR file path from conversation context
+- Task root path (default `./.vscode/pull-request-task/`)
 
-## Discovery Logic
-1. If conversation explicitly includes a PR file path under `./.vscode/pull-request-task/`, use it as first candidate.
-2. Otherwise scan `./.vscode/pull-request-task/${thread_key}/` for PR source files (`*_TW.md` excluded).
-3. If multiple candidates exist:
-   - Prefer non-done PR.
-   - Then prefer most recently updated.
-   - If still ambiguous, ask user to select.
+## Execution
+1. Resolve `thread_key`:
+   - `CODEX_THREAD_ID`
+   - explicit `thread_key` or `conversation_id`
+2. Run finder script:
+   - Thread scan mode:
+     - `bash ./skills/rule-find-task/scripts/find_pr_task.sh --root ./.vscode/pull-request-task --thread-key "$thread_key"`
+   - Explicit path mode with rebinding:
+     - `bash ./skills/rule-find-task/scripts/find_pr_task.sh --root ./.vscode/pull-request-task --thread-key "$thread_key" --explicit-path "$pr_path" --rebind`
+3. Parse output `result=` and branch:
+   - `FOUND`: invoke `$rule-execute-task` with `resolved_path`
+   - `NOT_FOUND`: no-op and continue normal non-workflow behavior
+   - `AMBIGUOUS`: ask user to choose one candidate
+   - `ERROR`: surface `message` and stop workflow invocation
 
-## Cross-Thread Rebinding
-If explicit PR file belongs to a different thread folder:
-1. Move source PR file into current `./.vscode/pull-request-task/${thread_key}/`.
-2. Move paired `_TW.md` mirror if it exists.
-3. Update source metadata `thread_key` to current thread.
-4. Keep original `pr_id`.
-
-## Invocation Contract
-- If PR source file is found (by thread or explicit path), invoke `$rule-execute-task`.
-- Pass the resolved source PR path as execution input.
-- If no PR file is found, do not invoke `$rule-execute-task` and continue with normal non-workflow behavior.
+## Output Contract
+- `result=FOUND|NOT_FOUND|AMBIGUOUS|ERROR`
+- `resolved_path=<absolute_source_md_path>` when found
+- `mirror_path=<absolute_tw_md_path>` when found
+- `source=explicit|explicit_rebound|thread_scan` when found
+- `status=<status_from_frontmatter>` when found
+- `candidate=<absolute_path>` repeated for ambiguous results
+- `message=<error_message>` for errors
 
 ## Boundary
 - This rule does not execute stage logic.

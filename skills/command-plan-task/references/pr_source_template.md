@@ -4,7 +4,7 @@ pr_id: {{pr_id}}
 thread_key: {{thread_key}}
 title: "{{title}}"
 task_slug: {{task_slug}}
-stage: A
+stage: Requirement Definition
 status: active
 created_at: {{created_at}}
 updated_at: {{updated_at}}

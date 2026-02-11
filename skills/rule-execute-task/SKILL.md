@@ -19,18 +19,18 @@ description: Execute staged PR workflow only when invoked by rule-find-task afte
 - Keep source and `_TW` mirror synchronized after each source update.
 
 ## Workflow Stages
-1. Stage A: Requirement definition via PR Change Card.
-2. Stage B: CR decomposition via CR Checklist.
-3. Stage C: CR implementation loop.
-4. Stage D: Final validation and merge readiness.
+1. Stage `Requirement Definition`: Requirement definition via PR Change Card.
+2. Stage `CR Decomposition`: CR decomposition via CR Checklist.
+3. Stage `CR Implementation`: CR implementation loop.
+4. Stage `Validation`: Final validation and merge readiness.
 
 ## Stage Transition Table
 | Current Stage | Exit Condition | Next Stage |
 |---|---|---|
-| A | PR Change Card approved by RD | B |
-| B | CR Checklist approved by RD | C |
-| C | All CR rows are `done` | D |
-| D | Final validation complete and RD approves merge | done |
+| `Requirement Definition` | PR Change Card approved by RD | `CR Decomposition` |
+| `CR Decomposition` | CR Checklist approved by RD | `CR Implementation` |
+| `CR Implementation` | All CR rows are `done` | `Validation` |
+| `Validation` | Final validation complete and RD approves merge | done |
 
 ## CR Status Transition Table
 | Current Status | Trigger | Next Status |

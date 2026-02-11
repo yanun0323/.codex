@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rule - Find Task"
+  short_description: "Always-read PR finder and workflow gate"
+  icon_small: "./assets/rule-small.svg"

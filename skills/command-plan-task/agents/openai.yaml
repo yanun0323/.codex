@@ -1,0 +1,4 @@
+interface:
+  display_name: "Command - Plan Task"
+  short_description: "Initialize PR and hand off to finder rule"
+  icon_small: "./assets/command-small.svg"

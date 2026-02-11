@@ -10,7 +10,7 @@ description: Execute staged PR workflow only when invoked by rule-find-task afte
 - Use when the assistant must continue workflow execution from the current stage in that resolved PR file.
 
 ## Inputs (Required)
-- Absolute path to resolved PR source file returned by `./skills/rule-find-task/scripts/find_pr_task.sh`
+- Absolute path to resolved PR source file returned by `/scripts/find_pr_task.sh`
 - Current PR metadata and sections from the source file.
 
 ## Goals

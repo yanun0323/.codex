@@ -12,11 +12,11 @@ description: "{{description}}"
 ---
 
 # PR Change Card
-Business Goal: {{business_goal}}
-Out of Scope:
+### Business Goal: {{business_goal}}
+### Out of Scope:
 {{out_of_scope_lines}}
 
-Architecture Gate:
+### Architecture Gate:
 - Schema change: {{schema_change}}
 - Auth/Permission change: {{auth_permission_change}}
 - Cross-service contract change: {{cross_service_contract_change}}
@@ -24,11 +24,49 @@ Architecture Gate:
 - Migration required: {{migration_required}}
 - Rollback path defined: {{rollback_path_defined}}
 
-Acceptance Tests (<=8):
+### Acceptance Tests (<=8):
 {{acceptance_tests_lines}}
 
-Critical Invariants (<=5):
+### Critical Invariants (<=5):
 {{critical_invariants_lines}}
+
+# Business Specification
+### Problem Statement
+{{problem_statement}}
+
+### Business Context
+{{business_context}}
+
+### User Roles and Stakeholders
+{{user_roles_lines}}
+
+### Detailed Business Logic
+{{detailed_business_logic_lines}}
+
+### Functional Requirements
+{{functional_requirements_lines}}
+
+### Non-Functional Requirements
+{{non_functional_requirements_lines}}
+
+### Decision Rules and Constraints
+{{decision_rules_lines}}
+
+### Process Flow
+{{process_flow_lines}}
+
+### Edge Cases and Exceptions
+{{edge_cases_lines}}
+
+### Input Sources
+Question Summary:
+{{question_summary}}
+
+Referenced Files:
+{{referenced_files_lines}}
+
+### Open Questions
+{{open_questions_lines}}
 
 # CR Checklist
 | CR-ID | Scope | Goal | Path(Fast/Guarded) | Status | Evidence Link | Commit Hash |

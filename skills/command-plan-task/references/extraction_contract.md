@@ -43,8 +43,13 @@ Use this contract to transform conversation context into deterministic PR fields
 
 8. `cr_rows`
 - Pipe-table rows matching:
-  `| CR-001 | A | <goal> | Fast | todo |  |  |`
+  `| CR-001 | A | 1 | test | <goal> | Fast | todo |  |  |`
 - At least one row.
+- Required columns:
+  - `Scope` (for example `A`, `B`)
+  - `Scope Seq` (integer starting from `1` inside each scope)
+  - `CR Type` (`test` or `impl`)
+- `CR Type=impl` is not allowed before a `CR Type=test` row in the same scope.
 
 9. `problem_statement`
 - 2-4 sentences.
@@ -95,6 +100,7 @@ Use this contract to transform conversation context into deterministic PR fields
 - Numbered lines.
 - Define CR decomposition and ordering in `Requirement Definition` stage.
 - Each line should include scope, intent, and dependency rationale.
+- Each scope plan must explicitly show `Test CR` first, then implementation CRs.
 
 20. `question_summary`
 - 1-2 sentences summarizing the user prompt in neutral language.
@@ -117,3 +123,6 @@ Use this contract to transform conversation context into deterministic PR fields
 5. Prioritize user-provided files as source-of-truth context when available.
 6. Mark every uncertain statement as an assumption instead of presenting it as fact.
 7. Requirement Definition must include both existing-code analysis and CR decomposition plan.
+8. Enforce scope-level test-first decomposition:
+   - Every scope starts with a `test` CR row at `Scope Seq=1`.
+   - No `impl` CR row is valid unless a preceding `test` CR exists in the same scope.

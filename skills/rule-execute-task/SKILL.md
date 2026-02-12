@@ -13,6 +13,16 @@ description: Execute staged PR workflow only when invoked by rule-find-task afte
 - Absolute path to resolved PR source file returned by `scripts/find_pr_task.sh`
 - Current PR metadata and sections from the source file.
 - Latest conversation messages for approval and stage-inference signals.
+- CR Checklist table with columns:
+  - `CR-ID`
+  - `Scope`
+  - `Scope Seq`
+  - `CR Type (test/impl)`
+  - `Goal`
+  - `Path(Fast/Guarded)`
+  - `Status`
+  - `Evidence Link`
+  - `Commit Hash`
 
 ## Goals
 - Continue workflow from the PR file's current `stage` and `status`.
@@ -46,6 +56,18 @@ Inference rules:
 5. Move to `done` when validation evidence is complete and RD gives merge approval.
 6. If later conversation feedback changes requirements or CR decomposition, automatically move stage back to `Requirement Definition` and update PR sections.
 
+## Scope Test-First Gate
+Before starting any `impl` CR, enforce all conditions:
+1. A `test` CR exists in the same `Scope`.
+2. That `test` CR has a lower `Scope Seq` than the target `impl` CR.
+3. That `test` CR status is `committed`.
+4. The `test` CR has evidence showing test code creation or update for the same scope intent.
+
+If any condition fails:
+1. Do not start the `impl` CR.
+2. Mark the implementation CR as blocked (or keep `todo`) and add a note in evidence/comments.
+3. Request creation/completion of the missing scope `test` CR first.
+
 ## CR Status Transition Table
 | Current Status | Trigger | Next Status |
 |---|---|---|
@@ -61,7 +83,7 @@ Rules:
 3. `committed` is immutable unless RD explicitly reopens the CR.
 
 ## Stage `CR Implementation` Fixed Loop
-`Pick next CR -> Agent implements -> Run checks -> Wait RD decision -> Commit -> Update Checklist -> Next CR`
+`Pick next CR -> Apply scope test-first gate -> Agent implements -> Run checks -> Wait RD decision -> Commit -> Update Checklist -> Next CR`
 
 RD decision values:
 - `approved`: `approved` or `approve`
@@ -90,6 +112,7 @@ Each CR must be:
 3. Revertable by default
 4. Independently understandable
 5. Not partial
+6. For `impl` CRs: scope-level test-first gate must be satisfied.
 
 ## High-Risk Exceptions
 For migration/schema/contract-breaking or irreversible operations:
@@ -115,3 +138,4 @@ Whenever source PR file is updated:
 - File discovery and thread rebinding belong to `$rule-find-task`.
 - New PR initialization belongs to `$command-plan-task`.
 - Stage transition commands from user are optional; stage progression is inferred and updated by this rule.
+- This rule must not bypass scope-level test-first gating.

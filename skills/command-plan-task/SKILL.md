@@ -62,7 +62,7 @@ Before writing files, extract and normalize:
 18. `question_summary`: neutral summary of user request.
 19. `referenced_files`: file evidence from user-provided paths.
 20. `open_questions`: unresolved requirement questions.
-21. `initial_cr_rows`: at least one CR row.
+21. `initial_cr_rows`: at least one CR row, with explicit `Scope Seq` and `CR Type`.
 
 Rules:
 1. Never leave `Business Goal` blank.
@@ -71,6 +71,8 @@ Rules:
 4. When user provides files, read those files first and use them as the primary source for business logic and business requirements.
 5. Analyze relevant existing code before finalizing business logic and CR plan.
 6. Perform CR decomposition inside `Requirement Definition`; do not create a separate `CR Decomposition` stage.
+7. Enforce scope-level test-first planning: each scope must start with a `test` CR before any `impl` CR.
+8. Do not generate `impl` CR rows for a scope unless a preceding `test` CR row exists in the same scope.
 
 ## Command Workflow
 1. Resolve `thread_key`.
@@ -82,6 +84,8 @@ Rules:
    - `task_slug` (filesystem-safe from title)
    - `created_at` and `updated_at` in ISO8601 UTC
 6. Build `requirement_definition_cr_plan` and initial CR Checklist rows in the same pass.
+   - Ensure each scope sequence starts with `CR Type=test`.
+   - Ensure all implementation rows use `CR Type=impl` and appear after the scope test row.
 7. Load `references/pr_source_template.md` and fill placeholders, including `# Business Specification` sections.
 8. Write source file `${task_slug}.md`; if filename collision occurs, append suffix (`-02`, `-03`, ...).
 9. Build `_TW` mirror by translating headings and narrative text to Traditional Chinese while preserving metadata keys, enum-like values, IDs, and table structure.
@@ -97,6 +101,8 @@ Rules:
 - Keep CR Checklist within limits: max 20 CR rows.
 - Ensure `# Business Specification` is detailed and grounded in user question/files.
 - Ensure `existing_code_analysis` and `requirement_definition_cr_plan` are populated before handoff.
+- Ensure CR Checklist uses `Scope Seq` and `CR Type`.
+- Ensure each scope has a committed path that starts with test-first planning (`test` before `impl`).
 
 ## Output Expectations
 - Return absolute `source_path`.

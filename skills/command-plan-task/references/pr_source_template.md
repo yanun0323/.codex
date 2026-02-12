@@ -78,6 +78,6 @@ Referenced Files:
 {{critical_invariants_lines}}
 
 # CR Checklist
-| CR-ID | Scope | Goal | Path(Fast/Guarded) | Status | Evidence Link | Commit Hash |
-|------|-------|------|---------------------|--------|---------------|-------------|
+| CR-ID | Scope | Scope Seq | CR Type (test/impl) | Goal | Path(Fast/Guarded) | Status | Evidence Link | Commit Hash |
+|------|-------|-----------|----------------------|------|---------------------|--------|---------------|-------------|
 {{cr_rows}}

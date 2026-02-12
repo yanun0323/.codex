@@ -129,9 +129,9 @@ For migration/schema/contract-breaking or irreversible operations:
 
 ## Translation Mirror Sync
 Whenever source PR file is updated:
-1. Regenerate or update `${task_slug}_TW.md`.
+1. Regenerate or update `PRTW_${task_slug}.md`.
 2. Keep source `.md` as the only executable state.
-3. Treat `_TW.md` as RD-facing mirror only.
+3. Treat `PRTW_*.md` as RD-facing mirror only.
 
 ## Rule Boundary
 - This rule does not discover or migrate PR files.

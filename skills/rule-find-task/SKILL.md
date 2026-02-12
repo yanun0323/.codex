@@ -18,6 +18,9 @@ description: Lightweight always-read rule that runs scripts/find_pr_task.sh to d
 ## Script
 - Path: `scripts/find_pr_task.sh`
 - Purpose: resolve one source PR file, optionally rebind cross-thread files, and return structured `key=value` output.
+- Naming convention:
+  - Source PR file: `PR_*.md`
+  - RD mirror file: `PRTW_*.md`
 
 ## Required Inputs
 - `thread_key` (or `CODEX_THREAD_ID`)
@@ -43,7 +46,7 @@ description: Lightweight always-read rule that runs scripts/find_pr_task.sh to d
 ## Output Contract
 - `result=FOUND|NOT_FOUND|AMBIGUOUS|ERROR`
 - `resolved_path=<absolute_source_md_path>` when found
-- `mirror_path=<absolute_tw_md_path>` when found
+- `mirror_path=<absolute_mirror_md_path>` when found
 - `source=explicit|explicit_rebound|thread_scan` when found
 - `status=<status_from_frontmatter>` when found
 - `candidate=<absolute_path>` repeated for ambiguous results

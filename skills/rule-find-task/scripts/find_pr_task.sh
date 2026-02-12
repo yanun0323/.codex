@@ -16,7 +16,7 @@ Options:
 Output (key=value lines):
   result=FOUND|NOT_FOUND|AMBIGUOUS|ERROR
   resolved_path=<absolute_source_md_path>   # present when FOUND
-  mirror_path=<absolute_tw_md_path>         # present when FOUND
+  mirror_path=<absolute_mirror_md_path>     # present when FOUND
   source=explicit|explicit_rebound|thread_scan
   status=<status_value_from_pr_metadata>
   candidate=<path>                          # repeated when AMBIGUOUS
@@ -133,10 +133,31 @@ mtime_of_file() {
 
 normalize_source_path() {
   local file="$1"
-  if [[ "$file" == *_TW.md ]]; then
-    printf '%s.md\n' "${file%_TW.md}"
+  local dir name
+  dir="$(dirname "$file")"
+  name="$(basename "$file")"
+
+  if [[ "$name" == PRTW_*.md ]]; then
+    printf '%s/PR_%s\n' "$dir" "${name#PRTW_}"
+  elif [[ "$name" == *_TW.md ]]; then
+    printf '%s/%s.md\n' "$dir" "${name%_TW.md}"
   else
     printf '%s\n' "$file"
+  fi
+}
+
+source_to_mirror_path() {
+  local source="$1"
+  local dir name
+  dir="$(dirname "$source")"
+  name="$(basename "$source")"
+
+  if [[ "$name" == PR_*.md ]]; then
+    printf '%s/PRTW_%s\n' "$dir" "${name#PR_}"
+  elif [[ "$name" == *.md ]]; then
+    printf '%s/%s_TW.md\n' "$dir" "${name%.md}"
+  else
+    printf '%s\n' "$source"
   fi
 }
 
@@ -204,7 +225,7 @@ emit_found() {
   echo "thread_key=$THREAD_KEY"
   echo "source=$source_type"
   echo "resolved_path=$resolved"
-  echo "mirror_path=${resolved%.md}_TW.md"
+  echo "mirror_path=$(source_to_mirror_path "$resolved")"
   echo "status=$(status_of_file "$resolved")"
 }
 
@@ -245,10 +266,10 @@ if [[ -n "$EXPLICIT_PATH" ]]; then
     SOURCE_DIR="$(dirname "$SOURCE_FILE")"
     if [[ "$SOURCE_DIR" != "$THREAD_DIR" ]]; then
       TARGET_SOURCE="$(unique_target_path "$THREAD_DIR/$(basename "$SOURCE_FILE")")"
-      TARGET_MIRROR="${TARGET_SOURCE%.md}_TW.md"
+      TARGET_MIRROR="$(source_to_mirror_path "$TARGET_SOURCE")"
 
       mv "$SOURCE_FILE" "$TARGET_SOURCE"
-      SOURCE_MIRROR="${SOURCE_FILE%.md}_TW.md"
+      SOURCE_MIRROR="$(source_to_mirror_path "$SOURCE_FILE")"
       if [[ -f "$SOURCE_MIRROR" ]]; then
         mv "$SOURCE_MIRROR" "$TARGET_MIRROR"
       fi
@@ -272,7 +293,7 @@ fi
 CANDIDATES=()
 while IFS= read -r file; do
   CANDIDATES+=("$file")
-done < <(find "$THREAD_DIR" -maxdepth 1 -type f -name '*.md' ! -name '*_TW.md' | sort)
+done < <(find "$THREAD_DIR" -maxdepth 1 -type f -name '*.md' ! -name '*_TW.md' ! -name 'PRTW_*.md' | sort)
 
 if [[ "${#CANDIDATES[@]}" -eq 0 ]]; then
   emit_not_found

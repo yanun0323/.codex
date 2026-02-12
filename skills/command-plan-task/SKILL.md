@@ -11,7 +11,7 @@ description: Use this skill only when the user explicitly asks to invoke. Create
 
 ## Goals
 - Create one PR source file under `./.vscode/pull-request-task/${thread_key}/`.
-- Create a `_TW` mirror for RD review from the same extracted task context.
+- Create a `PRTW_` mirror for RD review from the same extracted task context.
 - Delegate continuation to `$rule-find-task` after creation.
 - Produce a detailed business-specification section from user question and provided files.
 - Analyze existing code before drafting business logic and CR planning.
@@ -32,8 +32,8 @@ Resolve `thread_key` in this order:
 ## File Paths
 - Root: `./.vscode/pull-request-task/`
 - Thread directory: `./.vscode/pull-request-task/${thread_key}/`
-- Source file: `./.vscode/pull-request-task/${thread_key}/${task_slug}.md`
-- Mirror file: `./.vscode/pull-request-task/${thread_key}/${task_slug}_TW.md`
+- Source file: `./.vscode/pull-request-task/${thread_key}/PR_${task_slug}.md`
+- Mirror file: `./.vscode/pull-request-task/${thread_key}/PRTW_${task_slug}.md`
 
 ## Reference Templates
 Use these references to build files:
@@ -87,15 +87,15 @@ Rules:
    - Ensure each scope sequence starts with `CR Type=test`.
    - Ensure all implementation rows use `CR Type=impl` and appear after the scope test row.
 7. Load `references/pr_source_template.md` and fill placeholders, including `# Business Specification` sections.
-8. Write source file `${task_slug}.md`; if filename collision occurs, append suffix (`-02`, `-03`, ...).
-9. Build `_TW` mirror by translating headings and narrative text to Traditional Chinese while preserving metadata keys, enum-like values, IDs, and table structure.
+8. Write source file `PR_${task_slug}.md`; if filename collision occurs, append suffix (`-02`, `-03`, ...).
+9. Build `PRTW_${task_slug}.md` mirror by translating headings and narrative text to Traditional Chinese while preserving metadata keys, enum-like values, IDs, and table structure.
 10. Initialize stage as `Requirement Definition`, then delegate to `$rule-find-task` with the created source path.
 11. Let `$rule-execute-task` infer and update later stage transitions from conversation and PR state automatically.
 
 ## Constraints
 - Do not use scripts to create PR files in this command.
-- Keep `${task_slug}.md` as the only executable state source.
-- Keep `${task_slug}_TW.md` as review-only mirror.
+- Keep `PR_${task_slug}.md` as the only executable state source.
+- Keep `PRTW_${task_slug}.md` as review-only mirror.
 - Keep PR Change Card within limits: max 35 lines.
 - Keep Acceptance Tests within limits: max 10 acceptance tests, max 5 invariants.
 - Keep CR Checklist within limits: max 20 CR rows.

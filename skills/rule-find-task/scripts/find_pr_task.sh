@@ -9,14 +9,13 @@ Usage:
 Options:
   --root <dir>           Task root directory (default: ./.vscode/pull-request-task)
   --thread-key <key>     Current conversation thread key (required)
-  --explicit-path <path> Candidate PR file path from conversation context
+  --explicit-path <path> Candidate source PR file path from conversation context
   --rebind               Move explicit PR file to current thread folder and update metadata
   --help                 Show this help message
 
 Output (key=value lines):
   result=FOUND|NOT_FOUND|AMBIGUOUS|ERROR
   resolved_path=<absolute_source_md_path>   # present when FOUND
-  mirror_path=<absolute_mirror_md_path>     # present when FOUND
   source=explicit|explicit_rebound|thread_scan
   status=<status_value_from_pr_metadata>
   candidate=<path>                          # repeated when AMBIGUOUS
@@ -133,32 +132,7 @@ mtime_of_file() {
 
 normalize_source_path() {
   local file="$1"
-  local dir name
-  dir="$(dirname "$file")"
-  name="$(basename "$file")"
-
-  if [[ "$name" == PRTW_*.md ]]; then
-    printf '%s/PR_%s\n' "$dir" "${name#PRTW_}"
-  elif [[ "$name" == *_TW.md ]]; then
-    printf '%s/%s.md\n' "$dir" "${name%_TW.md}"
-  else
-    printf '%s\n' "$file"
-  fi
-}
-
-source_to_mirror_path() {
-  local source="$1"
-  local dir name
-  dir="$(dirname "$source")"
-  name="$(basename "$source")"
-
-  if [[ "$name" == PR_*.md ]]; then
-    printf '%s/PRTW_%s\n' "$dir" "${name#PR_}"
-  elif [[ "$name" == *.md ]]; then
-    printf '%s/%s_TW.md\n' "$dir" "${name%.md}"
-  else
-    printf '%s\n' "$source"
-  fi
+  printf '%s\n' "$file"
 }
 
 unique_target_path() {
@@ -225,7 +199,6 @@ emit_found() {
   echo "thread_key=$THREAD_KEY"
   echo "source=$source_type"
   echo "resolved_path=$resolved"
-  echo "mirror_path=$(source_to_mirror_path "$resolved")"
   echo "status=$(status_of_file "$resolved")"
 }
 
@@ -258,6 +231,11 @@ if [[ -n "$EXPLICIT_PATH" ]]; then
     echo "message=source PR file not found for explicit path: $SOURCE_FILE"
     exit 2
   fi
+  if [[ "$(basename "$SOURCE_FILE")" != PR_*.md ]]; then
+    echo "result=ERROR"
+    echo "message=explicit-path must point to source PR file: PR_*.md"
+    exit 2
+  fi
 
   SOURCE_KIND="explicit"
 
@@ -266,13 +244,8 @@ if [[ -n "$EXPLICIT_PATH" ]]; then
     SOURCE_DIR="$(dirname "$SOURCE_FILE")"
     if [[ "$SOURCE_DIR" != "$THREAD_DIR" ]]; then
       TARGET_SOURCE="$(unique_target_path "$THREAD_DIR/$(basename "$SOURCE_FILE")")"
-      TARGET_MIRROR="$(source_to_mirror_path "$TARGET_SOURCE")"
 
       mv "$SOURCE_FILE" "$TARGET_SOURCE"
-      SOURCE_MIRROR="$(source_to_mirror_path "$SOURCE_FILE")"
-      if [[ -f "$SOURCE_MIRROR" ]]; then
-        mv "$SOURCE_MIRROR" "$TARGET_MIRROR"
-      fi
 
       SOURCE_FILE="$TARGET_SOURCE"
       SOURCE_KIND="explicit_rebound"
@@ -293,7 +266,7 @@ fi
 CANDIDATES=()
 while IFS= read -r file; do
   CANDIDATES+=("$file")
-done < <(find "$THREAD_DIR" -maxdepth 1 -type f -name '*.md' ! -name '*_TW.md' ! -name 'PRTW_*.md' | sort)
+done < <(find "$THREAD_DIR" -maxdepth 1 -type f -name 'PR_*.md' | sort)
 
 if [[ "${#CANDIDATES[@]}" -eq 0 ]]; then
   emit_not_found

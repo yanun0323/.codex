@@ -1,21 +1,21 @@
 # Extraction Contract for `command-plan-task`
 
-Use this contract to transform conversation context into deterministic PR fields.
+Use this contract to transform conversation context into deterministic PR memory fields.
 
 ## Field Definitions
 
 1. `title`
 - Short and concrete.
 - Prefer verb + object form.
-- Example: `Define staged CR workflow for RD-gated commits`
+- Example: `Add scope-level test-first checkout validation`
 
 2. `description`
 - 1-2 sentences only.
-- Summarize context and why this PR exists.
+- Summarize context and why this task exists.
 
 3. `business_goal`
 - One complete sentence.
-- Must describe measurable or observable impact.
+- Must describe observable impact.
 - Must not be empty.
 
 4. `out_of_scope_lines`
@@ -32,16 +32,40 @@ Use this contract to transform conversation context into deterministic PR fields
   - `migration_required`
   - `rollback_path_defined`
 
-6. `acceptance_tests_lines`
+6. `planning_notes_lines`
+- Optional markdown bullet lines.
+- Keep concise implementation memory only (for example touched module hints, assumptions, dependency notes).
+- Use `- None at this stage.` when no useful notes.
+
+7. `referenced_files_lines`
+- Bullet lines of file paths explicitly provided by user or discovered from request context.
+- If none, use `- None provided.`
+- When files are provided, extract requirements from those files before planning.
+
+8. `open_questions_lines`
+- Bullet lines for unresolved items that block implementation or validation.
+- If none, use `- None at this stage.`
+
+9. `clarification_items_lines`
+- Bullet lines with status tag and decision context.
+- Format examples:
+  - `- [open][blocking=yes] Q-001 | Risk: <risk> | Impact: <impact> | Default: <proposal> | Need: <user decision>`
+  - `- [resolved] Q-001 | Decision: <final decision> | By: user`
+  - `- [accepted-risk] Q-002 | Decision: <accepted with reason> | By: user`
+- At creation time: 0-3 items.
+- Include only high-value implementation-risk questions.
+- Avoid low-signal or generic questions.
+
+10. `acceptance_tests_lines`
 - Numbered markdown lines (`1.`, `2.`, ...).
 - Between 2 and 8 lines.
 - Must be testable statements.
 
-7. `critical_invariants_lines`
+11. `critical_invariants_lines`
 - Numbered markdown lines (`1.`, `2.`, ...).
 - Between 1 and 5 lines.
 
-8. `cr_rows`
+12. `cr_rows`
 - Pipe-table rows matching:
   `| CR-001 | A | 1 | test | <goal> | Fast | todo |  |  |`
 - At least one row.
@@ -51,78 +75,21 @@ Use this contract to transform conversation context into deterministic PR fields
   - `CR Type` (`test` or `impl`)
 - `CR Type=impl` is not allowed before a `CR Type=test` row in the same scope.
 
-9. `problem_statement`
-- 2-4 sentences.
-- Describe current pain point and expected solved state.
-
-10. `business_context`
-- 2-5 sentences.
-- Include business domain background and why this change matters now.
-
-11. `user_roles_lines`
-- Bullet lines.
-- List actors, owners, and affected stakeholders.
-- At least 2 items when context allows.
-
-12. `existing_code_analysis_lines`
-- Bullet lines.
-- Summarize current implementation, touched modules/files, and known constraints from the existing codebase.
-- Include concrete file paths when available.
-
-13. `detailed_business_logic_lines`
-- Numbered lines.
-- Capture end-to-end business logic steps and decision branches.
-- Target 4-10 steps.
-
-14. `functional_requirements_lines`
-- Numbered lines.
-- Must be testable and concrete.
-- Target 4-12 requirements.
-
-15. `non_functional_requirements_lines`
-- Bullet lines.
-- Include latency, reliability, auditability, security, compliance, and operability if applicable.
-- Use `- None identified yet.` only when truly unknown.
-
-16. `decision_rules_lines`
-- Numbered lines.
-- Include thresholds, validation rules, allowed/disallowed transitions, and fallback behavior.
-
-17. `process_flow_lines`
-- Numbered lines representing business flow.
-- Each line should be an actionable step in sequence.
-
-18. `edge_cases_lines`
-- Bullet lines for exceptional paths.
-- Include failure modes, retries, invalid inputs, and data conflicts.
-
-19. `requirement_definition_cr_plan_lines`
-- Numbered lines.
-- Define CR decomposition and ordering in `Requirement Definition` stage.
-- Each line should include scope, intent, and dependency rationale.
-- Each scope plan must explicitly show `Test CR` first, then implementation CRs.
-
-20. `question_summary`
-- 1-2 sentences summarizing the user prompt in neutral language.
-
-21. `referenced_files_lines`
-- Bullet lines of file paths explicitly provided by user or discovered from request context.
-- If none, use `- None provided.`
-- When files are provided, extract spec details from those files before drafting business logic.
-
-22. `open_questions_lines`
-- Bullet lines for unresolved items that block implementation or validation.
-- If none, use `- None at this stage.`
-
 ## Normalization Rules
 
 1. Never use placeholders like `TBD`, `N/A`, or `as discussed`.
-2. Do not invent business domain details not present in conversation.
+2. Do not invent business-domain details not present in conversation or referenced files.
 3. Keep terms consistent across title, goal, acceptance tests, and CR rows.
-4. Keep generated content concise and reviewable.
-5. Prioritize user-provided files as source-of-truth context when available.
-6. Mark every uncertain statement as an assumption instead of presenting it as fact.
-7. Requirement Definition must include both existing-code analysis and CR decomposition plan.
-8. Enforce scope-level test-first decomposition:
+4. Keep generated content concise and machine-friendly.
+5. Requirement Definition memory must include:
+   - PR Change Card fields (`business_goal`, `out_of_scope_lines`, `architecture_gate`)
+   - `clarification_items_lines`
+   - `acceptance_tests_lines`
+   - `critical_invariants_lines`
+   - `cr_rows`
+6. Clarification loop readiness:
+   - Any `blocking=yes` item with status `open` prevents leaving `Requirement Definition`.
+   - Prefer explicit user decision over inferred assumptions.
+7. Enforce scope-level test-first decomposition:
    - Every scope starts with a `test` CR row at `Scope Seq=1`.
    - No `impl` CR row is valid unless a preceding `test` CR exists in the same scope.

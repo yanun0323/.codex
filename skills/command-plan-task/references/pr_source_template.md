@@ -1,5 +1,5 @@
 ---
-workflow_version: v2
+workflow_version: v3
 pr_id: {{pr_id}}
 thread_key: {{thread_key}}
 title: "{{title}}"
@@ -26,49 +26,18 @@ description: "{{description}}"
 - Migration required: {{migration_required}}
 - Rollback path defined: {{rollback_path_defined}}
 
-# Business Specification
-### Problem Statement
-{{problem_statement}}
+# Requirement Memory (Internal)
+### Planning Notes (Optional)
+{{planning_notes_lines}}
 
-### Business Context
-{{business_context}}
-
-### User Roles and Stakeholders
-{{user_roles_lines}}
-
-### Existing Code Analysis
-{{existing_code_analysis_lines}}
-
-### Detailed Business Logic
-{{detailed_business_logic_lines}}
-
-### Functional Requirements
-{{functional_requirements_lines}}
-
-### Non-Functional Requirements
-{{non_functional_requirements_lines}}
-
-### Decision Rules and Constraints
-{{decision_rules_lines}}
-
-### Process Flow
-{{process_flow_lines}}
-
-### Edge Cases and Exceptions
-{{edge_cases_lines}}
-
-### Requirement Definition CR Plan (Integrated)
-{{requirement_definition_cr_plan_lines}}
-
-### Input Sources
-Question Summary:
-{{question_summary}}
-
-Referenced Files:
+### Referenced Files
 {{referenced_files_lines}}
 
 ### Open Questions
 {{open_questions_lines}}
+
+### Clarification Items
+{{clarification_items_lines}}
 
 # Acceptance Tests
 ### Acceptance Tests:

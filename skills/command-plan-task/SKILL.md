@@ -11,17 +11,17 @@ description: Use this skill only when the user explicitly asks to invoke. Create
 
 ## Goals
 - Create one PR source file under `./.vscode/pull-request-task/${thread_key}/`.
-- Create a `PRTW_` mirror for RD review from the same extracted task context.
 - Delegate continuation to `$rule-find-task` after creation.
-- Produce a detailed business-specification section from user question and provided files.
-- Analyze existing code before drafting business logic and CR planning.
+- Keep PR as internal execution memory, not as RD-facing review document.
+- Capture only minimal planning state needed for staged execution.
+- Seed requirement clarification items for implementation-risk confirmation.
 - Complete CR decomposition inside `Requirement Definition` (no separate stage at creation time).
 
 ## Inputs
 - Current conversation content.
 - Optional explicit title/description from user.
 - Optional explicit `thread_key`.
-- Optional file paths provided by user for business-spec extraction.
+- Optional file paths provided by user for requirement extraction.
 
 ## Thread Binding
 Resolve `thread_key` in this order:
@@ -33,7 +33,6 @@ Resolve `thread_key` in this order:
 - Root: `./.vscode/pull-request-task/`
 - Thread directory: `./.vscode/pull-request-task/${thread_key}/`
 - Source file: `./.vscode/pull-request-task/${thread_key}/PR_${task_slug}.md`
-- Mirror file: `./.vscode/pull-request-task/${thread_key}/PRTW_${task_slug}.md`
 
 ## Reference Templates
 Use these references to build files:
@@ -46,65 +45,52 @@ Before writing files, extract and normalize:
 2. `description`: 1-2 sentence context summary.
 3. `business_goal`: complete sentence describing intended business impact.
 4. `out_of_scope`: explicit non-goals; if unknown use `- None identified yet.`
-5. `acceptance_tests`: 2-8 testable statements.
-6. `critical_invariants`: 1-5 invariants.
-7. `problem_statement`: clear current problem and desired outcome.
-8. `business_context`: background and constraints.
-9. `user_roles`: impacted actors and owners.
-10. `existing_code_analysis`: summary of current code behavior, boundaries, and touched modules/files.
-11. `detailed_business_logic`: step-by-step business logic with branching rules.
-12. `functional_requirements`: concrete feature requirements.
-13. `non_functional_requirements`: reliability/performance/security/operability requirements.
-14. `decision_rules`: deterministic rule set and boundary conditions.
-15. `process_flow`: ordered business flow.
-16. `edge_cases`: exceptional scenarios and failure handling.
-17. `requirement_definition_cr_plan`: ordered CR plan produced during requirement definition.
-18. `question_summary`: neutral summary of user request.
-19. `referenced_files`: file evidence from user-provided paths.
-20. `open_questions`: unresolved requirement questions.
-21. `initial_cr_rows`: at least one CR row, with explicit `Scope Seq` and `CR Type`.
+5. `planning_notes`: concise internal memory notes (optional).
+6. `referenced_files`: file evidence from user-provided paths.
+7. `open_questions`: unresolved requirement questions.
+8. `clarification_items`: implementation-risk clarification items with status.
+9. `acceptance_tests`: 2-8 testable statements.
+10. `critical_invariants`: 1-5 invariants.
+11. `initial_cr_rows`: at least one CR row, with explicit `Scope Seq` and `CR Type`.
 
 Rules:
 1. Never leave `Business Goal` blank.
 2. Do not use placeholders like `TBD` or `as discussed`.
 3. Keep extraction faithful to user intent; do not invent business logic.
-4. When user provides files, read those files first and use them as the primary source for business logic and business requirements.
-5. Analyze relevant existing code before finalizing business logic and CR plan.
+4. When user provides files, read those files first and use them as the primary source for planning.
+5. Keep planning notes concise; PR is memory, not human review artifact.
 6. Perform CR decomposition inside `Requirement Definition`; do not create a separate `CR Decomposition` stage.
 7. Enforce scope-level test-first planning: each scope must start with a `test` CR before any `impl` CR.
 8. Do not generate `impl` CR rows for a scope unless a preceding `test` CR row exists in the same scope.
+9. Seed initial clarification items for known implementation risks; max 3 items at creation.
 
 ## Command Workflow
 1. Resolve `thread_key`.
 2. Collect user-provided file paths from conversation (if any) and read relevant content before drafting.
-3. Analyze existing code paths related to the request and capture findings in `existing_code_analysis`.
-4. Extract required fields from conversation and file evidence using `references/extraction_contract.md`.
-5. Derive metadata:
+3. Extract required fields from conversation and file evidence using `references/extraction_contract.md`.
+4. Derive metadata:
    - `pr_id` (UTC timestamp-based identifier)
    - `task_slug` (filesystem-safe from title)
    - `created_at` and `updated_at` in ISO8601 UTC
-6. Build `requirement_definition_cr_plan` and initial CR Checklist rows in the same pass.
+5. Build initial CR Checklist rows in the same pass.
    - Ensure each scope sequence starts with `CR Type=test`.
    - Ensure all implementation rows use `CR Type=impl` and appear after the scope test row.
-7. Load `references/pr_source_template.md` and fill placeholders, including `# Business Specification` sections.
-8. Write source file `PR_${task_slug}.md`; if filename collision occurs, append suffix (`-02`, `-03`, ...).
-9. Build `PRTW_${task_slug}.md` mirror by translating headings and narrative text to Traditional Chinese while preserving metadata keys, enum-like values, IDs, and table structure.
-10. Initialize stage as `Requirement Definition`, then delegate to `$rule-find-task` with the created source path.
-11. Let `$rule-execute-task` infer and update later stage transitions from conversation and PR state automatically.
+6. Load `references/pr_source_template.md` and fill placeholders for minimal PR memory schema.
+7. Write source file `PR_${task_slug}.md`; if filename collision occurs, append suffix (`-02`, `-03`, ...).
+8. Initialize stage as `Requirement Definition`, then delegate to `$rule-find-task` with the created source path.
+9. Let `$rule-execute-task` infer and update later stage transitions from conversation and PR state automatically.
 
 ## Constraints
 - Do not use scripts to create PR files in this command.
 - Keep `PR_${task_slug}.md` as the only executable state source.
-- Keep `PRTW_${task_slug}.md` as review-only mirror.
-- Keep PR Change Card within limits: max 35 lines.
+- Keep PR Change Card within limits: max 25 lines.
+- Keep Requirement Memory (`planning_notes`, `referenced_files`, `open_questions`, `clarification_items`) within 28 lines total.
 - Keep Acceptance Tests within limits: max 10 acceptance tests, max 5 invariants.
 - Keep CR Checklist within limits: max 20 CR rows.
-- Ensure `# Business Specification` is detailed and grounded in user question/files.
-- Ensure `existing_code_analysis` and `requirement_definition_cr_plan` are populated before handoff.
 - Ensure CR Checklist uses `Scope Seq` and `CR Type`.
 - Ensure each scope has a committed path that starts with test-first planning (`test` before `impl`).
+- Clarification items must be decision-oriented and concise.
 
 ## Output Expectations
 - Return absolute `source_path`.
-- Return absolute `mirror_path`.
 - Confirm handoff to `$rule-find-task`.

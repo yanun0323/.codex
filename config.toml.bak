@@ -27,3 +27,7 @@ enabled = false
 [[skills.config]]
 path = "~/.codex/skills/rule-execute-task/SKILL.md"
 enabled = false
+
+[[skills.config]]
+path = "~/.codex/skills/skill-webapp-testing/SKILL.md"
+enabled = false

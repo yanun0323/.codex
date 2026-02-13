@@ -1,0 +1,4 @@
+interface:
+  display_name: "Command - Git Commit"
+  short_description: "Summarize uncommitted changes and run git commit"
+  icon_small: "./assets/command-small.svg"

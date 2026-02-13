@@ -1,6 +1,6 @@
 ---
 name: rule-global
-description: Global rules for all coding tasks in this repo - priority, language policy, scope, ambiguity handling, verification, security, output format, and which domain skills to load.
+description: Always load this skill for any task. Global rules for all coding tasks in this repo - priority, language policy, scope, ambiguity handling, verification, security, output format, and which domain skills to load.
 ---
 
 # Global Rules for This Repository

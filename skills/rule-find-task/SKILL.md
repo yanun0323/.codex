@@ -1,6 +1,6 @@
 ---
 name: rule-find-task
-description: Lightweight always-read rule that runs scripts/find_pr_task.sh to discover or rebind a PR task file and invokes rule-execute-task only when found.
+description: Always load this skill for any task. Lightweight always-read rule that runs scripts/find_pr_task.sh to discover or rebind a PR task file and invokes rule-execute-task only when found.
 ---
 
 # Find Task Rule

@@ -19,3 +19,11 @@ enabled = false
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-installer/SKILL.md"
 enabled = false
+
+[[skills.config]]
+path = "~/.codex/skills/rule-find-task/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "~/.codex/skills/rule-execute-task/SKILL.md"
+enabled = false

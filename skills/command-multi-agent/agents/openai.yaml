@@ -1,0 +1,4 @@
+interface:
+  display_name: "Command - Multi Agent"
+  short_description: "Run an autonomous multi-agent delivery loop"
+  icon_small: "./assets/command-small.svg"

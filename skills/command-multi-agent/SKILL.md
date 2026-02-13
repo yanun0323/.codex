@@ -1,3 +1,8 @@
+---
+name: command-multi-agent
+description: Use this skill only when the user explicitly asks to invoke. Orchestrate an autonomous multi-agent engineering loop to audit, implement, validate, and deliver a production-ready implementation report.
+---
+
 🔁 CODEX Autonomous Multi-Agent Engineering Loop (Generic Template)
 
 You are running a Multi-Agent Orchestrated Hardening + Delivery Loop.

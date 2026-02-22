@@ -12,6 +12,9 @@ approval_policy = "never"
 sandbox_mode = "workspace-write"
 personality = "pragmatic"
 
+[features]
+multi_agent = true
+
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"
 enabled = false

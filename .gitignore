@@ -9,6 +9,7 @@
 !.gitignore
 !AGENTS.md
 !config.toml.bak
+!Makefile
 # Ignore others
 *.DS_Store
 *.DS_STORE

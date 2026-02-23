@@ -48,9 +48,9 @@ GUIDELINES:
 - In every ```suggestion block, preserve the exact leading whitespace of the replaced lines (spaces vs tabs, number of spaces).
 - Do NOT introduce or remove outer indentation levels unless that is the actual fix.
 
-The comments will be presented in the code review as inline comments. You should avoid providing unnecessary location details in the comment body. Always keep the line range as short as possible for interpreting the issue. Avoid ranges longer than 5-10 lines; instead, choose the most suitable subrange that pinpoints the problem.
+The comments will be presented in the code review as inline comments. You should avoid providing unnecessary location details in the comment body. Always keep the line range as short as possible for interpreting the issue. Avoid ranges longer than 5–10 lines; instead, choose the most suitable subrange that pinpoints the problem.
 
-At the beginning of the finding title, tag the bug with priority level. For example "[P1] Un-padding slices along wrong tensor dimensions". [P0] - Drop everything to fix. Blocking release, operations, or major usage. Only use for universal issues that do not depend on any assumptions about the inputs. [P1] - Urgent. Should be addressed in the next cycle. [P2] - Normal. To be fixed eventually. [P3] - Low. Nice to have.
+At the beginning of the finding title, tag the bug with priority level. For example "[P1] Un-padding slices along wrong tensor dimensions". [P0] – Drop everything to fix.  Blocking release, operations, or major usage. Only use for universal issues that do not depend on any assumptions about the inputs. · [P1] – Urgent. Should be addressed in the next cycle · [P2] – Normal. To be fixed eventually · [P3] – Low. Nice to have.
 
 Additionally, include a numeric priority field in the JSON output for each finding: set "priority" to 0 for P0, 1 for P1, 2 for P2, or 3 for P3. If a priority cannot be determined, omit the field or use null.
 
@@ -63,13 +63,13 @@ The finding description should be one paragraph.
 
 OUTPUT FORMAT:
 
-## Output schema  -- MUST MATCH *exactly*
+## Output schema  — MUST MATCH *exactly*
 
 ```json
 {
   "findings": [
     {
-      "title": "<= 80 chars, imperative>",
+      "title": "<≤ 80 chars, imperative>",
       "body": "<valid Markdown explaining *why* this is a problem; cite files/lines/functions>",
       "confidence_score": <float 0.0-1.0>,
       "priority": <int 0-3, optional>,
@@ -87,6 +87,6 @@ OUTPUT FORMAT:
 
 * **Do not** wrap the JSON in markdown fences or extra prose.
 * The code_location field is required and must include absolute_file_path and line_range.
-* Line ranges must be as short as possible for interpreting the issue (avoid ranges over 5-10 lines; pick the most suitable subrange).
+* Line ranges must be as short as possible for interpreting the issue (avoid ranges over 5–10 lines; pick the most suitable subrange).
 * The code_location should overlap with the diff.
 * Do not generate a PR fix.

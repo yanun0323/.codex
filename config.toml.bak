@@ -14,6 +14,11 @@ personality = "pragmatic"
 
 [features]
 multi_agent = true
+apps = true
+prevent_idle_sleep = true
+
+[mcp_servers.context7]
+url = "https://mcp.context7.com/mcp"
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"
@@ -34,3 +39,6 @@ enabled = false
 [[skills.config]]
 path = "~/.codex/skills/skill-webapp-testing/SKILL.md"
 enabled = false
+
+[tui]
+status_line = ["model-with-reasoning", "git-branch", "context-used", "five-hour-limit", "weekly-limit"]

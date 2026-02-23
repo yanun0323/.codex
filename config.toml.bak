@@ -1,5 +1,5 @@
 model = "gpt-5.3-codex"
-review_model = "gpt-5.2-pro"
+review_model = "gpt-5.3-codex"
 model_provider = "openai"
 model_reasoning_effort = "xhigh"
 model_reasoning_summary = "auto"

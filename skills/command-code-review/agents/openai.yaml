@@ -1,0 +1,4 @@
+interface:
+  display_name: "Command - Code Review"
+  short_description: "Review diffs and return strict JSON findings"
+  icon_small: "./assets/command-small.svg"

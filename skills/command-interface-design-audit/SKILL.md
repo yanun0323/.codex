@@ -5,10 +5,6 @@ description: "Check existing code against your design system for spacing, depth,
 
 # interface-design audit
 
-## When to Use
-- Use this skill only when the user explicitly asks to invoke.
-
-Check existing code against your design system.
 
 ## Usage
 

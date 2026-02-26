@@ -5,13 +5,6 @@ description: Rules for SolidJS frontend work - boundaries, data fetching, UI sta
 
 # SolidJS Frontend Rules
 
-## When to Use
-- Load this skill when working on SolidJS frontend code or reviewing frontend changes.
-
-If any rule conflicts with explicit user instructions, follow the user instructions.
-If any rule conflicts with the rule-global skill, follow the higher-priority rule defined there.
-
----
 
 ## 1) Stack and Constraints
 

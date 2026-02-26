@@ -5,9 +5,6 @@ description: Use this skill only when the user explicitly asks to invoke This mo
 
 # Read-Only Chat Skill
 
-## When to Use
-- Use this skill only when the user explicitly asks to invoke
-- Use when the user wants discussion, analysis, explanation, or fact-finding without any repository changes.
 
 ## Goals
 - Answer questions accurately using local read-only context and web sources when needed.

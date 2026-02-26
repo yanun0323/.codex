@@ -5,10 +5,6 @@ description: "Extract design patterns from existing code to create a system.md f
 
 # interface-design extract
 
-## When to Use
-- Use this skill only when the user explicitly asks to invoke.
-
-Extract design patterns from existing code to create a system.
 
 ## Usage
 

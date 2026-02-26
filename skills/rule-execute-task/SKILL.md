@@ -5,9 +5,6 @@ description: Execute staged PR workflow only when invoked by rule-find-task afte
 
 # Execute Task Rule
 
-## When to Use
-- Use this rule only when `$rule-find-task` has already found and selected one PR source file.
-- Use when the assistant must continue workflow execution from the current stage in that resolved PR file.
 
 ## Inputs (Required)
 - Absolute path to resolved PR source file returned by `scripts/find_pr_task.sh`

@@ -5,13 +5,6 @@ description: UI layering and component rules for SolidJS UI work, including tier
 
 # UI Layering and Component Rules (SolidJS)
 
-## When to Use
-- Load this skill when making UI/UX decisions or editing UI components.
-
-If any rule conflicts with explicit user instructions, follow the user instructions.
-If any rule conflicts with the rule-global skill, follow the higher-priority rule defined there.
-
----
 
 ## 1) UI Layering Model (MANDATORY)
 

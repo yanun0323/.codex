@@ -5,9 +5,6 @@ description: Use this skill only when the user explicitly asks to invoke `comman
 
 # Git Commit Command
 
-## When to Use
-- Invoke only when user explicitly asks for `command-git-commit`.
-- Use for committing current local uncommitted changes.
 
 ## Goals
 - Detect all local uncommitted Git changes.

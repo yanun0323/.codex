@@ -5,13 +5,6 @@ description: Infra, container, and configuration rules for changes that affect r
 
 # Infra, Containerization, and Configuration Rules
 
-## When to Use
-- Load this skill when a change impacts runtime interface or deployment (ports, env vars, services, build/runtime behavior).
-
-If any rule conflicts with explicit user instructions, follow the user instructions.
-If any rule conflicts with the rule-global skill, follow the higher-priority rule defined there.
-
----
 
 ## 1) Trigger Conditions (When This Skill Applies)
 

@@ -5,9 +5,6 @@ description: Use this skill only when the user explicitly asks to invoke. Create
 
 # Plan Task Command
 
-## When to Use
-- Use this skill only when the user explicitly asks to invoke `$command-plan-task`.
-- Use when the user wants a new PR task document created from the current conversation.
 
 ## Goals
 - Create one PR source file under `./.vscode/pull-request-task/${thread_key}/`.

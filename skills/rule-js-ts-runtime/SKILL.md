@@ -7,16 +7,6 @@ metadata:
 
 # JS/TS Runtime & Tooling Rules (Bun + Node)
 
-## When to Use
-Load this skill for any JavaScript/TypeScript project work, including:
-- Frontend (Vite, SolidJS, React, Vue, Svelte)
-- SSR/Fullstack (SolidStart, Next.js, Nuxt, Remix, etc.)
-- Tooling (Vitest/Jest, ESLint, Prettier, TS config, build scripts)
-
-If any rule conflicts with explicit user instructions, follow the user instructions.
-If any rule conflicts with rule-global, follow the higher-priority rule defined there.
-
----
 
 ## 1) Primary Policy (MANDATORY)
 

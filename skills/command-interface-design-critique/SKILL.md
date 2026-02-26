@@ -5,10 +5,6 @@ description: "Critique your build for craft, then rebuild what defaulted. Use th
 
 # Critique
 
-## When to Use
-- Use this skill only when the user explicitly asks to invoke.
-
-Your first build shipped the structure. Now look at it the way a design lead reviews a junior's work — not asking "does this work?" but "would I put my name on this?"
 
 ## The Gap
 

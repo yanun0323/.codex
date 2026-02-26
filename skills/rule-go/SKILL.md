@@ -5,13 +5,6 @@ description: Rules for Go backend work - project identity, layering, error handl
 
 # Go Backend Rules
 
-## When to Use
-- Load this skill when working on the Go backend or reviewing Go server changes.
-
-If any rule conflicts with explicit user instructions, follow the user instructions.
-If any rule conflicts with the rule-global skill, follow the higher-priority rule defined there.
-
----
 
 ## 1) Project Identity (HARD)
 

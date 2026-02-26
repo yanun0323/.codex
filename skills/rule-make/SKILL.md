@@ -7,8 +7,6 @@ metadata:
 
 # Makefile Workflow
 
-## When to Use
-- Use this skill when the user asks to add or update a Makefile, make targets, or make-based shortcuts for running, building, or testing a project.
 
 ## Core Rules
 - Keep the Makefile minimal and aligned with existing project commands (scripts, package.json, Go tooling, etc.).

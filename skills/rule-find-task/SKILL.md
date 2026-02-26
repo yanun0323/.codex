@@ -5,9 +5,6 @@ description: Always load this skill for any task. Lightweight always-read rule t
 
 # Find Task Rule
 
-## When to Use
-- Always load this rule in this repository.
-- Use this rule as the workflow entry gate before loading `$rule-execute-task`.
 
 ## Goals
 - Keep token usage low by using a bash script for discovery and rebinding logic.

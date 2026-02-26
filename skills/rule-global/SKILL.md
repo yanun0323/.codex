@@ -5,8 +5,6 @@ description: Always load this skill for any task. Global rules for all coding ta
 
 # Global Rules for This Repository
 
-## When to Use
-- Always load this skill for any task in this repository.
 
 ## 0) Rule Priority (Highest to Lowest)
 

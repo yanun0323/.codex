@@ -5,9 +5,6 @@ description: Use this skill only when the user explicitly asks to invoke the `co
 
 # Git Commit Command
 
-## When to Use
-- Use this skill only when the user explicitly asks to invoke `$command-git-commit-complex`.
-- Use when the user wants to commit current uncommitted repository changes.
 
 ## Goals
 - Detect all local uncommitted changes in a Git repository.

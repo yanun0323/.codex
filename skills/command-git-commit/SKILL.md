@@ -1,82 +1,73 @@
 ---
 name: command-git-commit
-description: Use this skill only when the user explicitly asks to invoke the `command-git-commit` skill. Inspect uncommitted repository changes, summarize the pending commit, and run `git commit` safely.
+description: Use this skill only when the user explicitly asks to invoke `command-git-commit`, then review uncommitted changes, summarize the commit scope, and run `git commit` safely.
 ---
 
 # Git Commit Command
 
 ## When to Use
-- Use this skill only when the user explicitly asks to invoke `$command-git-commit`.
-- Use when the user wants to commit current uncommitted repository changes.
+- Invoke only when user explicitly asks for `command-git-commit`.
+- Use for committing current local uncommitted changes.
 
 ## Goals
-- Detect all local uncommitted changes in a Git repository.
-- Produce a concise, evidence-based summary of what will be committed.
-- Execute `git commit` with a clear commit message.
-- Return deterministic commit results (commit hash + summary).
+- Detect all local uncommitted Git changes.
+- Summarize exactly what will be committed.
+- Run `git commit` with a valid message.
+- Return deterministic result (`commit` hash + summary).
 
 ## Inputs
-- Optional explicit commit message from the user.
-- Optional scope override from the user (if unspecified, commit all tracked and untracked changes).
+- Optional user-provided commit message.
+- Optional path scope; default is all tracked + untracked (`git add -A`).
 
 ## Command Workflow
 1. Validate repository context.
    - Run `git rev-parse --is-inside-work-tree`.
-   - If not inside a Git repository, stop and report the reason.
+   - If false, stop and report.
 2. Check commit blockers.
    - Run `git diff --name-only --diff-filter=U`.
-   - If unresolved merge conflicts exist, stop and report conflicted paths.
+   - If conflicts exist, stop and list conflicted paths.
 3. Inspect pending changes.
    - Run `git status --porcelain=v1 --untracked-files=all`.
-   - If there are no changes, stop and report `nothing to commit`.
+   - If none, stop and report `nothing to commit`.
 4. Stage commit scope.
-   - Default behavior: run `git add -A`.
-   - If user provides a scoped commit request, stage only requested paths.
+   - Default: `git add -A`.
+   - If scoped request is given, stage only requested paths.
 5. Build pre-commit summary.
    - Run `git diff --cached --name-status`.
    - Run `git diff --cached --stat`.
-   - Summarize file-level impact and dominant change themes.
-6. Prepare commit message.
-   - If user provided a message, use it.
-   - Otherwise generate a concise message from staged changes:
-     - Subject line in imperative style, max 72 chars.
-     - Prefer Conventional Commit prefix (`feat:`, `fix:`, `chore:`, `refactor:`, `test:`, `docs:`) when clear.
-     - Optional body bullets for important change groups.
+   - Summarize file impact and dominant themes.
+6. Prepare commit message (mandatory rules below).
+   - Use user message if provided.
+   - Otherwise generate from staged diff:
+     - Imperative subject, <=72 chars.
+     - Prefer `feat|fix|chore|refactor|test|docs`, format `<type>(<scope>): <subject>` when clear.
+     - Add bullet body only if useful.
 
 ### Commit Message Rules (Mandatory)
-- Message precedence:
-  - User-provided message has highest priority.
-  - Do not rewrite user-provided message unless the user explicitly asks for reformatting.
-- Subject format:
-  - Preferred format is `<type>(<scope>): <subject>`.
-  - `<scope>` is optional. If omitted, use `<type>: <subject>`.
-  - Allowed `<type>` values: `feat`, `fix`, `chore`, `refactor`, `test`, `docs`.
-  - If `<type>` is ambiguous, default to `chore`.
-- Subject quality constraints:
-  - Use imperative mood.
-  - Keep subject length to 72 characters or fewer.
-  - Avoid trailing period (`.`) in the subject.
-- Body inclusion rules:
-  - Add body only when there are multiple change groups, notable risks, or migration notes.
-  - Keep body lines at 72 characters or fewer.
-  - Use concise bullet points for grouped changes when body is present.
-- Language and banned terms:
-  - Commit message text must be English.
-  - Avoid low-information subjects such as `update`, `misc`, `wip`, or `tmp`.
+- Priority: use user-provided message as-is unless reformat is explicitly requested.
+- Subject:
+  - Preferred `<type>(<scope>): <subject>`; fallback `<type>: <subject>`.
+  - Allowed types: `feat`, `fix`, `chore`, `refactor`, `test`, `docs`.
+  - If ambiguous, use `chore`.
+  - Must be imperative, English, <=72 chars, no trailing period.
+- Body:
+  - Add only for multiple change groups, risks, or migration notes.
+  - Use concise bullets, lines <=72 chars.
+- Avoid low-value subjects: `update`, `misc`, `wip`, `tmp`.
 7. Execute commit.
-   - Run `git commit -m "<subject>"` when no body is needed.
-   - Run `git commit -m "<subject>" -m "<body>"` when body exists.
+   - `git commit -m "<subject>"`
+   - `git commit -m "<subject>" -m "<body>"` when body exists.
 8. Report results.
    - Run `git show --stat --summary --oneline -1`.
-   - Return commit hash, subject, files changed, and insertion/deletion summary.
+   - Return commit hash, subject, files changed, and insert/delete summary.
 
 ## Constraints
-- Do not run `git push`, `git commit --amend`, `git rebase`, or history-rewrite commands unless explicitly requested.
-- Do not fabricate summary details; summaries must come from Git command output.
-- If commit hooks fail, report hook output and stop without forced bypass.
-- If generated summary could expose secrets, redact sensitive values and mention redaction.
+- Do not run `git push`, `git commit --amend`, `git rebase`, or history-rewrite commands unless requested.
+- Do not invent summaries; derive from Git output.
+- If hooks fail, report hook output and stop (no `--no-verify`).
+- If output could expose secrets, redact and mention it.
 
 ## Output Expectations
-- Always show a short pre-commit summary before presenting commit success output.
-- Include exact committed file list and diff stat in the final response.
-- If no commit is created, clearly state why and what the user can do next.
+- Always show a short pre-commit summary before commit success output.
+- Include exact committed file list and diff stat.
+- If no commit is created, clearly state reason and next action.

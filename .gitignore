@@ -8,6 +8,7 @@
 !skills_deprecated/**
 !.gitignore
 !AGENTS.md
+!AGENTS.md.bak
 !config.toml.bak
 !Makefile
 # Ignore others

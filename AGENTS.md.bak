@@ -1,444 +1,134 @@
-🔁 CODEX Autonomous Multi-Agent Engineering Loop (Generic Template)
+# Global Rules for This Repository
 
-You are running a Multi-Agent Orchestrated Hardening + Delivery Loop.
 
-🎯 Mission
+## 0) Rule Priority (Highest to Lowest)
 
-Build or significantly improve a production-grade feature/module in this repository.
+1. Explicit user instructions in the current request
+2. Security rules (in this skill + relevant domain skills)
+3. Domain skills, when applicable:
+  - rule-go
+  - rule-solid
+  - rule-ui
+  - rule-infra
+  - rule-js-ts-runtime
+  - rule-make
+4. This skill
+5. Other skills
+6. Existing repository conventions (when not in conflict)
 
-The result must be:
+When rules conflict, follow the higher priority rule and explain the conflict briefly.
 
-Actually usable now (not theoretical)
+---
 
-Well-tested
+## 1) Language Policy (STRICT)
 
-Clearly documented
+### 1.1 Chat Responses
+- Always respond in Traditional Chinese.
 
-Explicit about what is supported vs not supported
+### 1.2 Repository Artifacts
+Repository artifacts MUST be written in English, including:
+- Source code
+- Code comments
+- Identifiers, API field names, config keys, env var names
+- File/folder names
+- Commit messages, PR titles/descriptions (unless user explicitly asks otherwise)
 
-Delivered as a concise implementation report
+### 1.3 User-Facing Product Copy
+- User-facing UI copy MUST be Traditional Chinese (zh-TW).
+- Copy keys MUST be English.
 
-📁 Repository Context
+NEVER translate identifiers/config keys/code into Chinese.
 
-Repository path: <REPO_PATH>
+---
 
-⚙️ Execution Mode
+## 2) Default Agent Workflow (Recommended)
 
-Fully autonomous.
+Use separated roles to avoid self-justification:
+- Architect: plan + risk + file list
+- Builder: implement incrementally
+- Critic: review strictly, list issues, no code changes
+- Builder: fix issues + finalize
 
-Do not stop at planning.
+---
 
-Complete the full loop:
+## 3) Scope and Change Policy (STRICT)
 
-research → design → implement → review → validate → report
+- Prefer minimal, localized changes.
+- Do not perform drive-by refactors.
+- Do not rename exported/public APIs unless explicitly requested.
+- Do not introduce new dependencies without explicit approval.
+- Do not change build tooling, repository structure, or architectural patterns unless instructed.
+- If a request implies large changes, propose a staged plan and execute one stage only.
 
+---
 
-No partial delivery.
+## 4) Ambiguity Handling (ASSUME-THEN-CONFIRM)
 
-🗣️ Reporting Mode (MANDATORY)
+Default behavior is to proceed safely, not to stall.
 
-Do NOT create documentation files or folders for this loop.
+If requirements are unclear:
+- List up to 3 explicit assumptions.
+- Proceed with the safest assumption consistent with the existing codebase patterns.
+- Mark assumptions clearly in the response and (if applicable) in TASK.md/SPEC.md.
 
-Any artifact that would normally be written to markdown files must be consolidated into concise response text.
+STOP and ASK only when a wrong decision could cause:
+- security/auth boundary issues
+- money/balance/order correctness issues
+- data loss or irreversible migrations
+- privacy/PII leakage
 
-Status must be reported in structured response sections at each phase gate.
+Never invent business logic.
 
-🚧 Critical Scope Guard
+---
 
-Do NOT expand unrelated core architecture unless strictly required.
+## 5) Verification Policy (RISK-BASED)
 
-Do NOT introduce breaking public API changes unless justified and documented.
+### 5.1 Risk Levels
+- Low risk: docs/copy/styling, refactor with no behavior change
+- Medium risk: new feature, non-trivial logic, API behavior change
+- High risk: auth/permissions, money/balances/orders, concurrency, migrations, data-loss risk
 
-Do NOT make speculative claims.
+### 5.2 Requirements
+- Low risk:
+  - Tests optional
+  - Provide manual verification checklist
 
-No fake compatibility claims.
+- Medium risk:
+  - Add minimal tests following existing patterns (unless user forbids tests)
+  - Provide commands to run (or CI jobs) and expected outcomes
 
-If external libraries are used for parity/testing, they must remain dev-only unless explicitly required.
+- High risk:
+  - Tests REQUIRED (unless user explicitly forbids)
+  - Provide exact verification commands and a rollback strategy (if applicable)
 
-📚 SOURCE OF TRUTH (MANDATORY)
+If execution is not possible in the current environment, still provide:
+- the commands to run
+- the expected output / success criteria
+- key assumptions about runtime behavior
 
-Identify and freeze authoritative references:
+---
 
-Examples:
+## 6) Security Baseline (HARD)
 
-Official documentation
+- Never hardcode secrets or credentials.
+- Never log secrets/tokens/PII (unless explicitly approved).
+- User-facing errors must not expose internal details (stack traces, SQL, hostnames).
+- Frontend must never receive or store secrets.
+- Do not implement custom cryptography. Use established libraries/patterns.
+- If security requirements are ambiguous, STOP and ASK.
 
-Upstream repositories
+---
 
-Specs
+## 7) Output Format (When Code Changes Are Involved)
 
-API contracts
+When proposing or delivering code changes, include:
 
-RFCs
+1) Summary (what changed and why)
+2) Files touched (bulleted list)
+3) Risks / assumptions (explicit)
+4) Verification plan:
+   - commands to run (tests/linters/build)
+   - manual verification checklist (if needed)
+5) Migration/rollout notes (if applicable)
 
-Standards
-
-Rules:
-
-Every compatibility or behavioral claim must cite a concrete source.
-
-Every confirmed gap must cite:
-
-External reference
-
-Local code location
-
-If no solid citation is available → mark as rejected candidate.
-
-No assumptions.
-
-🧠 AGENT ORCHESTRATION TOPOLOGY
-1️⃣ Coordinator
-
-One master coordinator agent controls:
-
-Phase transitions
-
-Gate checks
-
-Quality enforcement
-
-Final integration
-
-2️⃣ Dual Audit Cells (Per Subsystem)
-
-For EACH subsystem, spawn exactly:
-
-auditA-<subsystem>
-
-auditB-<subsystem>
-
-They work independently first, then reconcile.
-
-Example subsystems (customize per project):
-
-Public API surface
-
-Lifecycle / execution flow
-
-Core logic correctness
-
-State management
-
-Error handling
-
-Performance characteristics
-
-External integrations
-
-Test coverage quality
-
-DX / Type safety
-
-Documentation clarity
-
-🧩 Negotiation Protocol (Per Subsystem)
-
-Round 1
-
-Each auditor submits candidate issues with evidence.
-
-Round 2
-
-Each auditor challenges the other’s evidence.
-
-Round 3
-
-Produce a SINGLE shared decision set:
-
-- Confirmed issues (both agree)
-- Rejected candidates (weak evidence / out-of-scope / non-deterministic)
-- Consensus achieved: YES/NO
-
-
-Only mutually confirmed issues enter the master fix list.
-
-📄 Mandatory Output Format (Per Subsystem)
-
-For each confirmed issue:
-
-severity: critical / high / medium / low
-
-exact evidence:
-
-external reference
-
-repo file + symbol (+ line if stable)
-
-minimal deterministic repro
-
-violated invariant (must reference invariant ID)
-
-fix direction
-
-required regression tests
-
-For rejected candidates:
-
-candidate
-
-rejection reason
-
-Must include:
-
-Consensus achieved: YES/NO
-
-📌 PHASED DELIVERY PLAN
-Phase 0 — Baseline Freeze
-
-Detect current state of feature/module.
-
-Freeze authoritative references.
-
-Report baseline in response text with:
-
-Current feature/module baseline
-
-Frozen authoritative references
-
-Known constraints and non-goals
-
-Phase 1 — Dual-Agent Audit
-
-Run all subsystem audits.
-
-Report in response text:
-
-Per-subsystem audit summaries
-
-Master confirmed issue list
-
-
-No coding yet.
-
-Phase 2 — Design Freeze
-
-Report in response text:
-
-Design plan
-
-Parity/capability matrix
-
-Matrix statuses must be explicit:
-
-Supported
-
-Supported with documented divergence
-
-Planned
-
-Out-of-scope
-
-No ambiguous states allowed.
-
-Phase 3 — Implementation Clusters
-
-Group confirmed issues into clusters.
-
-Spawn exactly ONE fixer agent per cluster.
-
-Fixers must:
-
-Stay in owned files
-
-Avoid unnecessary refactors
-
-Preserve public API unless documented
-
-Add regression tests for every fix
-
-Add property/fuzz tests when relevant
-
-Report:
-
-Changed files
-
-Commands executed
-
-Before/after behavior
-
-Phase 4 — Independent Review Gate
-
-Spawn exactly 2 reviewers per cluster.
-
-Reviewer output:
-
-PASS / FAIL
-Exact file references
-Invariant violations (if any)
-
-
-If any FAIL:
-
-Spawn follow-up fixer
-
-Re-run both reviewers
-
-Repeat until both PASS
-
-No cluster merges without dual PASS.
-
-Phase 5 — Integration + Validation
-
-Run full validation:
-
-lint
-
-typecheck
-
-build
-
-unit tests
-
-integration tests
-
-e2e tests (if present)
-
-If failures:
-
-Triage
-
-Fix
-
-Re-run
-
-Repeat until fully green
-
-If 3 cycles fail → produce triage report and stop.
-
-Phase 6 — Missing Capabilities Report (MANDATORY)
-
-Report missing capabilities in response text.
-
-
-For each item include:
-
-capability name
-
-why it matters
-
-evidence (external + local)
-
-current behavior
-
-desired behavior
-
-implementation direction
-
-tests to add
-
-priority (P0 / P1 / P2)
-
-scope:
-
-IN-SCOPE
-
-OUT-OF-SCOPE
-
-Include summary table:
-
-total missing capabilities
-
-by priority
-
-in-scope vs out-of-scope
-
-Convert OUT-OF-SCOPE into GitHub issues with:
-
-title
-
-labels
-
-acceptance criteria
-
-Phase 7 — Real Usable Example
-
-Deliver at least one runnable example demonstrating:
-
-Core lifecycle works
-
-Updates work
-
-Error handling is safe
-
-Clean exit / cleanup
-
-No crashes
-
-Proof of usability > theoretical claims.
-
-📣 MANDATORY RESPONSE REPORTING FORMAT
-
-At minimum, include these response sections:
-
-Baseline + Sources
-
-Subsystem Audit Consensus
-
-Master Confirmed Issues
-
-Design Plan
-
-Parity/Capability Matrix
-
-Implementation Cluster Progress
-
-Review Gate History
-
-Validation Commands + Results
-
-Missing Capabilities Summary
-
-Usable Example Evidence
-
-🚫 QUALITY GATES
-
-Reject any claim if:
-
-No deterministic repro
-
-No code reference
-
-No authoritative citation
-
-Based on assumptions
-
-Requires unrelated architectural expansion
-
-Prefer:
-
-Deterministic behavior
-
-Explicit divergence over fake parity
-
-Maintainable architecture
-
-Clear invariants
-
-📝 FINAL DELIVERY REQUIREMENTS
-
-Final response must include:
-
-Audit consensus summaries
-
-Master confirmed issue list
-
-Fix clusters implemented
-
-Reviewer PASS/FAIL history
-
-Validation commands + results
-
-Tests added
-
-Remaining risks
-
-Missing capabilities summary
-
-Matrix + baseline summary
-
-Concise completion report
-
-What is usable now
-
-What remains intentionally unsupported
+Avoid long textbook explanations unless requested.

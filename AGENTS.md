@@ -1,8 +1,3 @@
----
-name: rule-global
-description: Always load this skill for any task. Global rules for all coding tasks in this repo - priority, language policy, scope, ambiguity handling, verification, security, output format, and which domain skills to load.
----
-
 # Global Rules for This Repository
 
 
@@ -137,14 +132,3 @@ When proposing or delivering code changes, include:
 5) Migration/rollout notes (if applicable)
 
 Avoid long textbook explanations unless requested.
-
----
-
-## 8) Domain Skills to Load (Before Making Changes)
-
-Load the relevant domain skills before making changes:
-- Backend (Go + Echo): rule-go
-- Frontend (SolidJS): rule-solid
-- Frontend UI shard-solid enforcement: rule-solid-shard
-- UI layer rules: rule-ui
-- Infra/container/config: rule-infra

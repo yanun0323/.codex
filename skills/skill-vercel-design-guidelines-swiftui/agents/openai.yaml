@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill - Vercel Design Guidelines SwiftUI"
+  short_description: "Apply Vercel Design Guidelines in SwiftUI implementation and review."
+  icon_small: "./assets/skill-small.svg"

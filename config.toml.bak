@@ -12,11 +12,9 @@ approval_policy = "never"
 sandbox_mode = "workspace-write"
 personality = "pragmatic"
 
-[features]
-multi_agent = true
-
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
+enabled = false
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"

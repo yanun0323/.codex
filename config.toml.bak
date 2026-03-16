@@ -27,17 +27,5 @@ enabled = false
 path = "~/.codex/skills/.system/skill-installer/SKILL.md"
 enabled = false
 
-[[skills.config]]
-path = "~/.codex/skills/rule-find-task/SKILL.md"
-enabled = false
-
-[[skills.config]]
-path = "~/.codex/skills/rule-execute-task/SKILL.md"
-enabled = false
-
-[[skills.config]]
-path = "~/.codex/skills/skill-webapp-testing/SKILL.md"
-enabled = false
-
 [tui]
 status_line = [ "model-with-reasoning", "git-branch", "context-used", "five-hour-limit", "weekly-limit" ]

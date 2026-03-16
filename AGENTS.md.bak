@@ -7,11 +7,11 @@
 2. Security rules (in this skill + relevant domain skills)
 3. Domain skills, when applicable:
   - rule-go
-  - rule-solid
-  - rule-ui
   - rule-infra
   - rule-js-ts-runtime
   - rule-make
+  - rule-solid
+  - rule-ui
 4. This skill
 5. Other skills
 6. Existing repository conventions (when not in conflict)

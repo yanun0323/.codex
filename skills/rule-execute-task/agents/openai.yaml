@@ -1,4 +1,0 @@
-interface:
-  display_name: "Rule - Execute Task"
-  short_description: "Run workflow after rule-find-task resolves PR"
-  icon_small: "./assets/rule-small.svg"

@@ -1,20 +1,23 @@
-model = "gpt-5.3-codex"
+model = "gpt-5.4"
 review_model = "gpt-5.3-codex"
 model_provider = "openai"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 model_reasoning_summary = "auto"
-# Text verbosity for GPT-5 family (Responses API): low | medium | high (default: medium)
 model_verbosity = "medium"
 model_supports_reasoning_summaries = true
 web_search = "live"
-notify = ["notify-send", "Codex"]
+notify = [ "notify-send", "Codex" ]
 approval_policy = "never"
 sandbox_mode = "workspace-write"
 personality = "pragmatic"
 
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
-enabled = false
+enabled = true
+
+[mcp_servers.pencil]
+command = "/Users/yanunyang/.vscode/extensions/highagency.pencildev-0.6.32/out/mcp-server-darwin-arm64"
+args = [ "--app", "visual_studio_code" ]
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"
@@ -37,4 +40,4 @@ path = "~/.codex/skills/skill-webapp-testing/SKILL.md"
 enabled = false
 
 [tui]
-status_line = ["model-with-reasoning", "git-branch", "context-used", "five-hour-limit", "weekly-limit"]
+status_line = [ "model-with-reasoning", "git-branch", "context-used", "five-hour-limit", "weekly-limit" ]

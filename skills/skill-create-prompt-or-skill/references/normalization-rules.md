@@ -1,4 +1,4 @@
-# Skill Normalization Rules
+# Prompt and Skill Normalization Rules
 
 Apply these rules to all skill folders discovered by scanning `skills/**/SKILL.md`.
 
@@ -11,14 +11,11 @@ Apply these rules to all skill folders discovered by scanning `skills/**/SKILL.m
   - Set `interface.display_name` to `Rule - Xxx Xxx`
   - Set `interface.icon_small` to `./assets/rule-small.svg`
 
-- Folder names starting with `command-`:
-  - Keep (or normalize to) `command-` prefix
-  - Rename `SKILL.md` frontmatter `name` to the folder name
-  - Ensure `assets/command-small.svg` exists
-  - Set `interface.display_name` to `Command - Xxx Xxx`
-  - Set `interface.icon_small` to `./assets/command-small.svg`
-  - Ensure `SKILL.md` frontmatter `description` contains:
-    - `Use this skill only when the user explicitly asks to invoke`
+- Prompt files live under `prompts/`:
+  - Use plain names such as `review.md` or `plan-task.md`
+  - Do not use the `command-` prefix
+  - Frontmatter must contain `description` only
+  - Body should be concise and task-oriented in OpenAI Codex prompt format
 
 - Folder names starting with `rule-`:
   - Keep `rule-` prefix
@@ -40,11 +37,19 @@ Apply these rules to all skill folders discovered by scanning `skills/**/SKILL.m
 - Update only the required fields when normalizing:
   - `interface.display_name`
   - `interface.icon_small`
+- Prompts do not use `agents/openai.yaml` or `assets/` icons.
+
+## Legacy Command Skills
+
+- Existing `command-*` skill folders are legacy.
+- Do not create new `command-*` skills.
+- When a request uses command naming, convert it to a prompt file in `prompts/` and remove the prefix.
+- Catalog normalization may skip legacy command folders instead of rewriting them as skills.
 
 ## Validation
 
 Use check mode to validate without edits:
 
 ```bash
-ruby skills/skill-skill-creator/scripts/normalize_skill_catalog.rb --check
+ruby skills/skill-create-prompt-or-skill/scripts/normalize_skill_catalog.rb --check
 ```

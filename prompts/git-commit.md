@@ -1,24 +1,23 @@
 ---
-description: Analyze local changes, split them into 1-5 coherent commits, and execute the split safely.
+description: Inspect local changes, summarize the commit scope, and create one safe non-interactive git commit.
 ---
 
-Create a non-interactive multi-commit plan and execute it safely.
-
-Goals:
-- Group changes by business intent and dependency order.
-- Produce between 1 and 5 commits.
-- Keep every commit independently explainable and reviewable.
+Create exactly one safe git commit for the current workspace.
 
 Hard constraints:
-- No interactive staging.
-- No amend, rebase, squash, push, or hook bypass.
-- If a deterministic split is not possible, merge overlapping work into fewer commits and explain why.
+- Work non-interactively.
+- Do not amend, rebase, force, push, or bypass hooks.
+- Stop if there are merge conflicts or nothing to commit.
+- Use a user-provided commit message as-is unless reformatting was explicitly requested.
 
 Workflow:
-1. Verify git context and check for merge conflicts.
-2. Inspect all pending changes with file-level and diff-level evidence.
-3. Propose commit groups with intent, file list, and draft message.
-4. Order groups by dependency: prerequisites before consumers.
-5. Stage, validate, and commit each group separately.
-6. After each commit, capture the commit hash and diff stat.
-7. Return the executed plan, not just the proposal.
+1. Verify the current directory is inside a git repository.
+2. Check for unresolved conflicts.
+3. Inspect unstaged, staged, and untracked changes.
+4. Stage the intended scope.
+5. Summarize what will be committed from git output, not assumptions.
+6. Create one English commit message with an imperative subject, ideally Conventional Commit style.
+7. Run `git commit`.
+8. Report the commit hash, subject, file list, and diff stat.
+
+If hooks fail, stop and report the hook output without using `--no-verify`.

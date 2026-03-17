@@ -18,3 +18,4 @@
 *.DS_STORE
 *.vscode
 skills/.system/
+__pycache__

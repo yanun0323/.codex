@@ -13,11 +13,7 @@ personality = "pragmatic"
 
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
-enabled = true
-
-[mcp_servers.pencil]
-command = "/Users/yanunyang/.vscode/extensions/highagency.pencildev-0.6.32/out/mcp-server-darwin-arm64"
-args = [ "--app", "visual_studio_code" ]
+enabled = false
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"
@@ -27,5 +23,12 @@ enabled = false
 path = "~/.codex/skills/.system/skill-installer/SKILL.md"
 enabled = false
 
+[[skills.config]]
+path = "~/.codex/skills/skill-gemini-design/SKILL.md"
+enabled = false
+
 [tui]
 status_line = [ "model-with-reasoning", "git-branch", "context-used", "five-hour-limit", "weekly-limit" ]
+
+[features]
+multi_agent = false

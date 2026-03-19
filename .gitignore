@@ -4,6 +4,8 @@
 # Allow these directories/files
 !prompts
 !prompts/**
+!agents
+!agents/**
 !skills
 !skills/**
 !skills_deprecated

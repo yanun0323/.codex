@@ -1,5 +1,0 @@
-interface:
-  display_name: "Skill - Create Prompt Or Skill"
-  short_description: "Create and normalize prompts, rules, and skills"
-  icon_small: "./assets/skill-small.svg"
-  default_prompt: "Use $skill-create-prompt-or-skill to create or update prompts, rules, and skills with normalized naming and metadata."

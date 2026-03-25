@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Initializer - Creates a new Prompt/Rule/Skill from template.
+Skill Initializer - Creates a new Command/Rule/Skill from template.
 
 Usage:
-    init_skill.py <name> --kind <prompt|rule|skill> --path <path>
+    init_skill.py <name> --kind <command|rule|skill> --path <path>
       [--resources scripts,references,assets] [--examples] [--interface key=value]
 """
 
@@ -15,15 +15,15 @@ from pathlib import Path
 
 from generate_openai_yaml import write_openai_yaml
 
-MAX_ITEM_NAME_LENGTH = 64
+MAX_SKILL_NAME_LENGTH = 64
 ALLOWED_RESOURCES = {"scripts", "references", "assets"}
 KNOWN_PREFIXES = ("command-", "rule-", "skill-", "agents-")
 
 KIND_CONFIG = {
-    "prompt": {
-        "prefix": "",
-        "label": "Prompt",
-        "icon": None,
+    "command": {
+        "prefix": "command-",
+        "label": "Command",
+        "icon": "command-small.svg",
     },
     "rule": {
         "prefix": "rule-",
@@ -40,6 +40,10 @@ KIND_CONFIG = {
 DESCRIPTION_TEMPLATE = (
     "TODO: Complete and informative explanation of what this item does and when to use it. "
     "Include specific trigger scenarios, file types, or tasks."
+)
+
+COMMAND_TRIGGER_SENTENCE = (
+    "Use this skill only when the user explicitly asks to invoke the `{skill_name}` skill."
 )
 
 SKILL_TEMPLATE = """---
@@ -103,22 +107,6 @@ Files not intended to be loaded into context, but rather used within the output 
 **Not every skill requires all three types of resources.**
 """
 
-PROMPT_TEMPLATE = """---
-description: TODO: Describe what this prompt does and when to use it.
----
-
-State the task directly and keep the prompt concise.
-
-Goals:
-- TODO
-
-Constraints:
-- TODO
-
-Workflow:
-1. TODO
-"""
-
 EXAMPLE_SCRIPT = '''#!/usr/bin/env python3
 """
 Example helper script for {skill_name}
@@ -158,7 +146,7 @@ Replace with actual asset files (templates, images, fonts, etc.) or delete if no
 
 
 def normalize_skill_name(skill_name):
-    """Normalize a name to lowercase hyphen-case."""
+    """Normalize a skill name to lowercase hyphen-case."""
     normalized = skill_name.strip().lower()
     normalized = re.sub(r"[^a-z0-9]+", "-", normalized)
     normalized = normalized.strip("-")
@@ -179,8 +167,6 @@ def enforce_kind_prefix(name, kind):
     stem = normalize_skill_name(stem)
     if not stem:
         return None
-    if kind == "prompt":
-        return stem
     return f"{config['prefix']}{stem}"
 
 
@@ -235,7 +221,9 @@ def create_resource_dirs(skill_dir, skill_name, skill_title, resources, include_
                 print("[OK] Created assets/")
 
 
-def build_description_text(_kind, _skill_name):
+def build_description_text(kind, skill_name):
+    if kind == "command":
+        return f"{DESCRIPTION_TEMPLATE} {COMMAND_TRIGGER_SENTENCE.format(skill_name=skill_name)}"
     return DESCRIPTION_TEMPLATE
 
 
@@ -248,9 +236,6 @@ def display_name_for_kind(kind, skill_name):
 
 def ensure_kind_icon(skill_dir, kind):
     config = KIND_CONFIG[kind]
-    if not config["icon"]:
-        return True
-
     tool_root = Path(__file__).resolve().parents[1]
     src = tool_root / "references" / "icons" / config["icon"]
     if not src.exists():
@@ -266,41 +251,12 @@ def ensure_kind_icon(skill_dir, kind):
 
 
 def build_interface_overrides(kind, skill_name, raw_interface_overrides):
-    if kind == "prompt":
-        return []
-
     config = KIND_CONFIG[kind]
     defaults = [
         f"display_name={display_name_for_kind(kind, skill_name)}",
         f"icon_small=./assets/{config['icon']}",
     ]
     return defaults + list(raw_interface_overrides)
-
-
-def init_prompt(prompt_name, path):
-    output_path = Path(path).resolve() / f"{prompt_name}.md"
-
-    if output_path.exists():
-        print(f"[ERROR] Prompt file already exists: {output_path}")
-        return None
-
-    try:
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(PROMPT_TEMPLATE)
-        print(f"[OK] Created prompt file: {output_path}")
-    except Exception as exc:  # noqa: BLE001
-        print(f"[ERROR] Error creating prompt file: {exc}")
-        return None
-
-    print(f"\n[OK] Prompt '{prompt_name}' initialized successfully at {output_path}")
-    print("\nNext steps:")
-    print("1. Replace TODO items with a concise Codex prompt")
-    print("2. Keep frontmatter to description only")
-    print(
-        "3. Run: python3 skills/skill-create-prompt-or-skill/scripts/quick_validate.py "
-        f"{output_path}"
-    )
-    return output_path
 
 
 def init_skill(skill_name, kind, path, resources, include_examples, interface_overrides):
@@ -356,7 +312,7 @@ def init_skill(skill_name, kind, path, resources, include_examples, interface_ov
     print("1. Edit SKILL.md to complete TODO items and finalize trigger-based description")
     print("2. Confirm assets/ and agents/openai.yaml match the target type")
     print(
-        "3. Run: python3 skills/skill-create-prompt-or-skill/scripts/quick_validate.py "
+        "3. Run: python3 skills/skill-create-skill/scripts/quick_validate.py "
         f"{skill_dir}"
     )
 
@@ -365,20 +321,16 @@ def init_skill(skill_name, kind, path, resources, include_examples, interface_ov
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Create a new prompt file or rule/skill directory from template.",
+        description="Create a new command/rule/skill directory with a SKILL.md template.",
     )
-    parser.add_argument("skill_name", help="Name to normalize")
+    parser.add_argument("skill_name", help="Name to normalize and prefix")
     parser.add_argument(
         "--kind",
         choices=sorted(KIND_CONFIG.keys()),
         default="skill",
-        help="Target type and naming rule",
+        help="Target type and prefix rule",
     )
-    parser.add_argument(
-        "--path",
-        required=True,
-        help="Output directory for the prompt or skill",
-    )
+    parser.add_argument("--path", required=True, help="Output directory for the skill")
     parser.add_argument(
         "--resources",
         default="",
@@ -400,45 +352,34 @@ def main():
     raw_name = args.skill_name
     normalized_name = normalize_skill_name(raw_name)
     if not normalized_name:
-        print("[ERROR] Name must include at least one letter or digit.")
+        print("[ERROR] Skill name must include at least one letter or digit.")
         sys.exit(1)
 
     skill_name = enforce_kind_prefix(normalized_name, args.kind)
     if not skill_name:
-        print("[ERROR] Unable to normalize name after prefix enforcement.")
+        print("[ERROR] Unable to normalize skill name after prefix enforcement.")
         sys.exit(1)
 
-    if len(skill_name) > MAX_ITEM_NAME_LENGTH:
+    if len(skill_name) > MAX_SKILL_NAME_LENGTH:
         print(
-            f"[ERROR] Name '{skill_name}' is too long ({len(skill_name)} characters). "
-            f"Maximum is {MAX_ITEM_NAME_LENGTH} characters."
+            f"[ERROR] Skill name '{skill_name}' is too long ({len(skill_name)} characters). "
+            f"Maximum is {MAX_SKILL_NAME_LENGTH} characters."
         )
         sys.exit(1)
 
     if skill_name != raw_name:
-        print(f"Note: Normalized name from '{raw_name}' to '{skill_name}'.")
+        print(f"Note: Normalized skill name from '{raw_name}' to '{skill_name}'.")
 
     resources = parse_resources(args.resources)
-    if args.kind == "prompt" and resources:
-        print("[ERROR] Prompts do not use resource directories.")
-        sys.exit(1)
     if args.examples and not resources:
         print("[ERROR] --examples requires --resources to be set.")
-        sys.exit(1)
-    if args.kind == "prompt" and args.examples:
-        print("[ERROR] Prompts do not support --examples.")
-        sys.exit(1)
-    if args.kind == "prompt" and args.interface:
-        print("[ERROR] Prompts do not use --interface overrides.")
         sys.exit(1)
 
     interface_overrides = build_interface_overrides(args.kind, skill_name, args.interface)
 
     print(f"Initializing {KIND_CONFIG[args.kind]['label']}: {skill_name}")
     print(f"   Location: {args.path}")
-    if args.kind == "prompt":
-        print("   Resources: n/a")
-    elif resources:
+    if resources:
         print(f"   Resources: {', '.join(resources)}")
         if args.examples:
             print("   Examples: enabled")
@@ -446,20 +387,14 @@ def main():
         print("   Resources: none (create as needed)")
     print()
 
-    if args.kind == "prompt":
-        result = init_prompt(
-            prompt_name=skill_name,
-            path=args.path,
-        )
-    else:
-        result = init_skill(
-            skill_name=skill_name,
-            kind=args.kind,
-            path=args.path,
-            resources=resources,
-            include_examples=args.examples,
-            interface_overrides=interface_overrides,
-        )
+    result = init_skill(
+        skill_name=skill_name,
+        kind=args.kind,
+        path=args.path,
+        resources=resources,
+        include_examples=args.examples,
+        interface_overrides=interface_overrides,
+    )
 
     sys.exit(0 if result else 1)
 

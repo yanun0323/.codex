@@ -27,6 +27,8 @@ OptionParser.new do |opts|
   end
 end.parse!
 
+COMMAND_TRIGGER_PREFIX = 'Use this skill only when the user explicitly asks to invoke'
+
 def skill_dirs(skills_root)
   Dir.glob(File.join(skills_root, '**', 'SKILL.md'), File::FNM_DOTMATCH)
      .sort
@@ -44,7 +46,7 @@ def classify_basename(base)
   end
 
   if base.start_with?('command-')
-    return { skip: true, reason: 'legacy command skill folder', prompt_name: base.delete_prefix('command-') }
+    return { target_base: base, label: 'Command', icon: 'command-small.svg', stem: base.delete_prefix('command-') }
   end
 
   if base.start_with?('skill-')
@@ -57,6 +59,11 @@ end
 
 def titleize(stem)
   stem.split('-').reject(&:empty?).map { |token| token[0].upcase + token[1..].downcase }.join(' ')
+end
+
+def quote_yaml_string(value)
+  escaped = value.to_s.gsub('\\', '\\\\').gsub('"', '\\"')
+  "\"#{escaped}\""
 end
 
 def frontmatter_bounds(lines)
@@ -87,7 +94,7 @@ rescue StandardError => e
   [nil, nil, "invalid frontmatter YAML: #{e.message}"]
 end
 
-def update_frontmatter(skill_md_path, expected_name, check)
+def update_frontmatter(skill_md_path, expected_name, command_required_phrase, check)
   content = File.read(skill_md_path)
   lines = content.lines
 
@@ -101,6 +108,19 @@ def update_frontmatter(skill_md_path, expected_name, check)
   if frontmatter['name'] != expected_name
     frontmatter['name'] = expected_name
     changed = true
+  end
+
+  if command_required_phrase
+    description = frontmatter['description'].to_s.strip
+    unless description.include?(command_required_phrase)
+      description = if description.empty?
+                      command_required_phrase
+                    else
+                      "#{description} #{command_required_phrase}"
+                    end
+      frontmatter['description'] = description
+      changed = true
+    end
   end
 
   if changed && !check
@@ -163,10 +183,11 @@ icons_dir = options[:icons_dir]
 
 required_icons = {
   'rule-small.svg' => File.join(icons_dir, 'rule-small.svg'),
+  'command-small.svg' => File.join(icons_dir, 'command-small.svg'),
   'skill-small.svg' => File.join(icons_dir, 'skill-small.svg')
 }
 
-required_icons.each_value do |path|
+required_icons.each do |_name, path|
   errors << "Missing source icon: #{path}" unless File.exist?(path)
 end
 
@@ -175,14 +196,10 @@ if errors.any?
   exit 1
 end
 
+# Step 1: rename directories if needed
 skill_dirs(root).each do |dir|
   base = File.basename(dir)
   info = classify_basename(base)
-  if info[:skip]
-    changes << "skip #{dir} (#{info[:reason]}; migrate to prompts/#{info[:prompt_name]}.md)"
-    next
-  end
-
   target = info[:target_base]
   next if base == target
 
@@ -196,10 +213,10 @@ skill_dirs(root).each do |dir|
   FileUtils.mv(dir, new_dir) unless options[:check]
 end
 
+# Step 2: normalize files after rename
 skill_dirs(root).each do |dir|
   base = File.basename(dir)
   info = classify_basename(base)
-  next if info[:skip]
 
   expected_name = info[:target_base]
   label = info[:label]
@@ -207,8 +224,14 @@ skill_dirs(root).each do |dir|
   display_name = "#{label} - #{titleize(info[:stem])}"
   icon_small = "./assets/#{icon_file}"
 
+  command_description_phrase = nil
+  if label == 'Command'
+    command_description_phrase =
+      "#{COMMAND_TRIGGER_PREFIX} the `#{expected_name}` skill."
+  end
+
   skill_md = File.join(dir, 'SKILL.md')
-  err, changed = update_frontmatter(skill_md, expected_name, options[:check])
+  err, changed = update_frontmatter(skill_md, expected_name, command_description_phrase, options[:check])
   if err
     errors << "#{skill_md}: #{err}"
   elsif changed
@@ -233,23 +256,30 @@ skill_dirs(root).each do |dir|
     changes << "create openai #{openai_path}"
   end
 
-  next unless options[:check]
+  if options[:check]
+    yaml = load_yaml(openai_path)
+    interface = yaml['interface'].is_a?(Hash) ? yaml['interface'] : {}
+    if interface['display_name'] != display_name
+      errors << "display_name mismatch in #{openai_path}: expected '#{display_name}'"
+    end
+    if interface['icon_small'] != icon_small
+      errors << "icon_small mismatch in #{openai_path}: expected '#{icon_small}'"
+    end
 
-  yaml = load_yaml(openai_path)
-  interface = yaml['interface'].is_a?(Hash) ? yaml['interface'] : {}
-  if interface['display_name'] != display_name
-    errors << "display_name mismatch in #{openai_path}: expected '#{display_name}'"
-  end
-  if interface['icon_small'] != icon_small
-    errors << "icon_small mismatch in #{openai_path}: expected '#{icon_small}'"
-  end
+    unless File.exist?(icon_dst)
+      errors << "missing icon asset #{icon_dst}"
+    end
 
-  unless File.exist?(icon_dst)
-    errors << "missing icon asset #{icon_dst}"
+    command_desc_err, _changed = update_frontmatter(skill_md, expected_name, command_description_phrase, true)
+    if command_desc_err
+      errors << "#{skill_md}: #{command_desc_err}"
+    else
+      lines = File.read(skill_md)
+      if label == 'Command' && !lines.include?(COMMAND_TRIGGER_PREFIX)
+        errors << "description mismatch in #{skill_md}: missing command invoke-only sentence"
+      end
+    end
   end
-
-  skill_md_err, = update_frontmatter(skill_md, expected_name, true)
-  errors << "#{skill_md}: #{skill_md_err}" if skill_md_err
 end
 
 if options[:check]

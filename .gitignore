@@ -4,6 +4,8 @@
 # Allow these directories/files
 !prompts
 !prompts/**
+!commands
+!commands/**
 !agents
 !agents/**
 !skills
@@ -14,6 +16,7 @@
 !AGENTS.md
 !AGENTS.md.bak
 !config.toml.bak
+!opencode.json.bak
 !Makefile
 # Ignore others
 *.DS_Store
@@ -21,3 +24,8 @@
 *.vscode
 skills/.system/
 __pycache__
+.gitignore
+antigravity-accounts.json
+antigravity-accounts.json.*.tmp
+antigravity-signature-cache.json
+antigravity-logs/

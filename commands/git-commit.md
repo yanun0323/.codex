@@ -1,6 +1,6 @@
 ---
 description: Inspect local changes, summarize the commit scope, and create one safe non-interactive git commit.
-agent: build
+agent: quick
 model: openai/gpt-5.3-codex-spark
 ---
 

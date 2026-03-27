@@ -1,6 +1,6 @@
 ---
 description: Analyze local changes, split them into 1-5 coherent commits, and execute the split safely.
-agent: build
+agent: quick
 model: openai/gpt-5.3-codex-spark
 ---
 

@@ -1,4 +1,4 @@
-model = "gpt-5.4"
+model = "gpt-5.3-codex-spark"
 review_model = "gpt-5.3-codex"
 model_provider = "openai"
 model_reasoning_effort = "high"
@@ -8,12 +8,16 @@ model_supports_reasoning_summaries = true
 web_search = "live"
 notify = [ "notify-send", "Codex" ]
 approval_policy = "never"
-sandbox_mode = "workspace-write"
+sandbox_mode = "danger-full-access"
 personality = "pragmatic"
 
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
 enabled = false
+
+[mcp_servers.pencil]
+command = "/Users/yanunyang/.vscode/extensions/highagency.pencildev-0.6.36/out/mcp-server-darwin-arm64"
+args = [ "--app", "visual_studio_code" ]
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"
@@ -24,6 +28,10 @@ path = "~/.codex/skills/.system/skill-installer/SKILL.md"
 enabled = false
 
 [[skills.config]]
+path = "~/.codex/skills/.system/plugin-creator/SKILL.md"
+enabled = false
+
+[[skills.config]]
 path = "~/.codex/skills/skill-gemini-design/SKILL.md"
 enabled = false
 
@@ -31,4 +39,22 @@ enabled = false
 status_line = [ "model-with-reasoning", "git-branch", "context-used", "five-hour-limit", "weekly-limit" ]
 
 [features]
-multi_agent = false
+multi_agent = true
+
+[projects."/Users/Shared/Project/test/agent_frontend"]
+trust_level = "trusted"
+
+[notice.model_migrations]
+"gpt-5.3-codex" = "gpt-5.4"
+
+[apps.connector_76869538009648d5b282a4bb21c3d157]
+enabled = false
+
+[apps.connector_2128aebfecb84f64a069897515042a44]
+enabled = false
+
+[plugins."build-ios-apps@openai-curated"]
+enabled = true
+
+[plugins."game-studio@openai-curated"]
+enabled = true

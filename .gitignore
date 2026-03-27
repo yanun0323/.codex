@@ -17,7 +17,7 @@
 !AGENTS.md.bak
 !config.toml.bak
 !opencode.json.bak
-!Makefile
+!tui.json
 # Ignore others
 *.DS_Store
 *.DS_STORE

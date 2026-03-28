@@ -1,16 +1,19 @@
-model = "gpt-5.3-codex-spark"
-review_model = "gpt-5.3-codex"
-model_provider = "openai"
-model_reasoning_effort = "high"
+model = "gpt-5.4"
+review_model = "gpt-5.4"
+model_provider = "cliproxyapi"
+model_reasoning_effort = "medium"
 model_reasoning_summary = "concise"
 model_verbosity = "low"
 model_supports_reasoning_summaries = true
 web_search = "live"
 notify = [ "notify-send", "Codex" ]
+approval_policy = "never"
 sandbox_mode = "danger-full-access"
 personality = "pragmatic"
 
-# MCP
+[model_providers.cliproxyapi]
+name = "cliproxyapi"
+base_url = "http://127.0.0.1:8317/v1"
 
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
@@ -20,8 +23,6 @@ enabled = false
 command = "/Users/yanunyang/.vscode/extensions/highagency.pencildev-0.6.36/out/mcp-server-darwin-arm64"
 args = [ "--app", "visual_studio_code" ]
 enabled = true
-
-# SKILLS
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"
@@ -43,17 +44,11 @@ enabled = false
 path = "~/.codex/skills/skill-gemini-design/SKILL.md"
 enabled = false
 
-# TUI
-
 [tui]
 status_line = [ "model-with-reasoning", "git-branch", "context-used", "five-hour-limit", "weekly-limit" ]
 
-# FEATURE
-
 [features]
 multi_agent = true
-
-# OTHERS
 
 [apps.connector_76869538009648d5b282a4bb21c3d157]
 enabled = false

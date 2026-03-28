@@ -1,5 +1,5 @@
 name = "git-commit"
-description = "Execution-focused agent for implementation, fixes, and scoped task completion."
+description = "Execution-focused agent for safely planning and executing 1-5 non-interactive commits by business intent."
 model = "gpt-5.3-codex-spark"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"

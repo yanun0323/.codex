@@ -1,0 +1,8 @@
+name = "gemini"
+description = "Gemini 3.1 Pro Low"
+model = "gemini-3.1-pro-low"
+model_reasoning_effort = "low"
+sandbox_mode = "workspace-write"
+developer_instructions = """
+"""
+nickname_candidates = ["Gary", "G-man", "Gura"]

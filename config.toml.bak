@@ -2,14 +2,15 @@ model = "gpt-5.3-codex-spark"
 review_model = "gpt-5.3-codex"
 model_provider = "openai"
 model_reasoning_effort = "high"
-model_reasoning_summary = "auto"
-model_verbosity = "medium"
+model_reasoning_summary = "concise"
+model_verbosity = "low"
 model_supports_reasoning_summaries = true
 web_search = "live"
 notify = [ "notify-send", "Codex" ]
-approval_policy = "never"
 sandbox_mode = "danger-full-access"
 personality = "pragmatic"
+
+# MCP
 
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
@@ -18,6 +19,9 @@ enabled = false
 [mcp_servers.pencil]
 command = "/Users/yanunyang/.vscode/extensions/highagency.pencildev-0.6.36/out/mcp-server-darwin-arm64"
 args = [ "--app", "visual_studio_code" ]
+enabled = true
+
+# SKILLS
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"
@@ -25,27 +29,31 @@ enabled = false
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-installer/SKILL.md"
-enabled = false
+enabled = true
 
 [[skills.config]]
 path = "~/.codex/skills/.system/plugin-creator/SKILL.md"
 enabled = false
 
 [[skills.config]]
+path = "~/.codex/skills/.system/imagegen/SKILL.md"
+enabled = false
+
+[[skills.config]]
 path = "~/.codex/skills/skill-gemini-design/SKILL.md"
 enabled = false
+
+# TUI
 
 [tui]
 status_line = [ "model-with-reasoning", "git-branch", "context-used", "five-hour-limit", "weekly-limit" ]
 
+# FEATURE
+
 [features]
 multi_agent = true
 
-[projects."/Users/Shared/Project/test/agent_frontend"]
-trust_level = "trusted"
-
-[notice.model_migrations]
-"gpt-5.3-codex" = "gpt-5.4"
+# OTHERS
 
 [apps.connector_76869538009648d5b282a4bb21c3d157]
 enabled = false
@@ -54,7 +62,4 @@ enabled = false
 enabled = false
 
 [plugins."build-ios-apps@openai-curated"]
-enabled = true
-
-[plugins."game-studio@openai-curated"]
-enabled = true
+enabled = false

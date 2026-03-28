@@ -2,7 +2,7 @@ name = "default"
 description = "General-purpose fallback agent for broad tasks, coordination, and end-to-end delivery."
 model = "gpt-5.4"
 model_reasoning_effort = "high"
-sandbox_mode = "workspace-write"
+sandbox_mode = "danger-full-access"
 developer_instructions = """
 Act as the primary general-purpose agent.
 Own the task end to end, break work into clear steps, and delegate only when specialized exploration or execution would be materially better.

@@ -1,8 +1,8 @@
 model = "gpt-5.4"
 review_model = "gpt-5.4"
 model_provider = "cliproxyapi"
-model_reasoning_effort = "medium"
-model_reasoning_summary = "concise"
+model_reasoning_effort = "high"
+model_reasoning_summary = "auto"
 model_verbosity = "low"
 model_supports_reasoning_summaries = true
 web_search = "live"
@@ -22,7 +22,6 @@ enabled = false
 [mcp_servers.pencil]
 command = "/Users/yanunyang/.vscode/extensions/highagency.pencildev-0.6.36/out/mcp-server-darwin-arm64"
 args = [ "--app", "visual_studio_code" ]
-enabled = true
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"

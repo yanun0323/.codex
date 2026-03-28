@@ -1,0 +1,5 @@
+interface:
+  display_name: "Skill - Frontend Skill"
+  short_description: "Design visually strong landing pages, websites, apps, and UI"
+  icon_small: "./assets/skill-small.svg"
+  default_prompt: "Use $skill-frontend-skill to establish a visual thesis, content plan, and interaction thesis before building a visually strong landing page, website, app, prototype, demo, or game UI."

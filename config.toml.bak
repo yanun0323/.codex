@@ -23,6 +23,7 @@ enabled = false
 [mcp_servers.pencil]
 command = "/Users/yanunyang/.vscode/extensions/highagency.pencildev-0.6.36/out/mcp-server-darwin-arm64"
 args = [ "--app", "visual_studio_code" ]
+enabled = false
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"

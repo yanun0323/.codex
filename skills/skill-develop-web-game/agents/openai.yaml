@@ -1,0 +1,6 @@
+interface:
+  display_name: "Skill - Develop Web Game"
+  short_description: "Web game dev + Playwright test loop"
+  icon_small: "./assets/skill-small.svg"
+  icon_large: "./assets/game.png"
+  default_prompt: "Use $skill-develop-web-game to build and iterate a playable web game in this workspace with a Playwright validation loop."

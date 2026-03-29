@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Skill Initializer - Creates a new Command/Rule/Skill from template.
+Skill Initializer - Creates a new Action/Rule/Skill from template.
 
 Usage:
-    init_skill.py <name> --kind <command|rule|skill> --path <path>
+    init_skill.py <name> --kind <action|rule|skill> --path <path>
       [--resources scripts,references,assets] [--examples] [--interface key=value]
 """
 
@@ -17,13 +17,13 @@ from generate_openai_yaml import write_openai_yaml
 
 MAX_SKILL_NAME_LENGTH = 64
 ALLOWED_RESOURCES = {"scripts", "references", "assets"}
-KNOWN_PREFIXES = ("command-", "rule-", "skill-", "agents-")
+KNOWN_PREFIXES = ("action-", "command-", "rule-", "skill-", "agents-")
 
 KIND_CONFIG = {
-    "command": {
-        "prefix": "command-",
-        "label": "Command",
-        "icon": "command-small.svg",
+    "action": {
+        "prefix": "action-",
+        "label": "Action",
+        "icon": "action-small.svg",
     },
     "rule": {
         "prefix": "rule-",
@@ -42,7 +42,7 @@ DESCRIPTION_TEMPLATE = (
     "Include specific trigger scenarios, file types, or tasks."
 )
 
-COMMAND_TRIGGER_SENTENCE = (
+ACTION_TRIGGER_SENTENCE = (
     "Use this skill only when the user explicitly asks to invoke the `{skill_name}` skill."
 )
 
@@ -222,8 +222,8 @@ def create_resource_dirs(skill_dir, skill_name, skill_title, resources, include_
 
 
 def build_description_text(kind, skill_name):
-    if kind == "command":
-        return f"{DESCRIPTION_TEMPLATE} {COMMAND_TRIGGER_SENTENCE.format(skill_name=skill_name)}"
+    if kind == "action":
+        return f"{DESCRIPTION_TEMPLATE} {ACTION_TRIGGER_SENTENCE.format(skill_name=skill_name)}"
     return DESCRIPTION_TEMPLATE
 
 
@@ -321,7 +321,7 @@ def init_skill(skill_name, kind, path, resources, include_examples, interface_ov
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Create a new command/rule/skill directory with a SKILL.md template.",
+        description="Create a new action/rule/skill directory with a SKILL.md template.",
     )
     parser.add_argument("skill_name", help="Name to normalize and prefix")
     parser.add_argument(

@@ -27,7 +27,7 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-COMMAND_TRIGGER_PREFIX = 'Use this skill only when the user explicitly asks to invoke'
+ACTION_TRIGGER_PREFIX = 'Use this skill only when the user explicitly asks to invoke'
 
 def skill_dirs(skills_root)
   Dir.glob(File.join(skills_root, '**', 'SKILL.md'), File::FNM_DOTMATCH)
@@ -45,8 +45,13 @@ def classify_basename(base)
     return { target_base: base, label: 'Rule', icon: 'rule-small.svg', stem: base.delete_prefix('rule-') }
   end
 
+  if base.start_with?('action-')
+    return { target_base: base, label: 'Action', icon: 'action-small.svg', stem: base.delete_prefix('action-') }
+  end
+
   if base.start_with?('command-')
-    return { target_base: base, label: 'Command', icon: 'command-small.svg', stem: base.delete_prefix('command-') }
+    target = "action-#{base.delete_prefix('command-')}"
+    return { target_base: target, label: 'Action', icon: 'action-small.svg', stem: target.delete_prefix('action-') }
   end
 
   if base.start_with?('skill-')
@@ -94,7 +99,7 @@ rescue StandardError => e
   [nil, nil, "invalid frontmatter YAML: #{e.message}"]
 end
 
-def update_frontmatter(skill_md_path, expected_name, command_required_phrase, check)
+def update_frontmatter(skill_md_path, expected_name, action_required_phrase, check)
   content = File.read(skill_md_path)
   lines = content.lines
 
@@ -110,13 +115,13 @@ def update_frontmatter(skill_md_path, expected_name, command_required_phrase, ch
     changed = true
   end
 
-  if command_required_phrase
+  if action_required_phrase
     description = frontmatter['description'].to_s.strip
-    unless description.include?(command_required_phrase)
+    unless description.include?(action_required_phrase)
       description = if description.empty?
-                      command_required_phrase
+                      action_required_phrase
                     else
-                      "#{description} #{command_required_phrase}"
+                      "#{description} #{action_required_phrase}"
                     end
       frontmatter['description'] = description
       changed = true
@@ -183,7 +188,7 @@ icons_dir = options[:icons_dir]
 
 required_icons = {
   'rule-small.svg' => File.join(icons_dir, 'rule-small.svg'),
-  'command-small.svg' => File.join(icons_dir, 'command-small.svg'),
+  'action-small.svg' => File.join(icons_dir, 'action-small.svg'),
   'skill-small.svg' => File.join(icons_dir, 'skill-small.svg')
 }
 
@@ -224,14 +229,14 @@ skill_dirs(root).each do |dir|
   display_name = "#{label} - #{titleize(info[:stem])}"
   icon_small = "./assets/#{icon_file}"
 
-  command_description_phrase = nil
-  if label == 'Command'
-    command_description_phrase =
-      "#{COMMAND_TRIGGER_PREFIX} the `#{expected_name}` skill."
+  action_description_phrase = nil
+  if label == 'Action'
+    action_description_phrase =
+      "#{ACTION_TRIGGER_PREFIX} the `#{expected_name}` skill."
   end
 
   skill_md = File.join(dir, 'SKILL.md')
-  err, changed = update_frontmatter(skill_md, expected_name, command_description_phrase, options[:check])
+  err, changed = update_frontmatter(skill_md, expected_name, action_description_phrase, options[:check])
   if err
     errors << "#{skill_md}: #{err}"
   elsif changed
@@ -270,13 +275,13 @@ skill_dirs(root).each do |dir|
       errors << "missing icon asset #{icon_dst}"
     end
 
-    command_desc_err, _changed = update_frontmatter(skill_md, expected_name, command_description_phrase, true)
-    if command_desc_err
-      errors << "#{skill_md}: #{command_desc_err}"
+    action_desc_err, _changed = update_frontmatter(skill_md, expected_name, action_description_phrase, true)
+    if action_desc_err
+      errors << "#{skill_md}: #{action_desc_err}"
     else
       lines = File.read(skill_md)
-      if label == 'Command' && !lines.include?(COMMAND_TRIGGER_PREFIX)
-        errors << "description mismatch in #{skill_md}: missing command invoke-only sentence"
+      if label == 'Action' && !lines.include?(ACTION_TRIGGER_PREFIX)
+        errors << "description mismatch in #{skill_md}: missing action invoke-only sentence"
       end
     end
   end

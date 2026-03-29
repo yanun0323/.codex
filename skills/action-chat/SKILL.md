@@ -1,9 +1,9 @@
 ---
-name: command-chat
-description: Use this skill only when the user explicitly asks to invoke This mode is strictly read-only - never create, modify, rename, or delete files. Only inspect local files and optionally search the web to answer questions.
+name: action-chat
+description: Use this skill only when the user explicitly asks to invoke the `action-chat` skill. This mode is strictly read-only - never create, modify, rename, or delete files. Only inspect local files and optionally search the web to answer questions.
 ---
 
-# Read-Only Chat Skill
+# Read-Only Chat Action
 
 
 ## Goals
@@ -44,7 +44,7 @@ Avoid any command pattern that writes:
 - Distinguish verified facts from inference.
 
 ## If the User Requests File Changes
-- Explain that `command-chat` mode is read-only and cannot change files.
+- Explain that `action-chat` mode is read-only and cannot change files.
 - Provide either:
   - a read-only analysis/plan, or
   - a clear instruction that the user should switch to a non-read-only coding mode for implementation.

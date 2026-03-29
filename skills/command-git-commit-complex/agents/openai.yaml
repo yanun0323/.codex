@@ -1,4 +1,0 @@
-interface:
-  display_name: "Command - Git Commit Complex"
-  short_description: "Analyze uncommitted changes and split into 1-5 commits"
-  icon_small: "./assets/command-small.svg"

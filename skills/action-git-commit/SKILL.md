@@ -1,9 +1,9 @@
 ---
-name: command-git-commit
-description: Use this skill only when the user explicitly asks to invoke `command-git-commit`, then review uncommitted changes, summarize the commit scope, and run `git commit` safely.
+name: action-git-commit
+description: Use this skill only when the user explicitly asks to invoke the `action-git-commit` skill. Review uncommitted changes, summarize the commit scope, and run `git commit` safely.
 ---
 
-# Git Commit Command
+# Git Commit Action
 
 
 ## Goals

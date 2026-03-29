@@ -1,6 +1,6 @@
 ---
-name: command-code-review
-description: Use this skill only when the user explicitly asks to invoke the `command-code-review` skill. Review a proposed code change and return strict JSON findings with priority and code locations.
+name: action-code-review
+description: Use this skill only when the user explicitly asks to invoke the `action-code-review` skill. Review a proposed code change and return strict JSON findings with priority and code locations.
 ---
 
 # Review guidelines:

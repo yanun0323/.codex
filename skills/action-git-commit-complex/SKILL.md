@@ -1,9 +1,9 @@
 ---
-name: command-git-commit-complex
-description: Use this skill only when the user explicitly asks to invoke the `command-git-commit-complex` skill. Analyze uncommitted repository changes by business logic and scope, split them into 1-5 commits, and run `git commit` safely.
+name: action-git-commit-complex
+description: Use this skill only when the user explicitly asks to invoke the `action-git-commit-complex` skill. Analyze uncommitted repository changes by business logic and scope, split them into 1-5 commits, and run `git commit` safely.
 ---
 
-# Git Commit Command
+# Git Commit Action
 
 
 ## Goals

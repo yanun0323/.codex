@@ -1,0 +1,4 @@
+interface:
+  display_name: "Action - Git Commit Complex"
+  short_description: "Analyze uncommitted changes and split into 1-5 commits"
+  icon_small: "./assets/action-small.svg"

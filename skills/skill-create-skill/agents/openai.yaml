@@ -1,5 +1,5 @@
 interface:
   display_name: "Skill - Create Skill"
-  short_description: "Create and normalize command/rule/skill folders"
+  short_description: "Create and normalize action/rule/skill folders"
   icon_small: "./assets/skill-small.svg"
-  default_prompt: "Use $skill-create-skill to create or update Command/Rule/Skill folders with normalized naming, icons, and agents metadata."
+  default_prompt: "Use $skill-create-skill to create or update Action/Rule/Skill folders with normalized naming, icons, and agents metadata."

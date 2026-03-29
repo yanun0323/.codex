@@ -11,12 +11,12 @@ Apply these rules to all skill folders discovered by scanning `skills/**/SKILL.m
   - Set `interface.display_name` to `Rule - Xxx Xxx`
   - Set `interface.icon_small` to `./assets/rule-small.svg`
 
-- Folder names starting with `command-`:
-  - Keep (or normalize to) `command-` prefix
+- Folder names starting with `action-`:
+  - Keep (or normalize to) `action-` prefix
   - Rename `SKILL.md` frontmatter `name` to the folder name
-  - Ensure `assets/command-small.svg` exists
-  - Set `interface.display_name` to `Command - Xxx Xxx`
-  - Set `interface.icon_small` to `./assets/command-small.svg`
+  - Ensure `assets/action-small.svg` exists
+  - Set `interface.display_name` to `Action - Xxx Xxx`
+  - Set `interface.icon_small` to `./assets/action-small.svg`
   - Ensure `SKILL.md` frontmatter `description` contains:
     - `Use this skill only when the user explicitly asks to invoke`
 

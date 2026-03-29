@@ -1,6 +1,6 @@
 ---
 name: skill-create-skill
-description: Create or update skills with strict Command/Rule/Skill normalization. Use this when users ask to create a new skill, modify an existing skill, migrate naming conventions, or enforce folder/frontmatter/icon/agents metadata consistency.
+description: Create or update skills with strict Action/Rule/Skill normalization. Use this when users ask to create a new skill, modify an existing skill, migrate naming conventions, or enforce folder/frontmatter/icon/agents metadata consistency.
 ---
 
 # Skill Skill Creator
@@ -14,7 +14,7 @@ Use this skill to create or update skill folders and enforce deterministic conve
 - Folder naming and `SKILL.md` frontmatter `name`
 - `assets/` icon selection by type
 - `agents/openai.yaml` display and icon fields
-- Command-specific description constraints
+- Action-specific description constraints
 
 Use the same six-step lifecycle for reliable outcomes:
 
@@ -31,7 +31,7 @@ Use the same six-step lifecycle for reliable outcomes:
 - OpenAI YAML reference: `references/openai_yaml.md`
 - Shared icons:
   - `references/icons/rule-small.svg`
-  - `references/icons/command-small.svg`
+  - `references/icons/action-small.svg`
   - `references/icons/skill-small.svg`
 - Automation:
   - `scripts/init_skill.py`
@@ -43,12 +43,12 @@ Use the same six-step lifecycle for reliable outcomes:
 
 Always classify the user request as one of these types before editing files.
 
-- `Command`
-  - Folder and frontmatter name must use `command-` prefix.
-  - `assets/command-small.svg` must exist.
+- `Action`
+  - Folder and frontmatter name must use `action-` prefix.
+  - `assets/action-small.svg` must exist.
   - `agents/openai.yaml` must use:
-    - `interface.display_name: "Command - Xxx Xxx"`
-    - `interface.icon_small: "./assets/command-small.svg"`
+    - `interface.display_name: "Action - Xxx Xxx"`
+    - `interface.icon_small: "./assets/action-small.svg"`
   - `SKILL.md` frontmatter description must include:
     - `Use this skill only when the user explicitly asks to invoke`
 
@@ -74,7 +74,7 @@ Compatibility mapping for older names:
 
 ### Step 1: Understand and Classify
 
-Identify whether the user is creating/updating a `Command`, `Rule`, or `Skill`.
+Identify whether the user is creating/updating an `Action`, `Rule`, or `Skill`.
 If the requested name does not match the target prefix, normalize it.
 
 ### Step 2: Plan Reusable Resources
@@ -92,13 +92,13 @@ Keep SKILL instructions concise. Move variant-heavy details into `references/`.
 For new skills, initialize with type-aware naming:
 
 ```bash
-python3 skills/skill-create-skill/scripts/init_skill.py <name> --kind <command|rule|skill> --path <skills-root>
+python3 skills/skill-create-skill/scripts/init_skill.py <name> --kind <action|rule|skill> --path <skills-root>
 ```
 
 Useful variants:
 
 ```bash
-python3 skills/skill-create-skill/scripts/init_skill.py interface-design-audit --kind command --path skills --resources scripts,references,assets
+python3 skills/skill-create-skill/scripts/init_skill.py interface-design-audit --kind action --path skills --resources scripts,references,assets
 python3 skills/skill-create-skill/scripts/init_skill.py global --kind rule --path skills
 python3 skills/skill-create-skill/scripts/init_skill.py doc-coauthoring --kind skill --path skills --interface short_description="Draft and refine documentation"
 ```
@@ -118,7 +118,7 @@ After initialization:
 - Keep body procedural and concise.
 - Update or regenerate `agents/openai.yaml` as needed.
 - Ensure icon files in `assets/` match type.
-- For Command skills, keep the explicit invoke-only description sentence.
+- For Action skills, keep the explicit invoke-only description sentence.
 
 Regenerate UI metadata when needed:
 
@@ -141,7 +141,7 @@ Expected validation outcomes:
 - Folder name and frontmatter `name` are aligned.
 - Correct icon exists in `assets/`.
 - `agents/openai.yaml` uses proper `display_name` and `icon_small`.
-- Command descriptions contain the explicit invoke-only sentence.
+- Action descriptions contain the explicit invoke-only sentence.
 
 ### Step 6: Iterate
 

@@ -25,8 +25,13 @@ If this project identity does not match the actual repository, STOP and ASK.
 
 ## 2) Framework and Dependencies
 
-- Prefer standard library over third-party packages.
-- Do NOT introduce new dependencies unless explicitly instructed.
+- Follow the repository's existing choice first.
+- If the repository does not already use one, use the recommended package for that concern when applicable.
+- Use the standard library only when neither an existing repo choice nor a recommended package applies.
+
+HARD rules:
+- Do NOT replace an existing equivalent package just to match this recommendation.
+- Do NOT introduce additional third-party dependencies beyond the recommended set unless explicitly instructed.
 
 ### Recommended packages (follow repo conventions first)
 
@@ -37,6 +42,7 @@ If the repo already uses an equivalent external or in-house package for the same
 - http: github.com/labstack/echo/v4
 - websocket: github.com/gorilla/websocket
 - sql orm: gorm.io/gorm
+- json: github.com/bytedance/sonic
 
 ---
 

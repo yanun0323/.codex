@@ -53,26 +53,37 @@ Agents MUST respect the following folder responsibilities:
 | Folder              | Responsibility                                            |
 | ------------------- | --------------------------------------------------------- |
 | cmd/server          | Application wiring only (bootstrap, dependency injection) |
+| config              | Config schemas, defaults, and loaders for runtime params   |
 | internal/delivery   | Transport layer (HTTP handlers, request/response mapping) |
 | internal/usecase    | Business logic (application rules)                        |
 | internal/repository | Persistence / storage logic                               |
 | internal/model      | Domain entities and enums                                 |
-| internal/adapter    | Interface abstractions (ports/adapters)                   |
+| internal/adapter    | Shared application ports and interface contracts          |
 | infrastructure      | Runtime infra (Docker, compose, k8s, deployment)          |
 | pkg                 | Shared, stateless utilities ONLY                          |
 
 If the existing repo differs in naming but clearly follows the same layering,
 follow the repo's established structure. Do NOT reorganize folders unless instructed.
 
+Config rules:
+- `config/` owns configuration schemas, defaults, and loaders for runtime parameters.
+- `cmd/server` is responsible for loading config and injecting typed config values into the application.
+- Application code outside `config/` MUST receive config via dependency injection and MUST NOT scatter direct reads from environment variables for regular runtime parameters.
+
 ---
 
 ## 4) Boundary and Import Rules (HARD)
 
 HARD rules:
+- The following restrictions apply to repository internal packages. Standard library and approved external dependencies are allowed unless otherwise restricted.
+- `internal/model` CAN ONLY depend on `pkg`
+- `internal/adapter` CAN ONLY depend on `internal/model` `pkg`.
+- `internal/delivery` CAN ONLY depend on `internal/adapter` `internal/model` `pkg`.
 - `internal/delivery` MUST NOT contain business logic.
-- `internal/usecase` MUST NOT depend on `internal/delivery`.
-- `internal/repository` MUST NOT depend on `internal/delivery`.
-- `pkg` MUST NOT depend on `internal`.
+- `internal/usecase` CAN ONLY depend on `internal/adapter` `internal/model` `pkg`
+- `internal/repository` CAN ONLY depend on `internal/adapter` `internal/model` `pkg`
+- `config` CAN ONLY depend on `pkg`
+- `pkg` MUST NOT depend on `internal` `config` `cmd`.
 - Cross-layer imports that violate the above are HARD ERRORS.
 
 If you are unsure whether an import violates layering, STOP and ASK.
@@ -84,13 +95,13 @@ If you are unsure whether an import violates layering, STOP and ASK.
 ### 5.1 Handler Responsibilities
 Handlers in `internal/delivery` MUST:
 - Parse and validate inputs (path/query/body)
-- Map inputs to usecase calls
-- Map usecase outputs/errors to HTTP responses
+- Map inputs to application ports defined in `internal/adapter`
+- Map application outputs/errors to HTTP responses
 
 Handlers MUST NOT:
 - Contain business rules
 - Directly access database/storage
-- Embed long-running logic without delegation to usecase
+- Embed long-running logic without delegation to the application layer
 
 ### 5.2 Context and Timeouts
 - All request handling MUST respect the request context.

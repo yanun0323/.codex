@@ -8,7 +8,7 @@ description: Rules for Go backend work - project identity, layering, error handl
 
 ## 1) Project Identity (HARD)
 
-- This repository contains a monolithic Go backend service.
+- This project contains a monolithic Go backend service.
 - Single main binary: `cmd/server`
 - The ONLY application entry point is:
   - `cmd/server/main.go`
@@ -17,32 +17,37 @@ HARD rules:
 - Do NOT create additional binaries unless explicitly requested.
 - Do NOT put business logic in `cmd/server/main.go`.
 - Do NOT create or use a root-level `main.go` as an entry point.
-  - If `main.go` exists at repo root, it must contain no logic and must not be used.
+  - If `main.go` exists at the project root, it must contain no logic and must not be used.
 
-If this project identity does not match the actual repository, STOP and ASK.
+If this project identity does not match the actual project, STOP and ASK.
 
 ---
 
 ## 2) Framework and Dependencies
 
-- Follow the repository's existing choice first.
-- If the repository does not already use one, use the recommended package for that concern when applicable.
-- Use the standard library only when neither an existing repo choice nor a recommended package applies.
+- Follow the project's existing choice first.
+- If the project does not already use one, use the recommended package for that concern when applicable.
+- Use the standard library only when neither an existing project choice nor a recommended package applies.
 
 HARD rules:
 - Do NOT replace an existing equivalent package just to match this recommendation.
 - Do NOT introduce additional third-party dependencies beyond the recommended set unless explicitly instructed.
 
-### Recommended packages (follow repo conventions first)
+### Recommended packages (follow project conventions first)
 
-If the repo already uses an equivalent external or in-house package for the same purpose, use the repo's existing choice instead of switching.
+If the project already uses an equivalent external or in-house package for the same purpose, use the project's existing choice instead of switching.
 
-- environment/config: github.com/spf13/viper
+- config loading/binding: github.com/spf13/viper
 - log: github.com/rs/zerolog/log
 - http: github.com/labstack/echo/v4
 - websocket: github.com/gorilla/websocket
 - sql orm: gorm.io/gorm
 - json: github.com/bytedance/sonic
+
+Config package rules:
+- If `viper` is used, confine it to `config/` and application bootstrap in `cmd/server`.
+- Do NOT pass `viper` instances into `internal/delivery`, `internal/usecase`, or `internal/repository`.
+- Application layers MUST consume typed config values via dependency injection.
 
 ---
 
@@ -53,7 +58,7 @@ Agents MUST respect the following folder responsibilities:
 | Folder              | Responsibility                                            |
 | ------------------- | --------------------------------------------------------- |
 | cmd/server          | Application wiring only (bootstrap, dependency injection) |
-| config              | Config schemas, defaults, and loaders for runtime params   |
+| config              | Config schemas, defaults, and loaders for runtime parameters |
 | internal/delivery   | Transport layer (HTTP handlers, request/response mapping) |
 | internal/usecase    | Business logic (application rules)                        |
 | internal/repository | Persistence / storage logic                               |
@@ -62,12 +67,12 @@ Agents MUST respect the following folder responsibilities:
 | infrastructure      | Runtime infra (Docker, compose, k8s, deployment)          |
 | pkg                 | Shared, stateless utilities ONLY                          |
 
-If the existing repo differs in naming but clearly follows the same layering,
-follow the repo's established structure. Do NOT reorganize folders unless instructed.
+If the existing project differs in naming but clearly follows the same layering,
+follow the project's established structure. Do NOT reorganize folders unless instructed.
 
-Config rules:
+Configuration rules:
 - `config/` owns configuration schemas, defaults, and loaders for runtime parameters.
-- `cmd/server` is responsible for loading config and injecting typed config values into the application.
+- `cmd/server` is responsible for loading configuration and injecting typed config values into the application.
 - Application code outside `config/` MUST receive config via dependency injection and MUST NOT scatter direct reads from environment variables for regular runtime parameters.
 
 ---
@@ -75,15 +80,15 @@ Config rules:
 ## 4) Boundary and Import Rules (HARD)
 
 HARD rules:
-- The following restrictions apply to repository internal packages. Standard library and approved external dependencies are allowed unless otherwise restricted.
+- The following restrictions apply to internal packages in this project. Standard library and approved external dependencies are allowed unless otherwise restricted.
 - `internal/model` CAN ONLY depend on `pkg`
-- `internal/adapter` CAN ONLY depend on `internal/model` `pkg`.
-- `internal/delivery` CAN ONLY depend on `internal/adapter` `internal/model` `pkg`.
+- `internal/adapter` CAN ONLY depend on `internal/model` `pkg`
+- `internal/delivery` CAN ONLY depend on `internal/adapter` `internal/model` `pkg`
 - `internal/delivery` MUST NOT contain business logic.
 - `internal/usecase` CAN ONLY depend on `internal/adapter` `internal/model` `pkg`
 - `internal/repository` CAN ONLY depend on `internal/adapter` `internal/model` `pkg`
 - `config` CAN ONLY depend on `pkg`
-- `pkg` MUST NOT depend on `internal` `config` `cmd`.
+- `pkg` MUST NOT depend on `internal` `config` `cmd`
 - Cross-layer imports that violate the above are HARD ERRORS.
 
 If you are unsure whether an import violates layering, STOP and ASK.
@@ -105,11 +110,11 @@ Handlers MUST NOT:
 
 ### 5.2 Context and Timeouts
 - All request handling MUST respect the request context.
-- External calls (DB/HTTP/etc.) must have timeouts and be cancellable.
+- External calls (DB/HTTP/etc.) MUST have timeouts and be cancellable.
 
-### 5.3 Middleware (Follow Existing Repo)
-If the repo already has middleware conventions, follow them.
-Recommended (do not introduce new conventions if repo differs):
+### 5.3 Middleware (Follow Existing Project)
+If the project already has middleware conventions, follow them.
+Recommended (do not introduce new conventions if the project differs):
 - Request ID: propagate `X-Request-Id` or generate; return it in response headers.
 - Logging: one structured line per request (request_id, route, status, duration_ms).
 - Recovery: use recovery middleware if present (no panics in app code).
@@ -153,12 +158,12 @@ If concurrency lifecycle is unclear, STOP and ASK.
 
 ---
 
-## 9) API Contract and Status Codes (Follow Repo; Recommend Consistency)
+## 9) API Contract and Status Codes (Follow Project; Recommend Consistency)
 
-If the repo already has an established API envelope and error format, DO NOT change it.
+If the project already has an established API envelope and error format, DO NOT change it.
 Follow the existing patterns.
 
-If the repo has no standard, prefer a consistent format such as:
+If the project has no standard, prefer a consistent format such as:
 
 Success:
 {
@@ -226,7 +231,7 @@ If your change introduces:
 - new ports
 - new env vars
 - new external dependencies (DB/cache/queue)
-- runtime/build changes
+- runtime or build changes
 
 Then you MUST follow the rule-infra skill and update infra files accordingly.
 
@@ -235,7 +240,7 @@ Then you MUST follow the rule-infra skill and update infra files accordingly.
 ## 14) When to STOP and ASK (HARD)
 
 STOP and ASK if unclear about:
-- Auth boundary / permission model
+- Authentication boundary / permission model
 - Money/balance/order invariants
 - Data migration / irreversible changes
 - Concurrency lifecycle / shutdown wiring

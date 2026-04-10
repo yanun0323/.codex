@@ -1,29 +1,17 @@
 model = "gpt-5.4"
 review_model = "gpt-5.4"
-model_provider = "openai"
 model_reasoning_effort = "high"
 model_reasoning_summary = "auto"
 model_verbosity = "low"
 model_supports_reasoning_summaries = true
 web_search = "live"
 notify = [ "notify-send", "Codex" ]
-approval_policy = "never"
-sandbox_mode = "danger-full-access"
 personality = "pragmatic"
+approval_policy = "never"
+sandbox_mode = "workspace-write"
 
-[model_providers.cliproxyapi]
-name = "cliproxyapi"
-base_url = "http://127.0.0.1:8317/v1"
-wire_api = "responses"
-
-[mcp_servers.context7]
-url = "https://mcp.context7.com/mcp"
-enabled = false
-
-[mcp_servers.pencil]
-command = "/Users/yanunyang/.vscode/extensions/highagency.pencildev-0.6.36/out/mcp-server-darwin-arm64"
-args = [ "--app", "visual_studio_code" ]
-enabled = false
+[sandbox_workspace_write]
+network_access = true
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Action - Claude Design"
+  short_description: "Install Claude design pack into ./.design and update AGENTS.md"
+  icon_small: "./assets/action-small.svg"
+  default_prompt: "Use $action-claude-design to install the bundled Claude design reference into this project and enforce it via `./.design/` and `AGENTS.md`."

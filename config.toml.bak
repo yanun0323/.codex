@@ -19,7 +19,7 @@ enabled = false
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-installer/SKILL.md"
-enabled = true
+enabled = false
 
 [[skills.config]]
 path = "~/.codex/skills/.system/plugin-creator/SKILL.md"
@@ -37,7 +37,9 @@ enabled = false
 status_line = [ "model-with-reasoning", "git-branch", "context-used", "five-hour-limit", "weekly-limit" ]
 
 [features]
-multi_agent = true
+multi_agent = false
+memories = false
+chronicle = false
 
 [agents]
 max_threads = 3
@@ -50,4 +52,7 @@ enabled = false
 enabled = false
 
 [plugins."build-ios-apps@openai-curated"]
+enabled = false
+
+[plugins."computer-use@openai-bundled"]
 enabled = false

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Skill - Generate 2d Sprite"
+  short_description: "Pixel sprites, clean HD props, bundles, and transparent GIFs."
+  icon_small: "./assets/skill-small.svg"
+  default_prompt: "Use $skill-generate-2d-sprite to create a clean HD top-down map prop sheet that matches the current map style."

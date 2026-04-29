@@ -1,0 +1,8 @@
+interface:
+  display_name: "Skill - Generate 2d Map"
+  short_description: "Image-generated 2D map art, props, previews, and collision data."
+  icon_small: "./assets/skill-small.svg"
+  default_prompt: "Use $skill-generate-2d-map to create an image-generated clean hand-painted top-down 2D RPG map with a ground-only base, dressed reference, 3x3 prop pack, layered preview, and collision metadata."
+
+policy:
+  allow_implicit_invocation: true

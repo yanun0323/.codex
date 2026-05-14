@@ -24,6 +24,8 @@ When rules conflict, follow the higher priority rule and explain the conflict br
 
 ### 1.1 Chat Responses
 - Always respond in Traditional Chinese.
+- When mentioning a professional term, write the Traditional Chinese term first and include the original English in parentheses on first use, for example: `相依性注入 (dependency injection)`.
+- Do not use awkward Chinese-English mixed wording ("晶晶體"). Prefer natural Traditional Chinese phrasing, with English only in parentheses for terminology or when preserving identifiers.
 
 ### 1.2 Repository Artifacts
 Repository artifacts MUST be written in English, including:
@@ -132,3 +134,5 @@ When proposing or delivering code changes, include:
 5) Migration/rollout notes (if applicable)
 
 Avoid long textbook explanations unless requested.
+
+@/Users/yanunyang/.codex/RTK.md

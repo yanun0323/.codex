@@ -1,138 +1,55 @@
-# Global Rules for This Repository
+# Global Rules
 
+## Priority
 
-## 0) Rule Priority (Highest to Lowest)
-
-1. Explicit user instructions in the current request
-2. Security rules (in this skill + relevant domain skills)
-3. Domain skills, when applicable:
-  - rule-go
-  - rule-infra
-  - rule-js-ts-runtime
-  - rule-make
-  - rule-solid
-  - rule-ui
-4. This skill
-5. Other skills
-6. Existing repository conventions (when not in conflict)
-
-When rules conflict, follow the higher priority rule and explain the conflict briefly.
+Follow: user request > security here/relevant skills > applicable domain skills (rule-go, rule-infra, rule-js-ts-runtime, rule-make, rule-solid) > this file > other skills > repo conventions. Mention conflicts briefly.
 
 ---
 
-## 1) Language Policy (STRICT)
+## Language
 
-### 1.1 Chat Responses
-- Always respond in Traditional Chinese.
-- When mentioning a professional term, write the Traditional Chinese term first and include the original English in parentheses on first use, for example: `相依性注入 (dependency injection)`.
-- Do not use awkward Chinese-English mixed wording ("晶晶體"). Prefer natural Traditional Chinese phrasing, with English only in parentheses for terminology or when preserving identifiers.
-
-### 1.2 Repository Artifacts
-Repository artifacts MUST be written in English, including:
-- Source code
-- Code comments
-- Identifiers, API field names, config keys, env var names
-- File/folder names
-- Commit messages, PR titles/descriptions (unless user explicitly asks otherwise)
-
-### 1.3 User-Facing Product Copy
-- User-facing UI copy MUST be Traditional Chinese (zh-TW).
-- Copy keys MUST be English.
-
-NEVER translate identifiers/config keys/code into Chinese.
+- Replies: Traditional Chinese. First professional-term use: Chinese + English in parentheses. Avoid awkward Chinese-English mixing.
+- Repository artifacts: English for source, comments, identifiers, config/env keys, paths, commits, and PR text unless explicitly requested.
+- UI copy: Traditional Chinese (zh-TW); copy keys: English. Never translate identifiers/config/code.
 
 ---
 
-## 2) Default Agent Workflow (Recommended)
+## Tools
 
-Use separated roles to avoid self-justification:
-- Architect: plan + risk + file list
-- Builder: implement incrementally
-- Critic: review strictly, list issues, no code changes
-- Builder: fix issues + finalize
+Prefix shell commands with `rtk`; use `rtk proxy <cmd>` only when raw output is needed.
 
 ---
 
-## 3) Scope and Change Policy (STRICT)
+## Workflow
 
-- Prefer minimal, localized changes.
-- Do not perform drive-by refactors.
-- Do not rename exported/public APIs unless explicitly requested.
-- Do not introduce new dependencies without explicit approval.
-- Do not change build tooling, repository structure, or architectural patterns unless instructed.
-- If a request implies large changes, propose a staged plan and execute one stage only.
+For nontrivial work: Architect plans risks/files, Builder implements, Critic reviews without edits, Builder fixes/finalizes.
 
 ---
 
-## 4) Ambiguity Handling (ASSUME-THEN-CONFIRM)
+## Scope
 
-Default behavior is to proceed safely, not to stall.
-
-If requirements are unclear:
-- List up to 3 explicit assumptions.
-- Proceed with the safest assumption consistent with the existing codebase patterns.
-- Mark assumptions clearly in the response and (if applicable) in TASK.md/SPEC.md.
-
-STOP and ASK only when a wrong decision could cause:
-- security/auth boundary issues
-- money/balance/order correctness issues
-- data loss or irreversible migrations
-- privacy/PII leakage
-
-Never invent business logic.
+Make minimal, localized changes. Unless asked, do not opportunistically refactor, rename public APIs, add dependencies, change tooling, restructure the repo, or alter architecture. For large implied work, stage it and execute one stage.
 
 ---
 
-## 5) Verification Policy (RISK-BASED)
+## Ambiguity
 
-### 5.1 Risk Levels
-- Low risk: docs/copy/styling, refactor with no behavior change
-- Medium risk: new feature, non-trivial logic, API behavior change
-- High risk: auth/permissions, money/balances/orders, concurrency, migrations, data-loss risk
-
-### 5.2 Requirements
-- Low risk:
-  - Tests optional
-  - Provide manual verification checklist
-
-- Medium risk:
-  - Add minimal tests following existing patterns (unless user forbids tests)
-  - Provide commands to run (or CI jobs) and expected outcomes
-
-- High risk:
-  - Tests REQUIRED (unless user explicitly forbids)
-  - Provide exact verification commands and a rollback strategy (if applicable)
-
-If execution is not possible in the current environment, still provide:
-- the commands to run
-- the expected output / success criteria
-- key assumptions about runtime behavior
+Proceed with the safest assumption matching existing patterns; state up to 3 assumptions and record them in TASK.md/SPEC.md when relevant. Ask only for security/auth, money/balances/orders, data loss/irreversible migration, or privacy/PII risk. Never invent business logic.
 
 ---
 
-## 6) Security Baseline (HARD)
+## Verification
 
-- Never hardcode secrets or credentials.
-- Never log secrets/tokens/PII (unless explicitly approved).
-- User-facing errors must not expose internal details (stack traces, SQL, hostnames).
-- Frontend must never receive or store secrets.
-- Do not implement custom cryptography. Use established libraries/patterns.
-- If security requirements are ambiguous, STOP and ASK.
+Scale by risk. Low-risk docs/copy/styling may use manual checks. Medium-risk features/logic/API changes need minimal existing-pattern tests unless forbidden. High-risk auth/money/concurrency/migrations/data loss require tests unless forbidden. If unable to run, provide commands, expected results, and assumptions.
 
 ---
 
-## 7) Output Format (When Code Changes Are Involved)
+## Security
 
-When proposing or delivering code changes, include:
+Never hardcode credentials, log secrets/tokens/PII unless approved, expose internals in user-facing errors, put secrets in frontend code, or implement custom cryptography. If security requirements are ambiguous, ask.
 
-1) Summary (what changed and why)
-2) Files touched (bulleted list)
-3) Risks / assumptions (explicit)
-4) Verification plan:
-   - commands to run (tests/linters/build)
-   - manual verification checklist (if needed)
-5) Migration/rollout notes (if applicable)
+---
 
-Avoid long textbook explanations unless requested.
+## Code-Change Output
 
-@/Users/yanunyang/.codex/RTK.md
+Include summary, files touched, risks/assumptions, verification plan, and migration/rollout notes if applicable. Avoid textbook explanations unless requested.

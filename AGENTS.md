@@ -2,7 +2,7 @@
 
 ## Priority
 
-Follow: user request > security here/relevant skills > applicable domain skills (rule-go, rule-infra, rule-js-ts-runtime, rule-make, rule-solid) > this file > other skills > repo conventions. Mention conflicts briefly.
+Follow: user request > security here/relevant skills > applicable domain skills (rule-go, rule-infra, rule-make) > this file > other skills > repo conventions. Mention conflicts briefly.
 
 ---
 

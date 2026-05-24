@@ -1,14 +1,16 @@
-model = "gpt-5.4"
-review_model = "gpt-5.4"
+model = "gpt-5.5"
+review_model = "gpt-5.5"
 model_reasoning_effort = "high"
 model_reasoning_summary = "auto"
 model_verbosity = "low"
 model_supports_reasoning_summaries = true
 web_search = "live"
-notify = [ "notify-send", "Codex" ]
 personality = "pragmatic"
 approval_policy = "never"
-sandbox_mode = "workspace-write"
+sandbox_mode = "danger-full-access"
+
+
+notify = ["/Users/yanunyang/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended", "--previous-notify", "[\"notify-send\",\"Codex\"]"]
 
 [sandbox_workspace_write]
 network_access = true
@@ -36,6 +38,9 @@ enabled = false
 [tui]
 status_line = [ "model-with-reasoning", "git-branch", "context-used", "five-hour-limit", "weekly-limit" ]
 
+[tui.model_availability_nux]
+"gpt-5.5" = 1
+
 [features]
 multi_agent = false
 memories = false
@@ -44,15 +49,3 @@ chronicle = false
 [agents]
 max_threads = 3
 max_depth = 1
-
-[apps.connector_76869538009648d5b282a4bb21c3d157]
-enabled = false
-
-[apps.connector_2128aebfecb84f64a069897515042a44]
-enabled = false
-
-[plugins."build-ios-apps@openai-curated"]
-enabled = false
-
-[plugins."computer-use@openai-bundled"]
-enabled = false

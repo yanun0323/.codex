@@ -1,0 +1,4 @@
+interface:
+  display_name: "Action - No Skill"
+  short_description: "Disable optional skill loading"
+  icon_small: "./assets/action-small.svg"

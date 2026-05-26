@@ -1,4 +1,0 @@
-interface:
-  display_name: "Command - Plan Task"
-  short_description: "Create PR from conversation using templates"
-  icon_small: "./assets/command-small.svg"

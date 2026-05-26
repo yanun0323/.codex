@@ -1,8 +1,0 @@
-interface:
-  display_name: "Skill - Gemini Design"
-  short_description: "Use Gemini CLI for design direction and UI skeletons"
-  icon_small: "./assets/skill-small.svg"
-  default_prompt: "Use $skill-gemini-design to get design direction or a UI skeleton from Gemini CLI before implementation."
-
-policy:
-  allow_implicit_invocation: true

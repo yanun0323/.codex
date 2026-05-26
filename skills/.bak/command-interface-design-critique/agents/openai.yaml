@@ -1,5 +1,0 @@
-interface:
-  display_name: Command - Interface Design Critique
-  short_description: Critique your build for craft, then rebuild what defaulted.
-  default_prompt: Use $command-interface-design-critique when you need this command workflow as a skill.
-  icon_small: './assets/command-small.svg'

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Skill - Vercel Design Guidelines"
-  short_description: "Apply Vercel Web Interface Guidelines for web frontend UI behavior, accessibility, performance, and copy."
-  icon_small: "./assets/skill-small.svg"

@@ -5,24 +5,18 @@ metadata:
   short-description: Makefile workflow and env injection
 ---
 
-# Makefile Workflow
+# Makefile Rules
 
-
-## Core Rules
-- Keep the Makefile minimal and aligned with existing project commands (scripts, package.json, Go tooling, etc.).
-- Prefer wrapping existing scripts or commands instead of inventing new workflows.
-- Every target must include a `## ` comment so it appears in `make help` output.
-- Avoid long `.PHONY` lists; use the wildcard pattern below.
-
-## Environment Injection
-- Use `Makefile.env` for build/deploy-related environment variables.
-- Use `Makefile.local.env` as a repo-committed template for local development environment variables.
-- `Makefile.env` should be git-ignored; `Makefile.local.env` can be committed.
-- Only include `Makefile.local.env` when local env vars are needed. If included, it should override `Makefile.env`.
+- Keep Makefiles minimal and wrap existing repo commands.
+- Every target needs a `## ` help comment.
+- Use wildcard `.PHONY`: `.PHONY: $(wildcard *)`.
+- `Makefile.env` is git-ignored build/deploy env; `Makefile.local.env` is committed local template only when needed and may override `Makefile.env`.
 - Do not hardcode secrets.
+- Typical targets: `run`, `dev`, `build`, `test`, `lint`, `fmt`, `clean`; add only supported workflows.
+- For Docker requests, wrap existing files with `docker-build`, `docker-run`, `compose-up`, `compose-down`, `compose-logs`; prefer `docker compose` unless repo uses `docker-compose`.
+- If ports/env/services/build change, follow infra rules.
 
-## Template (Required)
-Use this template as the base. Add `-include Makefile.local.env` only when needed.
+## Base Template
 
 ```make
 -include Makefile.env
@@ -41,44 +35,6 @@ help:
 ARGS := $(word 2,$(MAKECMDGOALS))
 %:
 	@:
-
-## run: go run particular folder
-run:
-	@if [ -z "$(ARGS)" ]; then \
-	    echo "go run main.go"; go run main.go; \
-	fi
-	@echo "go run ./$(ARGS)"; go run ./$(ARGS)
-
-## test: go test particular folder
-test:
-	@if [ -z "$(ARGS)" ]; then \
-	    echo "go test ./..."; go test --count=1 ./...; \
-	fi
-	@echo "go test ./$(ARGS)"; go test --count=1 ./$(ARGS)
 ```
 
-If local env is required, insert this line after `-include Makefile.env`:
-
-```make
--include Makefile.local.env
-```
-
-When a target requires values from `Makefile.local.env`, load it explicitly:
-
-```make
-## dev-run: example target that loads Makefile.local.env
-dev-run:
-\t@set -a; . ./Makefile.local.env; set +a; \\
-\t\trun something...
-```
-
-## Target Patterns
-- `run`, `dev`, `build`, `test`, `lint`, `fmt`, `clean` are typical. Only add what the repo already supports.
-- Use shell-safe commands and inherit env via `export` from the template.
-
-## Docker / Compose Shortcuts
-If the request includes Docker or docker-compose:
-- Add make targets that wrap the existing Dockerfile and compose file names.
-- Prefer `docker compose` (v2) unless the repo clearly uses `docker-compose`.
-- Typical targets: `docker-build`, `docker-run`, `compose-up`, `compose-down`, `compose-logs`.
-- If infra changes are needed (ports/env/services/build), load and follow `rule-infra`.
+Add `-include Makefile.local.env` after `Makefile.env` only when local env is needed. Targets that require it should source it explicitly with `set -a; . ./Makefile.local.env; set +a; ...`.

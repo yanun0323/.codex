@@ -5,20 +5,13 @@ description: "Use this skill only when the user explicitly asks to invoke the `a
 
 # No Skill Action
 
-Use this action to prevent skill-based behavior from being loaded automatically.
+Disable automatic skill behavior.
 
-## Operating Mode
+## Rules
 
-- Do not load, open, or apply any other skill because a task appears to match it.
-- Do not inspect other `SKILL.md` files, skill references, skill scripts, or skill assets unless the user explicitly requests that exact file or skill.
-- Continue following system, developer, AGENTS, security, repository, and direct user instructions.
-- Use normal tools and repository conventions to complete the task without skill-specific workflows.
-
-## Duration
-
-- This mode remains active for later work in the conversation until the user explicitly invokes another skill, asks to stop `action-no-skill`, or gives a higher-priority instruction that requires a skill.
-- If another skill would normally trigger, proceed without it and mention the skipped skill only when it affects risk, verification, or user expectations.
-
-## Conflict Handling
-
-If a system or developer instruction mandates a specific skill, follow the higher-priority instruction and briefly state the conflict.
+- Do not load, open, or apply other skills merely because they match the task.
+- Do not inspect skill files, references, scripts, or assets unless the user explicitly requests that file/skill.
+- Continue following system, developer, AGENTS, security, repo, and direct user instructions.
+- Use normal tools and repo conventions.
+- Stay active until the user invokes another skill, stops `action-no-skill`, or higher-priority instructions require a skill.
+- Mention skipped skills only when it affects risk, verification, or expectations.

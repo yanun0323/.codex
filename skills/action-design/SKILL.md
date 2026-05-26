@@ -5,48 +5,28 @@ description: "Use this skill only when the user explicitly asks to invoke the `a
 
 # Action Design
 
-## Overview
-
-Use this action to install a design pack from this skill's `references/` catalog into the current project. The action copies the selected design into `./.design/` and creates or updates a managed block in `AGENTS.md` that forces future design and frontend work to follow `./.design/`.
+Install exactly one bundled design pack from `references/<slug>/` into the current project.
 
 ## Workflow
 
-1. List available designs from `references/`.
-2. Ask the developer which design slug to install.
-3. Run the loader script:
+1. List available slugs in `references/`.
+2. Ask which slug to install.
+3. If `./.design/` exists and no mode was specified, ask `Replace`, `Merge`, or `Cancel`.
+4. Run:
 
 ```bash
 python3 "$CODEX_HOME/skills/action-design/scripts/load_design_into_project.py" \
   --project-root "$PWD" \
-  --design apple
+  --design <slug>
 ```
 
-4. If `./.design/` already exists and the developer has not specified a mode, ask whether to `Replace`, `Merge`, or `Cancel`.
-5. Confirm that:
-   - `./.design/` contains the selected reference files.
-   - `AGENTS.md` contains exactly one managed `action-design` block.
+5. Verify `./.design/` contains the copied pack and `AGENTS.md` has one managed `action-design` block.
 
-## Runtime Rules
+## Rules
 
-- Only install from `references/<slug>/`. Do not synthesize or partially recreate a design pack.
-- Treat the copied `./.design/` files as the source of truth after installation.
-- Keep `AGENTS.md` updates idempotent by using the managed block markers from the loader script.
-- Do not overwrite an existing `./.design/` directory silently. If the user did not specify a mode, ask first.
-- If the selected slug does not exist, stop and ask the developer to choose one of the actual catalog entries.
+- Do not synthesize packs or silently overwrite `./.design/`.
+- Treat copied `./.design/` as source of truth.
+- Keep `AGENTS.md` idempotent via loader markers.
+- If slug is invalid, stop and ask for a catalog entry.
 
-## Maintenance
-
-To rebuild the bundled catalog from the `awesome-design-md` repository, run:
-
-```bash
-python3 "$CODEX_HOME/skills/action-design/scripts/build_reference_catalog.py" \
-  --source-repo /absolute/path/to/awesome-design-md
-```
-
-The build script copies all design assets into `references/`, rewrites README links to local relative paths, and captures `preview.html` plus `preview-dark.html` screenshots using the Playwright CLI wrapper from `$CODEX_HOME/skills/skill-playwright/scripts/playwright_cli.sh`.
-
-## Files
-
-- `scripts/load_design_into_project.py`: Installs one design into the current project and updates `AGENTS.md`.
-- `scripts/build_reference_catalog.py`: Rebuilds the bundled `reference/` catalog from the source repository.
-- `references/<slug>/`: Bundled design pack copied into target projects.
+Maintenance: rebuild catalog with `scripts/build_reference_catalog.py` from an `awesome-design-md` checkout.

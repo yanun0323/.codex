@@ -1,0 +1,4 @@
+interface:
+  display_name: "Action - Caveman"
+  short_description: "Terse full-mode technical responses"
+  icon_small: "./assets/action-small.svg"

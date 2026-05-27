@@ -14,12 +14,6 @@ Follow: user request > security here/relevant skills > applicable domain skills 
 
 ---
 
-## Tools
-
-Prefix shell commands with `rtk`; use `rtk proxy <cmd>` only when raw output is needed.
-
----
-
 ## Workflow
 
 For nontrivial work: Architect plans risks/files, Builder implements, Critic reviews without edits, Builder fixes/finalizes.

@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "python3 ~/.codex/hooks/rtk_pre_tool_use.py",
+            "statusMessage": "Routing noisy Bash command through RTK",
+            "timeout": 15,
+            "type": "command"
+          }
+        ],
+        "matcher": "^Bash$"
+      }
+    ]
+  }
+}

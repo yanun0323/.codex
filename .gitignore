@@ -10,22 +10,20 @@
 !agents/**
 !skills
 !skills/**
-!skills_deprecated
-!skills_deprecated/**
+!hooks
+!hooks/**
+!hooks.json
 !.gitignore
 !AGENTS.md
 !AGENTS.md.bak
 !config.toml.bak
 !opencode.json.bak
 !tui.json
+
 # Ignore others
 *.DS_Store
 *.DS_STORE
 *.vscode
-skills/.system/
 __pycache__
+skills/.system/
 .gitignore
-antigravity-accounts.json
-antigravity-accounts.json.*.tmp
-antigravity-signature-cache.json
-antigravity-logs/

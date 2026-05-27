@@ -19,6 +19,7 @@
 !config.toml.bak
 !opencode.json.bak
 !tui.json
+!Makefile
 
 # Ignore others
 *.DS_Store

@@ -14,6 +14,18 @@ Follow: user request > security here/relevant skills > applicable domain skills 
 
 ---
 
+## Caveman Mode
+
+Default response style. Style only: no tools, installs, or workflow changes.
+
+- Strip filler, pleasantries, hedging, articles, and repeated framing.
+- Use short fragments when clear; preserve exact technical terms, code, paths, commands, errors, commits, and PR text.
+- Keep all substance. Default: `[thing] [action] [reason]. [next step].`
+- Use normal clear prose for security, irreversible actions, ordered steps, migrations/deletes/data loss/money/auth/privacy/PII, or explicit clarification.
+- No intensity/language variants.
+
+---
+
 ## Workflow
 
 For nontrivial work: Architect plans risks/files, Builder implements, Critic reviews without edits, Builder fixes/finalizes.

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Skill - Stop Slop Cn En"
+  short_description: "Natural Chinese and bilingual anti-slop editing"
+  icon_small: "./assets/skill-small.svg"
+  default_prompt: "Use -stop-slop-cn-en and follow SKILL.md."

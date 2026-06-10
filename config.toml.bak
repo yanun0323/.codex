@@ -51,6 +51,7 @@ status_line = [ "model-with-reasoning", "git-branch", "context-used", "five-hour
 fast_mode = true
 multi_agent = true
 js_repl = true
+hooks = true
 
 [agents]
 max_threads = 3

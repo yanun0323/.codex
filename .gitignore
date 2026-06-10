@@ -21,6 +21,9 @@
 !tui.json
 !Makefile
 
+!gemma.config.toml
+!opus.config.toml
+
 # Ignore others
 *.DS_Store
 *.DS_STORE

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Action - Subagents"
+  short_description: "Enable automatic Codex subagent routing for the current task."
+  icon_small: "./assets/action-small.svg"

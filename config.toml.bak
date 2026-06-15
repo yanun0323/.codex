@@ -90,6 +90,18 @@ enabled = true
 [plugins."chrome@openai-bundled"]
 enabled = true
 
+[model_providers.omlx]
+name = "omlx"
+base_url = "https://localhost:11434/v1"
+wire_api = "responses"
+stream_idle_timeout_ms = 10000000
+
+[model_providers.proxy]
+name = "vibe proxy api"
+base_url = "http://localhost:8317/v1"
+wire_api = "responses"
+stream_idle_timeout_ms = 10000000
+
 [desktop]
 appearanceTheme = "light"
 usePointerCursors = false

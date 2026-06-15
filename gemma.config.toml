@@ -20,6 +20,13 @@ wire_api = "responses"
 env_key = "MLX_API_KEY"
 stream_idle_timeout_ms = 600000
 
+[model_providers.local]
+name = "Remote LLM"
+base_url = "http://127.0.0.1:8080/v1"
+wire_api = "responses"
+env_key = "MLX_API_KEY"
+stream_idle_timeout_ms = 600000
+
 [features]
 fast_mode = false
 multi_agent = false
@@ -55,3 +62,6 @@ enabled = false
 [[skills.config]]
 path = "~/.codex/skills/skill-playwright-interactive/SKILL.md"
 enabled = false
+
+[projects."/Users/yanun"]
+trust_level = "trusted"

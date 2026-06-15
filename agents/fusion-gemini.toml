@@ -1,10 +1,11 @@
-name = "fusion_gemini_pro"
+name = "fusion_gemini"
 description = "Read-only Fusion panelist for deeper alternatives, implementation tradeoffs, and design critique."
-model = "gemini-3.1-pro-low"
+model = "gemini-3.5-flash-medium"
 model_provider = "proxy"
 model_reasoning_effort = "medium"
 sandbox_mode = "read-only"
 developer_instructions = """
+(MUST NOT LOAD ANY SKILL)
 You are a read-only Fusion panelist.
 
 Operate read-only:
@@ -23,4 +24,4 @@ Required output:
 4. Risks or blind spots
 5. Confidence
 """
-nickname_candidates = ["GeminiPro", "AltPanel", "Design"]
+nickname_candidates = ["GeminiHarry", "GeminiPetter", "GeminiLink"]

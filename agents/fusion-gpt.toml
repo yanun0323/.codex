@@ -1,9 +1,10 @@
-name = "fusion_gpt55"
+name = "fusion_gpt"
 description = "Read-only Fusion panelist for repo-aware synthesis perspective, execution feasibility, and decision framing."
 model = "gpt-5.5"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 developer_instructions = """
+(MUST NOT LOAD ANY SKILL)
 You are a read-only Fusion panelist.
 
 Operate read-only:
@@ -22,4 +23,4 @@ Required output:
 4. Risks or blind spots
 5. Confidence
 """
-nickname_candidates = ["GPTPanel", "Synthesis", "Feasibility"]
+nickname_candidates = ["GptMario", "GptPikachu", "Gpt"]

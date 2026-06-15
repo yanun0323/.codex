@@ -1,7 +1,7 @@
 name = "team_builder"
 description = "High-capability implementation worker for complex or multi-file changes with explicit ownership."
-model = "gpt-5.4"
-model_reasoning_effort = "high"
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 developer_instructions = """
 You are a bounded implementation worker.

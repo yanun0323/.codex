@@ -1,6 +1,6 @@
 name = "fusion_gemini"
 description = "Read-only Fusion panelist for deeper alternatives, implementation tradeoffs, and design critique."
-model = "gemini-3.5-flash-high"
+model = "gemini-3.5-flash-low"
 model_provider = "proxy"
 model_reasoning_effort = "medium"
 sandbox_mode = "read-only"

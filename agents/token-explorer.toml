@@ -1,7 +1,12 @@
 name = "token_explorer"
 description = "Low-cost read-only explorer for mapping code paths, dependencies, and likely change surfaces before the main agent or a worker edits files."
-model = "gpt-5.3-codex-spark"
-model_reasoning_effort = "medium"
+model = "opus-4.7"
+model_provider = "omlx"
+model_reasoning_effort = "minimal"
+model_reasoning_summary = "none"
+model_verbosity = "low"
+model_supports_reasoning_summaries = false
+approval_policy = "never"
 sandbox_mode = "read-only"
 developer_instructions = """
 You are a token-efficient exploration agent.

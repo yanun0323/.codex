@@ -90,9 +90,9 @@ enabled = true
 [plugins."chrome@openai-bundled"]
 enabled = true
 
-[model_providers.omlx]
-name = "omlx"
-base_url = "https://localhost:11434/v1"
+[model_providers.local]
+name = "local"
+base_url = "http://localhost:11434/v1"
 wire_api = "responses"
 stream_idle_timeout_ms = 10000000
 

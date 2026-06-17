@@ -115,7 +115,6 @@ def main():
                 "permissionDecision": "allow",
                 "updatedInput": {"command": rewritten},
             },
-            "systemMessage": "Bash command was routed through RTK. Use NO_RTK <command> if raw output is required.",
         }
     )
 

@@ -23,6 +23,7 @@
 
 !gemma.config.toml
 !opus.config.toml
+!shared.config.toml
 
 # Ignore others
 *.DS_Store

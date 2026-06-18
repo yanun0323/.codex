@@ -1,0 +1,87 @@
+model = "gpt-5.5"
+review_model = "gpt-5.5"
+model_reasoning_effort = "high"
+model_reasoning_summary = "auto"
+model_verbosity = "low"
+model_supports_reasoning_summaries = true
+web_search = "live"
+personality = "pragmatic"
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+approvals_reviewer = "auto_review"
+service_tier = "fast"
+notify = [
+    "~/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient",
+    "turn-ended",
+    "--previous-notify",
+    "[\"notify-send\",\"Codex\"]",
+]
+
+[features]
+fast_mode = true
+multi_agent = true
+js_repl = false
+hooks = true
+
+[[skills.config]]
+path = "~/.codex/skills/.system/skill-creator/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "~/.codex/skills/.system/skill-installer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "~/.codex/skills/.system/plugin-creator/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "~/.codex/skills/.system/imagegen/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "~/.codex/skills/.system/openai-docs/SKILL.md"
+enabled = false
+
+[tui]
+status_line = [
+    "model-with-reasoning",
+    "git-branch",
+    "context-used",
+    "five-hour-limit",
+    "weekly-limit",
+]
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+
+[agents]
+max_threads = 8
+max_depth = 1
+
+[model_providers.local]
+name = "local"
+base_url = "http://localhost:11434/v1"
+wire_api = "responses"
+stream_idle_timeout_ms = 10000000
+
+[model_providers.proxy]
+name = "vibe proxy api"
+base_url = "http://localhost:8317/v1"
+wire_api = "responses"
+stream_idle_timeout_ms = 10000000
+
+[apps.connector_76869538009648d5b282a4bb21c3d157]
+enabled = false
+
+[apps.connector_2128aebfecb84f64a069897515042a44]
+enabled = false
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[plugins."chrome@openai-bundled"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true

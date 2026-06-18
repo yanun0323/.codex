@@ -22,6 +22,12 @@ fast_mode = true
 multi_agent = true
 js_repl = false
 hooks = true
+memories = true
+
+[memories]
+generate_memories = true
+use_memories = true
+disable_on_external_context = true
 
 [[skills.config]]
 path = "~/.codex/skills/.system/skill-creator/SKILL.md"

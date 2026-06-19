@@ -17,5 +17,5 @@ help:
 
 ## setup: setup repository setting
 setup:
-	@chmod +x ~/.codex/hooks/rtk_pre_tool_use.py && \
+	@chmod +x ./hooks/rtk_pre_tool_use.py && \
 	echo "setup complete!"

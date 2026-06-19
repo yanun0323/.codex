@@ -27,23 +27,23 @@ use_memories = true
 disable_on_external_context = true
 
 [[skills.config]]
-path = "~/.codex/skills/.system/skill-creator/SKILL.md"
+path = "./skills/.system/skill-creator/SKILL.md"
 enabled = false
 
 [[skills.config]]
-path = "~/.codex/skills/.system/skill-installer/SKILL.md"
+path = "./skills/.system/skill-installer/SKILL.md"
 enabled = true
 
 [[skills.config]]
-path = "~/.codex/skills/.system/plugin-creator/SKILL.md"
+path = "./skills/.system/plugin-creator/SKILL.md"
 enabled = false
 
 [[skills.config]]
-path = "~/.codex/skills/.system/imagegen/SKILL.md"
+path = "./skills/.system/imagegen/SKILL.md"
 enabled = false
 
 [[skills.config]]
-path = "~/.codex/skills/.system/openai-docs/SKILL.md"
+path = "./skills/.system/openai-docs/SKILL.md"
 enabled = false
 
 [tui]

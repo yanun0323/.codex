@@ -1,6 +1,0 @@
-interface:
-  display_name: "Skill - Playwright"
-  short_description: "Automate real browsers from the terminal"
-  icon_small: "./assets/skill-small.svg"
-  icon_large: "./assets/playwright.png"
-  default_prompt: "Use $skill-playwright to automate this browser workflow and produce reliable terminal run steps."

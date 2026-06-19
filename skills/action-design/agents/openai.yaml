@@ -1,5 +1,0 @@
-interface:
-  display_name: "Action - Design"
-  short_description: "Install a curated design into ./.design and update AGENTS.md"
-  icon_small: "./assets/action-small.svg"
-  default_prompt: "Use $action-design to install a design pack into this project and enforce `./.design/` via `AGENTS.md`."

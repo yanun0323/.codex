@@ -22,6 +22,7 @@
 !Makefile
 
 !config.shared.toml
+!config.toml
 
 # Ignore others
 *.DS_Store

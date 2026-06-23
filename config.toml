@@ -28,15 +28,7 @@ use_memories = true
 disable_on_external_context = true
 
 [[skills.config]]
-path = "./skills/.system/skill-creator/SKILL.md"
-enabled = false
-
-[[skills.config]]
-path = "./skills/.system/skill-installer/SKILL.md"
-enabled = true
-
-[[skills.config]]
-path = "./skills/.system/plugin-creator/SKILL.md"
+path = "/Users/yanun/.codex-cli/skills/.system/skill-installer/SKILL.md"
 enabled = false
 
 [[skills.config]]
@@ -94,4 +86,10 @@ enabled = false
 enabled = false
 
 [plugins."browser@openai-bundled"]
+enabled = false
+
+[plugins."build-ios-apps@openai-curated-remote"]
+enabled = false
+
+[plugins."build-macos-apps@openai-curated-remote"]
 enabled = false

@@ -88,8 +88,8 @@ enabled = false
 [plugins."browser@openai-bundled"]
 enabled = false
 
-[plugins."build-ios-apps@openai-curated-remote"]
+[plugins."build-ios-apps@openai-curated"]
 enabled = false
 
-[plugins."build-macos-apps@openai-curated-remote"]
+[plugins."build-macos-apps@openai-curated"]
 enabled = false

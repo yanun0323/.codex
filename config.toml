@@ -17,7 +17,7 @@ apps = false
 fast_mode = true
 multi_agent = true
 hooks = true
-memories = true
+memories = false
 js_repl = false
 skill_mcp_dependency_install = false
 enable_mcp_apps = false
@@ -55,9 +55,6 @@ status_line = [
     "five-hour-limit",
     "weekly-limit",
 ]
-
-[tui.model_availability_nux]
-"gpt-5.5" = 2
 
 [agents]
 max_threads = 8

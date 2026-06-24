@@ -14,13 +14,23 @@ service_tier = "fast"
 
 [features]
 apps = false
+browser_use = false
+browser_use_external = false
+computer_use = false
 fast_mode = true
 multi_agent = true
 hooks = true
+in_app_browser = false
 memories = false
-js_repl = false
+plugin_sharing = false
+plugins = false
+remote_compaction_v2 = false
 skill_mcp_dependency_install = false
+tool_call_mcp_elicitation = false
+tool_suggest = false
+js_repl = false
 enable_mcp_apps = false
+sqlite = false
 
 [memories]
 generate_memories = true

@@ -38,7 +38,7 @@ use_memories = true
 disable_on_external_context = true
 
 [[skills.config]]
-path = "/Users/yanun/.codex-cli/skills/.system/skill-installer/SKILL.md"
+path = "./skills/.system/skill-installer/SKILL.md"
 enabled = false
 
 [[skills.config]]
@@ -47,6 +47,18 @@ enabled = false
 
 [[skills.config]]
 path = "./skills/.system/openai-docs/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "./skills/.system/plugin-creator/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "./skills/.system/skill-creator/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "./skills/.system/skill-installer/SKILL.md"
 enabled = false
 
 [tui]

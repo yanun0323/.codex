@@ -33,8 +33,8 @@ enable_mcp_apps = false
 sqlite = false
 
 [memories]
-generate_memories = true
-use_memories = true
+generate_memories = false
+use_memories = false
 disable_on_external_context = true
 
 [[skills.config]]

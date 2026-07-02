@@ -1,7 +1,7 @@
 name = "fusion_gpt"
 description = "Read-only Fusion panelist for repo-aware synthesis perspective, execution feasibility, and decision framing."
 model = "gpt-5.5"
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 sandbox_mode = "read-only"
 developer_instructions = """
 (MUST NOT LOAD ANY SKILL)

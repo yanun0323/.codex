@@ -21,6 +21,7 @@ Follow existing choices first. If absent, prefer: config `viper`, log `zerolog/l
 - `internal/usecase`: business logic
 - `internal/repository`: persistence
 - `internal/model`: domain entities
+- `internal/model/enum`: domain entities enum
 - `internal/adapter`: ports/interfaces
 - `infrastructure`: Docker/compose/k8s/deploy
 - `pkg`: stateless shared utilities only
@@ -29,7 +30,7 @@ Do not reorganize folders unless requested.
 
 ## Imports
 
-`model -> pkg`; `adapter -> model,pkg`; `delivery/usecase/repository -> adapter,model,pkg`; `config -> pkg`; `pkg` must not import `internal/config/cmd`. Cross-layer violations are hard errors; ask if unclear.
+`model -> enum`; `model -> pkg`; `adapter -> model,enum,pkg`; `delivery/usecase/repository -> adapter,model,enum,pkg`; `config -> pkg`; `pkg` must not import `internal/config/cmd`. Cross-layer violations are hard errors; ask if unclear.
 
 ## Runtime Rules
 

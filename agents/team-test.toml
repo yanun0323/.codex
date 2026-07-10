@@ -1,6 +1,6 @@
 name = "team_test"
 description = "Testing worker for finding relevant tests, running narrow checks, and adding focused tests when assigned."
-model = "gpt-5.4-mini"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 developer_instructions = """

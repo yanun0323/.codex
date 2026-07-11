@@ -1,0 +1,28 @@
+#!/bin/sh
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
+if [ "$(uname -s)" != "Darwin" ] || [ "$(uname -m)" != "arm64" ]; then
+  printf '%s\n' "error: bundled codebase-memory-mcp supports macOS arm64 only" >&2
+  exit 64
+fi
+
+CBM_BIN="$SCRIPT_DIR/vendor/codebase-memory-mcp-darwin-arm64"
+if [ ! -x "$CBM_BIN" ]; then
+  printf '%s\n' "error: bundled codebase-memory-mcp binary is missing or not executable" >&2
+  exit 69
+fi
+
+case "${1:-}" in
+  --version)
+    exec "$CBM_BIN" --version
+    ;;
+  cli)
+    exec "$CBM_BIN" "$@"
+    ;;
+  *)
+    printf '%s\n' "error: only '--version' and 'cli' are allowed; MCP server and configuration commands are disabled" >&2
+    exit 64
+    ;;
+esac

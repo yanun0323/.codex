@@ -23,6 +23,7 @@
 
 !config.shared.toml
 !config.toml
+!.gitattributes
 
 # Ignore others
 *.DS_Store

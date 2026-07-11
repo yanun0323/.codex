@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rule - Codebase Memory"
+  short_description: "Bundled macOS code graph CLI, without MCP integration"
+  icon_small: "./assets/rule-small.svg"

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Action - Pua"
-  short_description: "Escalate stalled work into evidence-driven execution"
-  icon_small: "./assets/action-small.svg"

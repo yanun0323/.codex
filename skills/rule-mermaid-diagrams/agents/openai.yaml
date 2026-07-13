@@ -1,4 +1,0 @@
-interface:
-  display_name: "Rule - Mermaid Diagrams"
-  short_description: "Keep Mermaid diagrams readable in Markdown"
-  icon_small: "./assets/rule-small.svg"

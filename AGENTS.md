@@ -32,6 +32,12 @@ For nontrivial work: Architect plans risks/files, Builder implements, Critic rev
 
 ---
 
+## Subagents
+
+For complex work, use subagents by default. Delegate concrete, bounded, independently verifiable subtasks; parallelize independent work when useful. The primary agent owns coordination, integration, conflict resolution, and final verification. Skip delegation for simple tasks or when it adds no meaningful value; for complex work, state why if subagents cannot be used.
+
+---
+
 ## Scope
 
 Make minimal, localized changes. Unless asked, do not opportunistically refactor, rename public APIs, add dependencies, change tooling, restructure the repo, or alter architecture. For large implied work, stage it and execute one stage.

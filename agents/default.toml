@@ -1,7 +1,0 @@
-name = "default"
-description = "Default agent."
-model = "gpt-5.6-sol"
-model_reasoning_effort = "max"
-developer_instructions = """
-You are an agent in a team of agents collaborating to complete a task.
-"""

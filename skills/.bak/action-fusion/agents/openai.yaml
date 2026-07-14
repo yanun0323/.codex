@@ -1,4 +1,0 @@
-interface:
-  display_name: "Action - Fusion"
-  short_description: "Run read-only Fusion-style review panel"
-  icon_small: "./assets/action-small.svg"

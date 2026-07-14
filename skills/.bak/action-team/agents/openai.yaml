@@ -1,4 +1,0 @@
-interface:
-  display_name: "Action - Team"
-  short_description: "Run orchestrator-workers subagent workflow"
-  icon_small: "./assets/action-small.svg"

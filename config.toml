@@ -74,6 +74,9 @@ status_line = [
 max_threads = 6
 max_depth = 1
 
+[features.multi_agent_v2]
+hide_spawn_agent_metadata = false
+
 [model_providers.local]
 name = "local"
 base_url = "http://localhost:11434/v1"

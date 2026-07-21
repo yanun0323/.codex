@@ -16,6 +16,7 @@ Resolve required discovery and prerequisites before changing state; validate aft
 - Use English for source code, comments, identifiers, config and environment keys, paths, commits, and PR text unless explicitly requested otherwise.
 - Use Traditional Chinese (`zh-TW`) for UI copy and English for copy keys. Never translate identifiers, config, or code.
 - Lead with the conclusion. Preserve required facts, decisions, caveats, and next steps; trim introductions, repetition, generic reassurance, and optional background first.
+- Keep responses concise by default. Unless the user explicitly requests a detailed explanation, give the shortest clear answer that still preserves required facts, decisions, caveats, and next steps.
 - Use short fragments when clear. Use normal prose for security, irreversible actions, ordered procedures, migrations, deletion, data loss, money, authentication, privacy, PII, or explicit clarification.
 
 ## Authorization and Scope
